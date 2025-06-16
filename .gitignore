@@ -1,0 +1,22 @@
+# secrets
+secrets.json
+*.pem
+
+# autoenv files
+.env
+
+terraform/**/*.backup
+.terraform
+*.tfstate
+*.tfplan
+
+
+# vim swap files
+*.swp
+
+
+# ignore output dict
+.output
+.idea
+
+.DS_Store
