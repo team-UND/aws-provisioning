@@ -20,3 +20,5 @@ terraform/**/*.backup
 .idea
 
 .DS_Store
+
+terraform/lambda/teamund/beforegoingd_apnortheast2/terraform.tfvars
