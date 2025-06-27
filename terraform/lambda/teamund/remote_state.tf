@@ -9,9 +9,3 @@ data "terraform_remote_state" "iam" {
 
   config = merge(var.remote_state.iam.teamund.beforegoingdapne2)
 }
-
-data "terraform_remote_state" "sns" {
-  backend = "s3"
-
-  config = merge(var.remote_state.sns.teamund.beforegoingdapne2)
-}

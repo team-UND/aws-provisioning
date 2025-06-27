@@ -32,19 +32,19 @@ def lambda_handler(event, context):
     if status == "SUCCEEDED":
         color = 10478271
         status_emoji = "✅"
-        status_text = "배포 성공!"
+        status_text = "Deployment Succeeded!"
     elif status == "FAILED":
         color = 13458524
         status_emoji = "❌"
-        status_text = "배포 실패!"
+        status_text = "Deployment Failed!"
     elif status == "STOPPED":
         color = 16777113
         status_emoji = "⏹️"
-        status_text = "배포 중단!"
+        status_text = "Deployment Stopped!"
     else:
-        color = 8421504 # Gray (0x808080)
+        color = 8421504
         status_emoji = "ℹ️"
-        status_text = f"배포 상태: {status}"
+        status_text = f"Deployment Status: {status}"
 
     # Generate the AWS Console link for the deployment
     encoded_deployment_id = urllib.parse.quote_plus(deployment_id)
@@ -56,6 +56,7 @@ def lambda_handler(event, context):
                   f"**Status:** {status_emoji} {status_text}"
 
     discord_data = {
+        "content": "Codedeploy Result",
         "embeds": [
             {
                 "title": "CodeDeploy Deployment Notification",

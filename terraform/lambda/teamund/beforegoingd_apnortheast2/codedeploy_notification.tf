@@ -26,17 +26,3 @@ resource "aws_lambda_function" "codedeploy_notification" {
     Environment = data.terraform_remote_state.vpc.outputs.billing_tag
   }
 }
-
-resource "aws_lambda_permission" "allow_sns_to_invoke_lambda" {
-  statement_id  = "AllowExecutionFromSNS"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.codedeploy_notification.function_name
-  principal     = "sns.amazonaws.com"
-  source_arn    = data.terraform_remote_state.sns.outputs.aws_sns_topic_codedeploy_arn
-}
-
-resource "aws_sns_topic_subscription" "lambda_subscription" {
-  topic_arn = data.terraform_remote_state.sns.outputs.aws_sns_topic_codedeploy_arn
-  protocol  = "lambda"
-  endpoint  = aws_lambda_function.codedeploy_notification.arn
-}

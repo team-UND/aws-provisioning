@@ -14,6 +14,19 @@ variable "remote_state" {
 
     }
 
+    # Route53
+    route53 = {
+      teamund = {
+
+        beforegoingdapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/route53/teamund/beforegoing.site/terraform.tfstate"
+        }
+
+      }
+    }
+
     # Services
     services = {
       server = {
@@ -92,14 +105,14 @@ variable "remote_state" {
       }
     }
 
-    # SNS
-    sns = {
+    # Lambda
+    lambda = {
       teamund = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/sns/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }
