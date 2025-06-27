@@ -1,4 +1,4 @@
-data "archive_file" "codedeploy_function_zip" {
+data "archive_file" "codedeploy_notification_zip" {
   type        = "zip"
   source_file = "${path.module}/codedeploy_notification.py"
   output_path = "${path.module}/codedeploy_notification.zip"
@@ -12,8 +12,8 @@ resource "aws_lambda_function" "codedeploy_notification" {
   timeout       = 30
   memory_size   = 128
 
-  filename         = data.archive_file.codedeploy_function_zip.output_path
-  source_code_hash = data.archive_file.codedeploy_function_zip.output_base64sha256
+  filename         = data.archive_file.codedeploy_notification_zip.output_path
+  source_code_hash = data.archive_file.codedeploy_notification_zip.output_base64sha256
 
   environment {
     variables = {
