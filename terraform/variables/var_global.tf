@@ -105,6 +105,19 @@ variable "remote_state" {
       }
     }
 
+    # SNS
+    sns = {
+      teamund = {
+
+        beforegoingdapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/sns/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+        }
+
+      }
+    }
+
     # Lambda
     lambda = {
       teamund = {
