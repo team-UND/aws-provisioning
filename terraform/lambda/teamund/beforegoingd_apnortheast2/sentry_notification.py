@@ -49,16 +49,13 @@ def lambda_handler(event, context):
     color = color_map.get(level, 10478271)
 
     fields = [
-        {"name": "View in Sentry", "value": f"[Issue Details]({url})", "inline": False},
         {"name": "environment", "value": environment, "inline": True},
         {"name": "level", "value": level.capitalize(), "inline": True},
+        {"name": "Request URL", "value": req_url},
+        {"name": "method", "value": method, "inline": True},
+        {"name": "User-Agent", "value": user_agent},
+        {"name": "View in Sentry", "value": f"[Issue Details]({url})", "inline": False}
     ]
-    if req_url:
-        fields.append({"name": "Request URL", "value": req_url})
-    if method:
-        fields.append({"name": "method", "value": method, "inline": True})
-    if user_agent:
-        fields.append({"name": "User-Agent", "value": user_agent})
 
     discord_data = {
         "content": "Sentry Issue",
