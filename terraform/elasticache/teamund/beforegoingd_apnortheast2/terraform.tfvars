@@ -1,1 +1,2 @@
-port = 6079
+internal_domain_name = "redis-dev"
+port                 = 6079

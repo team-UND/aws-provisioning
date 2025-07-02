@@ -13,5 +13,5 @@ resource "aws_vpc_security_group_ingress_rule" "mysql_ing" {
   from_port                    = var.port
   to_port                      = var.port
   ip_protocol                  = "tcp"
-  referenced_security_group_id = data.terraform_remote_state.services.outputs.aws_security_group_ec2_id
+  referenced_security_group_id = data.terraform_remote_state.server.outputs.aws_security_group_ec2_id
 }

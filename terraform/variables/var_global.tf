@@ -29,6 +29,16 @@ variable "remote_state" {
 
     # Services
     services = {
+      prometheus = {
+
+        beforegoingdapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/services/prometheus/beforegoingd_apnortheast2/terraform.tfstate"
+        }
+
+      }
+
       server = {
 
         beforegoingdapne2 = {

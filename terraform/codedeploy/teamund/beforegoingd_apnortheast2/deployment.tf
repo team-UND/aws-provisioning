@@ -16,7 +16,7 @@ resource "aws_codedeploy_deployment_group" "beforegoing" {
     ec2_tag_filter {
       key   = "aws:autoscaling:groupName"
       type  = "KEY_AND_VALUE"
-      value = data.terraform_remote_state.services.outputs.aws_autoscaling_group_name
+      value = data.terraform_remote_state.server.outputs.aws_autoscaling_group_name
     }
   }
 
@@ -27,7 +27,7 @@ resource "aws_codedeploy_deployment_group" "beforegoing" {
 
   load_balancer_info {
     target_group_info {
-      name = data.terraform_remote_state.services.outputs.aws_lb_target_group_external_name
+      name = data.terraform_remote_state.server.outputs.aws_lb_target_group_external_name
     }
   }
 

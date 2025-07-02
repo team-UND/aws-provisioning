@@ -9,7 +9,7 @@ resource "aws_db_subnet_group" "beforegoingd_mysql" {
 
 resource "aws_route53_record" "beforegoingd_rds" {
   zone_id = data.terraform_remote_state.vpc.outputs.route53_internal_zone_id
-  name    = "rds-dev.${data.terraform_remote_state.vpc.outputs.route53_internal_domain_name}"
+  name    = var.internal_domain_name
   type    = "CNAME"
   ttl     = 60
   records = [aws_db_instance.beforegoingd_mysql.address]

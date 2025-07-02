@@ -35,7 +35,7 @@ resource "aws_elasticache_replication_group" "beforegoing_redis_cluster" {
 # Route53 Record for elasticache
 resource "aws_route53_record" "beforegoingd_redis" {
   zone_id = data.terraform_remote_state.vpc.outputs.route53_internal_zone_id
-  name    = "redis-dev.${data.terraform_remote_state.vpc.outputs.route53_internal_domain_name}"
+  name    = var.internal_domain_name
   type    = "CNAME"
   ttl     = 300
   records = [aws_elasticache_replication_group.beforegoing_redis_cluster.primary_endpoint_address]

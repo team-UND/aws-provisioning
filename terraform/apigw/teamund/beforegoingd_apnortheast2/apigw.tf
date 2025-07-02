@@ -34,9 +34,14 @@ resource "aws_apigatewayv2_domain_name" "external_dns" {
 }
 
 resource "aws_route53_record" "external_dns" {
-  zone_id = var.r53_variables.preprod.beforegoing_site_zone_id
-  name    = var.subdomain_name
-  type    = "A"
+  zone_id        = var.r53_variables.preprod.beforegoing_site_zone_id
+  name           = var.subdomain_name
+  type           = "A"
+  set_identifier = data.terraform_remote_state.vpc.outputs.aws_region
+
+  latency_routing_policy {
+    region = data.terraform_remote_state.vpc.outputs.aws_region
+  }
 
   alias {
     name                   = aws_apigatewayv2_domain_name.external_dns.domain_name_configuration[0].target_domain_name
