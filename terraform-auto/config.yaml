@@ -1,0 +1,7 @@
+directories:
+  - ../terraform/vpc/beforegoingd_apnortheast2
+  - ../terraform/services/server/beforegoingd_apnortheast2
+  - ../terraform/services/prometheus/beforegoingd_apnortheast2
+  - ../terraform/rds/teamund/beforegoingd_apnortheast2
+  - ../terraform/elasticache/teamund/beforegoingd_apnortheast2
+  - ../terraform/codedeploy/teamund/beforegoingd_apnortheast2
