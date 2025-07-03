@@ -56,6 +56,26 @@ resource "aws_vpc_security_group_ingress_rule" "ec2_ing" {
   description = "Port open for ${var.service_name}"
 }
 
+resource "aws_vpc_security_group_ingress_rule" "ec2_healthcheck_ing" {
+  security_group_id            = aws_security_group.ec2.id
+  from_port                    = var.healthcheck_port
+  to_port                      = var.healthcheck_port
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.external_lb.id
+
+  description = "Port open for ${var.service_name}"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ec2_observer_ing" {
+  security_group_id            = aws_security_group.ec2.id
+  from_port                    = var.observer_port
+  to_port                      = var.observer_port
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = var.observer_sg
+
+  description = "Port open for ${var.service_name}"
+}
+
 resource "aws_vpc_security_group_egress_rule" "ec2_eg" {
   security_group_id = aws_security_group.ec2.id
   ip_protocol       = "-1"
@@ -195,6 +215,12 @@ resource "aws_autoscaling_group" "asg" {
   tag {
     key                 = "Name"
     value               = "${var.service_name}-${var.vpc_name}-asg"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Monitoring"
+    value               = "enabled"
     propagate_at_launch = true
   }
 }

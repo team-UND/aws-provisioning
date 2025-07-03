@@ -55,12 +55,20 @@ variable "ext_lb_ingress_cidrs" {
   description = "Ingress of security group of external load balancer"
 }
 
+variable "observer_sg" {
+  description = "Security Group of Observer"
+}
+
 variable "home_sg" {
   description = "Office people IP list"
 }
 
 variable "service_port" {
   description = "Service port"
+}
+
+variable "observer_port" {
+  description = "Observer port"
 }
 
 variable "healthcheck_port" {

@@ -7,7 +7,8 @@ module "server" {
 
   # Port for service and healthcheck
   service_port     = 8080
-  healthcheck_port = 8080
+  observer_port    = 10090
+  healthcheck_port = 10090
   healthcheck_path = "/actuator/health"
 
   # VPC Information via remote_state
@@ -33,6 +34,8 @@ module "server" {
 
   # Security Group variables
   sg_variables = var.sg_variables
+
+  observer_sg = data.terraform_remote_state.prometheus.outputs.aws_security_group_ec2_id
 
   # Home Security Group via remote_state
   home_sg = data.terraform_remote_state.vpc.outputs.aws_security_group_home_id

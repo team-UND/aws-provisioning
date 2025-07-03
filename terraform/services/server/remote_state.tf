@@ -9,3 +9,9 @@ data "terraform_remote_state" "iam" {
 
   config = merge(var.remote_state.iam.teamund.beforegoingdapne2)
 }
+
+data "terraform_remote_state" "prometheus" {
+  backend = "s3"
+
+  config = merge(var.remote_state.services.prometheus.beforegoingdapne2)
+}
