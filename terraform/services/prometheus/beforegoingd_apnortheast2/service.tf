@@ -43,7 +43,7 @@ module "prometheus" {
 
   private_ec2_key_name = data.terraform_remote_state.vpc.outputs.aws_key_pair_private_ec2_key_name
 
-  iam_instance_profile_name = data.terraform_remote_state.iam.outputs.aws_iam_instance_profile_ec2_name
+  iam_instance_profile_name = data.terraform_remote_state.iam.outputs.aws_iam_instance_profile_prometheus_name
   user_data_path            = "${path.module}/user-data.sh"
 
   # Bastion aware Security Group via remote_state
