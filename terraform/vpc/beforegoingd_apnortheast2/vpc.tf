@@ -21,16 +21,27 @@ resource "aws_internet_gateway" "default" {
 
 # NAT gateway
 resource "aws_nat_gateway" "default" {
-  count = length(var.availability_zones)
+  # count = length(var.availability_zones)
 
-  allocation_id = element(aws_eip.nat.*.id, count.index)
+  # allocation_id = element(aws_eip.nat.*.id, count.index)
 
   # Subnet setting
   # nat[0] will be attatched to subnet[0]
-  subnet_id = element(aws_subnet.public.*.id, count.index)
+  # subnet_id = element(aws_subnet.public.*.id, count.index)
+
+  # tags = {
+  #   Name = "nat-gw${count.index}-${var.vpc_name}"
+  # }
+
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
+
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public[0].id
 
   tags = {
-    Name = "nat-gw${count.index}-${var.vpc_name}"
+    Name = "nat-gw-${var.vpc_name}"
   }
 
   lifecycle {
@@ -40,7 +51,13 @@ resource "aws_nat_gateway" "default" {
 
 # Elastic IP for NAT gateway
 resource "aws_eip" "nat" {
-  count  = length(var.availability_zones)
+  # count  = length(var.availability_zones)
+  # domain = "vpc"
+
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
+
   domain = "vpc"
 
   lifecycle {
@@ -100,20 +117,31 @@ resource "aws_subnet" "private" {
 
 # Route table for private subnets
 resource "aws_route_table" "private" {
-  count  = length(var.availability_zones)
+  # count  = length(var.availability_zones)
+  # vpc_id = aws_vpc.default.id
+
+  # tags = {
+  #   Name    = "private${count.index}rt-${var.vpc_name}"
+  #   Network = "Private"
+  # }
+
   vpc_id = aws_vpc.default.id
 
   tags = {
-    Name    = "private${count.index}rt-${var.vpc_name}"
+    Name    = "privatert-${var.vpc_name}"
     Network = "Private"
   }
 }
 
 # Route table association for private subnets
 resource "aws_route_table_association" "private" {
+  # count     = length(var.availability_zones)
+  # subnet_id = element(aws_subnet.private.*.id, count.index)
+  # route_table_id = element(aws_route_table.private.*.id, count.index)
+
   count          = length(var.availability_zones)
   subnet_id      = element(aws_subnet.private.*.id, count.index)
-  route_table_id = element(aws_route_table.private.*.id, count.index)
+  route_table_id = aws_route_table.private.id
 }
 
 # DB private subnets
