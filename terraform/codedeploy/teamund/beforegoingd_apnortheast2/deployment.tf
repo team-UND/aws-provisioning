@@ -1,4 +1,4 @@
-resource "aws_codedeploy_app" "beforegoing" {
+resource "aws_codedeploy_app" "server" {
   name = "codedeploy-app-${data.terraform_remote_state.vpc.outputs.shard_id}"
 
   tags = {
@@ -7,8 +7,8 @@ resource "aws_codedeploy_app" "beforegoing" {
   }
 }
 
-resource "aws_codedeploy_deployment_group" "beforegoing" {
-  app_name              = aws_codedeploy_app.beforegoing.name
+resource "aws_codedeploy_deployment_group" "server" {
+  app_name              = aws_codedeploy_app.server.name
   deployment_group_name = "codedeploy-group-${data.terraform_remote_state.vpc.outputs.shard_id}"
   service_role_arn      = data.terraform_remote_state.iam.outputs.aws_iam_role_codedeploy_arn
 
