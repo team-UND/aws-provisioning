@@ -8,7 +8,7 @@ module "prometheus" {
   # Port for service and healthcheck
   service_port     = 9090
   healthcheck_port = 9090
-  healthcheck_path = "/"
+  healthcheck_path = "/-/healthy"
 
   # VPC Information via remote_state
   shard_id           = data.terraform_remote_state.vpc.outputs.shard_id
