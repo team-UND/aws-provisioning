@@ -12,13 +12,7 @@ resource "aws_codedeploy_deployment_group" "server" {
   deployment_group_name = "codedeploy-group-server-${data.terraform_remote_state.vpc.outputs.shard_id}"
   service_role_arn      = data.terraform_remote_state.iam.outputs.aws_iam_role_codedeploy_arn
 
-  ec2_tag_set {
-    ec2_tag_filter {
-      key   = "aws:autoscaling:groupName"
-      type  = "KEY_AND_VALUE"
-      value = data.terraform_remote_state.server.outputs.aws_autoscaling_group_name
-    }
-  }
+  autoscaling_groups = [data.terraform_remote_state.server.outputs.aws_autoscaling_group_name]
 
   deployment_style {
     deployment_option = "WITH_TRAFFIC_CONTROL"
