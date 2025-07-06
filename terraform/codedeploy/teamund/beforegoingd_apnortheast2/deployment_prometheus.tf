@@ -1,22 +1,22 @@
-resource "aws_codedeploy_app" "server" {
-  name = "codedeploy-app-${data.terraform_remote_state.vpc.outputs.shard_id}"
+resource "aws_codedeploy_app" "prometheus" {
+  name = "codedeploy-app-prometheus-${data.terraform_remote_state.vpc.outputs.shard_id}"
 
   tags = {
-    Name        = "codedeploy-app-${data.terraform_remote_state.vpc.outputs.shard_id}"
+    Name        = "codedeploy-app-prometheus-${data.terraform_remote_state.vpc.outputs.shard_id}"
     Environment = data.terraform_remote_state.vpc.outputs.billing_tag
   }
 }
 
-resource "aws_codedeploy_deployment_group" "server" {
-  app_name              = aws_codedeploy_app.server.name
-  deployment_group_name = "codedeploy-group-${data.terraform_remote_state.vpc.outputs.shard_id}"
+resource "aws_codedeploy_deployment_group" "prometheus" {
+  app_name              = aws_codedeploy_app.prometheus.name
+  deployment_group_name = "codedeploy-group-prometheus-${data.terraform_remote_state.vpc.outputs.shard_id}"
   service_role_arn      = data.terraform_remote_state.iam.outputs.aws_iam_role_codedeploy_arn
 
   ec2_tag_set {
     ec2_tag_filter {
       key   = "aws:autoscaling:groupName"
       type  = "KEY_AND_VALUE"
-      value = data.terraform_remote_state.server.outputs.aws_autoscaling_group_name
+      value = data.terraform_remote_state.prometheus.outputs.aws_autoscaling_group_name
     }
   }
 
@@ -27,7 +27,7 @@ resource "aws_codedeploy_deployment_group" "server" {
 
   load_balancer_info {
     target_group_info {
-      name = data.terraform_remote_state.server.outputs.aws_lb_target_group_external_name
+      name = data.terraform_remote_state.prometheus.outputs.aws_lb_target_group_external_name
     }
   }
 
@@ -49,7 +49,7 @@ resource "aws_codedeploy_deployment_group" "server" {
   }
 
   tags = {
-    Name        = "codedeploy-group-${data.terraform_remote_state.vpc.outputs.shard_id}"
+    Name        = "codedeploy-group-promtheus-${data.terraform_remote_state.vpc.outputs.shard_id}"
     Environment = data.terraform_remote_state.vpc.outputs.billing_tag
   }
 }

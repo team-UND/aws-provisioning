@@ -4,6 +4,12 @@ data "terraform_remote_state" "vpc" {
   config = merge(var.remote_state.vpc.beforegoingdapne2)
 }
 
+data "terraform_remote_state" "prometheus" {
+  backend = "s3"
+
+  config = merge(var.remote_state.services.prometheus.beforegoingdapne2)
+}
+
 data "terraform_remote_state" "server" {
   backend = "s3"
 
