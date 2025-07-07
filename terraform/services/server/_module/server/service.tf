@@ -10,8 +10,6 @@ resource "aws_security_group" "ecs_tasks" {
   }
 }
 
-# /workspace/aws-provisioning/terraform/services/server/_module/server/service.tf
-
 # Allow TCP traffic from the ALB to the application container port
 resource "aws_vpc_security_group_ingress_rule" "tasks_alb_app_ing" {
   security_group_id            = aws_security_group.ecs_tasks.id
@@ -31,7 +29,6 @@ resource "aws_vpc_security_group_ingress_rule" "tasks_alb_app_health_check_ing" 
   referenced_security_group_id = var.alb_security_group_id
   description                  = "Allow health check traffic from the external ALB"
 }
-
 
 # External LB target group
 resource "aws_lb_target_group" "default" {
@@ -102,15 +99,7 @@ resource "aws_ecs_task_definition" "default" {
   memory                   = var.task_memory
   execution_role_arn       = var.ecs_task_execution_role_arn
 
-  container_definitions = templatefile("${path.module}/container-definitions.json.tftpl", {
-    service_name           = var.service_name
-    image_url              = var.container_image_url
-    prometheus_image_url   = var.prometheus_image_url
-    service_port           = var.service_port
-    app_log_group_name     = aws_cloudwatch_log_group.default.name
-    sidecar_log_group_name = aws_cloudwatch_log_group.prometheus_sidecar.name
-    aws_region             = var.aws_region
-  })
+  container_definitions = var.container_definitions_json
 }
 
 # Application-specific ECS Service
@@ -162,14 +151,4 @@ resource "aws_appautoscaling_policy" "cpu_scaling" {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
   }
-}
-
-resource "aws_cloudwatch_log_group" "default" {
-  name              = "/ecs/${var.service_name}"
-  retention_in_days = var.cloudwatch_log_retention_in_days
-}
-
-resource "aws_cloudwatch_log_group" "prometheus_sidecar" {
-  name              = "/ecs/${var.service_name}-prometheus"
-  retention_in_days = var.cloudwatch_log_retention_in_days
 }

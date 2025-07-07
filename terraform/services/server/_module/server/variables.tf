@@ -31,22 +31,22 @@ variable "private_subnet_ids" {
 }
 
 variable "ecs_cluster_id" {
-  description = "The ID of the shared ECS cluster."
+  description = "The ID of the shared ECS cluster"
   type        = string
 }
 
 variable "ecs_cluster_name" {
-  description = "The name of the shared ECS cluster."
+  description = "The name of the shared ECS cluster"
   type        = string
 }
 
 variable "alb_https_listener_arn" {
-  description = "The ARN of the external ALB's HTTPS listener."
+  description = "The ARN of the external ALB's HTTPS listener"
   type        = string
 }
 
 variable "alb_security_group_id" {
-  description = "The security group ID of the external ALB."
+  description = "The security group ID of the external ALB"
   type        = string
 }
 
@@ -59,12 +59,12 @@ variable "domain_name" {
 }
 
 variable "alb_dns_name" {
-  description = "The DNS name of the external ALB."
+  description = "The DNS name of the external ALB"
   type        = string
 }
 
 variable "alb_zone_id" {
-  description = "The zone ID of the external ALB."
+  description = "The zone ID of the external ALB"
   type        = string
 }
 
@@ -81,52 +81,46 @@ variable "health_check_path" {
 }
 
 variable "listener_rule_priority" {
-  description = "The priority for the listener rule. Must be unique per listener."
+  description = "The priority for the listener rule. Must be unique per listener"
   type        = number
 }
 
 variable "ecs_task_execution_role_arn" {
-  description = "ARN of the IAM role for ECS task execution. Allows pulling images from ECR and sending logs to CloudWatch."
+  description = "ARN of the IAM role for ECS task execution. Allows pulling images from ECR and sending logs to CloudWatch"
   type        = string
 }
 
 variable "task_cpu" {
-  description = "The number of CPU units to reserve for the container. 1024 is 1 vCPU."
+  description = "The number of CPU units to reserve for the container. 1024 is 1 vCPU"
   type        = string
   default     = "256" # 0.25 vCPU
 }
 
 variable "task_memory" {
-  description = "The amount of memory (in MiB) to reserve for the container."
+  description = "The amount of memory (in MiB) to reserve for the container"
   type        = string
   default     = "512" # 512 MiB
 }
 
-variable "container_image_url" {
-  description = "The URL of the container image to use for the service."
+variable "container_definitions_json" {
+  description = "A fully-rendered JSON string of container definitions for the task"
   type        = string
-}
-
-variable "prometheus_image_url" {
-  description = "The URL of the Prometheus container image to use for the sidecar."
-  type        = string
-  default     = "prom/prometheus:latest"
 }
 
 variable "container_desired_capacity" {
-  description = "Default number of containers to run for the service."
+  description = "Default number of containers to run for the service"
   type        = number
   default     = 1
 }
 
 variable "container_min_capacity" {
-  description = "Minimum number of containers to run for the service."
+  description = "Minimum number of containers to run for the service"
   type        = number
   default     = 1
 }
 
 variable "container_max_capacity" {
-  description = "Maximum number of containers to run for the service."
+  description = "Maximum number of containers to run for the service"
   type        = number
   default     = 2
 }
@@ -144,9 +138,4 @@ variable "scale_in_cooldown" {
 variable "scale_out_cooldown" {
   type    = number
   default = 60 # 1 minute before scaling out again
-}
-
-variable "cloudwatch_log_retention_in_days" {
-  type    = number
-  default = 3
 }

@@ -1,0 +1,96 @@
+[
+  {
+    "name": "observability-sidecar",
+    "image": "${observability_image_url}",
+    "essential": false,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${sidecar_log_group_name}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${service_name}-observability"
+      }
+    }
+  },
+  {
+    "name": "${service_name}",
+    "image": "${app_image_url}",
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": ${service_port}
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${app_log_group_name}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${service_name}-app"
+      }
+    },
+    "environment": [
+      {
+        "name": "SPRING_PROFILES_ACTIVE",
+        "value": "${spring_profiles_active}"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "SPRING_DATASOURCE_ENDPOINT",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_ENDPOINT::"
+      },
+      {
+        "name": "SPRING_DATASOURCE_PORT",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_PORT::"
+      },
+      {
+        "name": "SPRING_DATASOURCE_DATABASE_NAME",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_DATABASE_NAME::"
+      },
+      {
+        "name": "SPRING_DATASOURCE_USERNAME",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_USERNAME::"
+      },
+      {
+        "name": "SPRING_DATASOURCE_PASSWORD",
+        "valueFrom": "${rdb_secrets_arn}:password::"
+      },
+      {
+        "name": "SPRING_REDIS_HOST",
+        "valueFrom": "${app_secrets_arn}:SPRING_REDIS_HOST::"
+      },
+      {
+        "name": "SPRING_REDIS_PORT",
+        "valueFrom": "${app_secrets_arn}:SPRING_REDIS_PORT::"
+      },
+      {
+        "name": "OAUTH_KAKAO_APP_KEY",
+        "valueFrom": "${app_secrets_arn}:OAUTH_KAKAO_APP_KEY::"
+      },
+      {
+        "name": "ISSUER_NAME",
+        "valueFrom": "${app_secrets_arn}:ISSUER_NAME::"
+      },
+            {
+        "name": "JWT_SECRET",
+        "valueFrom": "${app_secrets_arn}:JWT_SECRET::"
+      },
+      {
+        "name": "ACCESS_TOKEN_EXPIRE_TIME",
+        "valueFrom": "${app_secrets_arn}:ACCESS_TOKEN_EXPIRE_TIME::"
+      },
+            {
+        "name": "REFRESH_TOKEN_EXPIRE_TIME",
+        "valueFrom": "${app_secrets_arn}:REFRESH_TOKEN_EXPIRE_TIME::"
+      },
+      {
+        "name": "SENTRY_DSN",
+        "valueFrom": "${app_secrets_arn}:SENTRY_DSN::"
+      }
+    ],
+    "dependsOn": [
+      { "containerName": "observability-sidecar", "condition": "START" }
+    ]
+  }
+]
