@@ -1,6 +1,6 @@
 resource "aws_security_group" "beforegoingd_mysql" {
   name        = "mysql-${data.terraform_remote_state.vpc.outputs.shard_id}"
-  description = "beforegoing preprod mysql SG"
+  description = "beforegoing dev mysql SG"
   vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
 
   tags = {

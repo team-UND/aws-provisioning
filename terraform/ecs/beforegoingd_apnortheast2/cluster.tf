@@ -13,7 +13,7 @@ module "cluster" {
   ext_lb_ingress_cidrs = "0.0.0.0/0" # Allow traffic from anywhere to the ALB
 
   # Security and Access
-  acm_external_ssl_certificate_arn = var.r53_variables.preprod.star_beforegoing_site_acm_arn_apnortheast2
+  acm_external_ssl_certificate_arn = var.r53_variables.dev.star_beforegoing_site_acm_arn_apnortheast2
   private_ec2_key_name             = data.terraform_remote_state.vpc.outputs.aws_key_pair_private_ec2_key_name
   iam_instance_profile_name        = data.terraform_remote_state.iam.outputs.aws_iam_instance_profile_ec2_name
   bastion_aware_sg                 = data.terraform_remote_state.vpc.outputs.aws_security_group_bastion_aware_id
