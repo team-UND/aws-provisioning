@@ -17,8 +17,28 @@ resource "aws_iam_role" "ecs_task_execution" {
   })
 }
 
+resource "aws_iam_policy" "secrets_manager_read" {
+  name        = "secrets-manager-read-${data.terraform_remote_state.vpc.outputs.shard_id}"
+  description = "Policy for EC2 to read secrets from Secrets Manager"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "secretsmanager:GetSecretValue"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
-  role = aws_iam_role.ecs_task_execution.name
-  # AWS 관리형 정책으로, ECR pull 및 CloudWatch logs 전송 권한을 포함합니다.
+  role       = aws_iam_role.ecs_task_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_secrets_manager_read" {
+  role       = aws_iam_role.ecs_task_execution.name
+  policy_arn = aws_iam_policy.secrets_manager_read.arn
 }
