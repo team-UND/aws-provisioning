@@ -50,6 +50,18 @@ variable "remote_state" {
       }
     }
 
+    # ECR
+    ecr = {
+      teamund = {
+
+        beforegoingdapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+        }
+      }
+    }
+
     # RDS
     rds = {
       teamund = {
