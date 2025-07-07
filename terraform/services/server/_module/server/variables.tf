@@ -79,12 +79,6 @@ variable "healthcheck_path" {
   description = "Healthcheck path"
 }
 
-variable "image_id" {
-  description = "AMI ID for instance"
-  type        = string
-  default     = "ami-0662f4965dfc70aca"
-}
-
 variable "instance_type" {
   description = "EC2 Instance type"
   type        = string
@@ -100,28 +94,85 @@ variable "iam_instance_profile_name" {
   description = "Name of IAM instance profile"
 }
 
-variable "user_data_path" {
-  description = "Path for user-data.sh"
+variable "ecs_task_execution_role_arn" {
+  description = "ARN of the IAM role for ECS task execution. Allows pulling images from ECR and sending logs to CloudWatch."
+  type        = string
 }
 
 variable "bastion_aware_sg" {
   description = "Allows ssh access from the bastion server"
 }
 
-variable "min_size" {
+variable "ec2_min_size" {
   description = "Auto Scaling min size"
   type        = number
   default     = 1
 }
 
-variable "max_size" {
+variable "ec2_max_size" {
   description = "Auto Scaling max size"
   type        = number
   default     = 2
 }
 
-variable "desired_capacity" {
+variable "ec2_desired_capacity" {
   description = "Auto Scaling desired capacity"
   type        = number
   default     = 1
+}
+
+variable "task_cpu" {
+  description = "The number of CPU units to reserve for the container. 1024 is 1 vCPU."
+  type        = string
+  default     = "256" # 0.25 vCPU
+}
+
+variable "task_memory" {
+  description = "The amount of memory (in MiB) to reserve for the container."
+  type        = string
+  default     = "512" # 512 MiB
+}
+
+variable "container_image_url" {
+  description = "The URL of the container image to use for the service."
+  type        = string
+}
+
+variable "prometheus_image_url" {
+  description = "The URL of the Prometheus container image to use for the sidecar."
+  type        = string
+  default     = "prom/prometheus:latest"
+}
+
+variable "container_desired_capacity" {
+  description = "Default number of containers to run for the service."
+  type        = number
+  default     = 1
+}
+
+variable "container_min_capacity" {
+  description = "Minimum number of containers to run for the service."
+  type        = number
+  default     = 1
+}
+
+variable "container_max_capacity" {
+  description = "Maximum number of containers to run for the service."
+  type        = number
+  default     = 2
+}
+
+variable "target_value" {
+  type    = number
+  default = 80 # Target 80% average CPU utilization
+}
+
+variable "scale_in_cooldown" {
+  type    = number
+  default = 300 # 5 minutes before scaling in
+}
+
+variable "scale_out_cooldown" {
+  type    = number
+  default = 60 # 1 minute before scaling out again
 }
