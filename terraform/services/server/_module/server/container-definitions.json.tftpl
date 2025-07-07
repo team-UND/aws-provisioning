@@ -3,20 +3,10 @@
     "name": "prometheus-sidecar",
     "image": "${prometheus_image_url}",
     "essential": false,
-    "command": [
-      "--config.file=/etc/prometheus/prometheus.yml"
-    ],
-    "mountPoints": [
-      {
-        "sourceVolume": "prometheus-config-volume",
-        "containerPath": "/etc/prometheus/prometheus.yml",
-        "readOnly": true
-      }
-    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${log_group_name}-prometheus",
+        "awslogs-group": "${sidecar_log_group_name}",
         "awslogs-region": "${aws_region}",
         "awslogs-stream-prefix": "ecs-prometheus"
       }
@@ -34,7 +24,7 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${log_group_name}",
+        "awslogs-group": "${app_log_group_name}",
         "awslogs-region": "${aws_region}",
         "awslogs-stream-prefix": "ecs"
       }

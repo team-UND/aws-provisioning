@@ -10,6 +10,12 @@ data "terraform_remote_state" "iam" {
   config = merge(var.remote_state.iam.teamund.beforegoingdapne2)
 }
 
+data "terraform_remote_state" "cluster" {
+  backend = "s3"
+
+  config = merge(var.remote_state.ecs.cluster.beforegoingdapne2)
+}
+
 data "terraform_remote_state" "ecr" {
   backend = "s3"
 

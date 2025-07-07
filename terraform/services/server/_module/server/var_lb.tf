@@ -5,10 +5,6 @@ variable "lb_variables" {
 
     target_group_deregistration_delay = {}
 
-    external_lb = {
-      tags = {}
-    }
-
     external_lb_tg = {
       tags = {}
     }

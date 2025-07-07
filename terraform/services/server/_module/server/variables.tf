@@ -20,11 +20,6 @@ variable "vpc_id" {
   description = "The AWS ID of the VPC this shard is being deployed into"
 }
 
-variable "availability_zone" {
-  description = "A comma-delimited list of availability zones for the VPC"
-  default     = "ap-northeast-2a"
-}
-
 variable "public_subnet_ids" {
   description = "A comma-delimited list of public subnets for the VPC"
   type        = list(string)
@@ -35,8 +30,24 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
-variable "billing_tag" {
-  description = "The shard's default billing tag"
+variable "ecs_cluster_id" {
+  description = "The ID of the shared ECS cluster."
+  type        = string
+}
+
+variable "ecs_cluster_name" {
+  description = "The name of the shared ECS cluster."
+  type        = string
+}
+
+variable "alb_https_listener_arn" {
+  description = "The ARN of the external ALB's HTTPS listener."
+  type        = string
+}
+
+variable "alb_security_group_id" {
+  description = "The security group ID of the external ALB."
+  type        = string
 }
 
 variable "route53_external_zone_id" {
@@ -47,78 +58,36 @@ variable "domain_name" {
   description = "Domain Name"
 }
 
-variable "acm_external_ssl_certificate_arn" {
-  description = "ssl cert id"
+variable "alb_dns_name" {
+  description = "The DNS name of the external ALB."
+  type        = string
 }
 
-variable "ext_lb_ingress_cidrs" {
-  description = "Ingress of security group of external load balancer"
-}
-
-variable "observer_sg" {
-  description = "Security Group of Observer"
-}
-
-variable "home_sg" {
-  description = "Office people IP list"
+variable "alb_zone_id" {
+  description = "The zone ID of the external ALB."
+  type        = string
 }
 
 variable "service_port" {
   description = "Service port"
 }
 
-variable "observer_port" {
-  description = "Observer port"
-}
-
-variable "healthcheck_port" {
+variable "health_check_port" {
   description = "Healthcheck port"
 }
 
-variable "healthcheck_path" {
+variable "health_check_path" {
   description = "Healthcheck path"
 }
 
-variable "instance_type" {
-  description = "EC2 Instance type"
-  type        = string
-  default     = "t2.micro"
-}
-
-variable "private_ec2_key_name" {
-  description = "Private EC2 key-pair"
-  type        = string
-}
-
-variable "iam_instance_profile_name" {
-  description = "Name of IAM instance profile"
+variable "listener_rule_priority" {
+  description = "The priority for the listener rule. Must be unique per listener."
+  type        = number
 }
 
 variable "ecs_task_execution_role_arn" {
   description = "ARN of the IAM role for ECS task execution. Allows pulling images from ECR and sending logs to CloudWatch."
   type        = string
-}
-
-variable "bastion_aware_sg" {
-  description = "Allows ssh access from the bastion server"
-}
-
-variable "ec2_min_size" {
-  description = "Auto Scaling min size"
-  type        = number
-  default     = 1
-}
-
-variable "ec2_max_size" {
-  description = "Auto Scaling max size"
-  type        = number
-  default     = 2
-}
-
-variable "ec2_desired_capacity" {
-  description = "Auto Scaling desired capacity"
-  type        = number
-  default     = 1
 }
 
 variable "task_cpu" {
@@ -175,4 +144,9 @@ variable "scale_in_cooldown" {
 variable "scale_out_cooldown" {
   type    = number
   default = 60 # 1 minute before scaling out again
+}
+
+variable "cloudwatch_log_retention_in_days" {
+  type    = number
+  default = 3
 }

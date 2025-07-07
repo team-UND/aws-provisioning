@@ -9,20 +9,6 @@ variable "lb_variables" {
       beforegoingdapne2 = 0
     }
 
-    external_lb = {
-      tags = {
-
-        beforegoingdapne2 = {
-          Name    = "beforegoingd_apnortheast2-external-lb"
-          app     = "beforegoing"
-          project = "beforegoing"
-          env     = "dev"
-          stack   = "beforegoingd_apnortheast2"
-        }
-
-      }
-    }
-
     external_lb_tg = {
       tags = {
 

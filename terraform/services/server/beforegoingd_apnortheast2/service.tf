@@ -5,50 +5,54 @@ module "server" {
   # Name of service
   service_name = "server"
 
-  # Port for service and healthcheck
-  service_port     = 8080
-  observer_port    = 10090
-  healthcheck_port = 10090
-  healthcheck_path = "/actuator/health"
-
-  # VPC Information via remote_state
-  shard_id           = data.terraform_remote_state.vpc.outputs.shard_id
-  public_subnet_ids  = data.terraform_remote_state.vpc.outputs.public_subnet_ids
-  private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
-  aws_region         = data.terraform_remote_state.vpc.outputs.aws_region
-  vpc_id             = data.terraform_remote_state.vpc.outputs.vpc_id
-  vpc_name           = data.terraform_remote_state.vpc.outputs.vpc_name
-  billing_tag        = data.terraform_remote_state.vpc.outputs.billing_tag
-
   # Domain Name
   # This will be the prefix of record
   # ex) server-dev.beforegoing.com
-  domain_name = "server-dev"
+  domain_name = "server-dev.beforegoing.site"
+
+  # Port for service and healthcheck
+  service_port      = 8080
+  health_check_port = 10090
+  health_check_path = "/actuator/health"
+
+  # VPC Information via remote_state
+  shard_id           = data.terraform_remote_state.vpc.outputs.shard_id
+  aws_region         = data.terraform_remote_state.vpc.outputs.aws_region
+  vpc_id             = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_name           = data.terraform_remote_state.vpc.outputs.vpc_name
+  public_subnet_ids  = data.terraform_remote_state.vpc.outputs.public_subnet_ids
+  private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
+
+  # Shared Cluster Info
+  ecs_cluster_id   = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_default_id
+  ecs_cluster_name = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_default_name
+
+  # Shared ALB Info
+  alb_https_listener_arn = data.terraform_remote_state.cluster.outputs.aws_lb_listener_external_https_arn
+  alb_security_group_id  = data.terraform_remote_state.cluster.outputs.aws_security_group_external_lb_id
+  alb_dns_name           = data.terraform_remote_state.cluster.outputs.aws_lb_external_dns_name
+  alb_zone_id            = data.terraform_remote_state.cluster.outputs.aws_lb_external_zone_id
 
   # Route53 variables
-  acm_external_ssl_certificate_arn = var.r53_variables.preprod.star_beforegoing_site_acm_arn_apnortheast2
-  route53_external_zone_id         = var.r53_variables.preprod.beforegoing_site_zone_id
+  route53_external_zone_id = var.r53_variables.preprod.beforegoing_site_zone_id
+  listener_rule_priority   = 100
 
   # Resource LoadBalancer variables
   lb_variables = var.lb_variables
 
-  # Security Group variables
-  sg_variables = var.sg_variables
+  # IAM & ECR
+  ecs_task_execution_role_arn = data.terraform_remote_state.iam.outputs.aws_iam_role_ecs_task_execution_arn
+  container_image_url         = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_server_build_repository_url}:latest"
+  prometheus_image_url        = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_prometheus_build_repository_url}:latest"
 
-  observer_sg = data.terraform_remote_state.prometheus.outputs.aws_security_group_ec2_id
+  # Task Sizing
+  task_cpu    = "256"
+  task_memory = "512"
 
-  # Home Security Group via remote_state
-  home_sg = data.terraform_remote_state.vpc.outputs.aws_security_group_home_id
+  # Auto Scaling
+  container_desired_capacity = 1
+  container_min_capacity     = 1
+  container_max_capacity     = 2
 
-  # CIDR for external LB
-  # Control allowed IP for external LB
-  ext_lb_ingress_cidrs = "0.0.0.0/0"
-
-  private_ec2_key_name = data.terraform_remote_state.vpc.outputs.aws_key_pair_private_ec2_key_name
-
-  iam_instance_profile_name = data.terraform_remote_state.iam.outputs.aws_iam_instance_profile_ec2_name
-  user_data_path            = "${path.module}/user-data.sh"
-
-  # Bastion aware Security Group via remote_state
-  bastion_aware_sg = data.terraform_remote_state.vpc.outputs.aws_security_group_bastion_aware_id
+  cloudwatch_log_retention_in_days = 3
 }
