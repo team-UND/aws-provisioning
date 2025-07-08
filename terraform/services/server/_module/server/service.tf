@@ -30,6 +30,12 @@ resource "aws_vpc_security_group_ingress_rule" "tasks_alb_app_health_check_ing" 
   description                  = "Allow health check traffic from the external ALB"
 }
 
+resource "aws_vpc_security_group_egress_rule" "tasks_eg" {
+  security_group_id = aws_security_group.ecs_tasks.id
+  ip_protocol       = "-1"
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
 # External LB target group
 resource "aws_lb_target_group" "default" {
   name                 = "tg-${var.service_name}-${var.shard_id}"
