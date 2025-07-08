@@ -1,7 +1,7 @@
 # Elasticache Parameter Group for redis
-resource "aws_elasticache_parameter_group" "beforegoingd_redis" {
+resource "aws_elasticache_parameter_group" "redis" {
   name        = "redis-${data.terraform_remote_state.vpc.outputs.shard_id}"
-  description = "Beforegoing dev Elasticache Redis Parameter Group"
+  description = "Redis Parameter Group"
 
   # Please use the right engine and version
   family = "redis7"
