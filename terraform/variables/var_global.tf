@@ -27,6 +27,31 @@ variable "remote_state" {
       }
     }
 
+    # IAM
+    iam = {
+      teamund = {
+
+        beforegoingdapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/iam/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+        }
+
+      }
+    }
+
+    # ECR
+    ecr = {
+      teamund = {
+
+        beforegoingdapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+        }
+      }
+    }
+
     # ECS
     ecs = {
 
@@ -56,18 +81,6 @@ variable "remote_state" {
       }
     }
 
-    # ECR
-    ecr = {
-      teamund = {
-
-        beforegoingdapne2 = {
-          region = "ap-northeast-2"
-          bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast2/terraform.tfstate"
-        }
-      }
-    }
-
     # RDS
     rds = {
       teamund = {
@@ -81,14 +94,14 @@ variable "remote_state" {
       }
     }
 
-    # IAM
-    iam = {
+    # Lambda
+    lambda = {
       teamund = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/iam/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }
@@ -102,19 +115,6 @@ variable "remote_state" {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
           key    = "aws-provisioning/terraform/sns/teamund/beforegoingd_apnortheast2/terraform.tfstate"
-        }
-
-      }
-    }
-
-    # Lambda
-    lambda = {
-      teamund = {
-
-        beforegoingdapne2 = {
-          region = "ap-northeast-2"
-          bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }
