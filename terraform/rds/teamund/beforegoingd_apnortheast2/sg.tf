@@ -1,6 +1,6 @@
-resource "aws_security_group" "beforegoingd_mysql" {
+resource "aws_security_group" "mysql" {
   name        = "mysql-${data.terraform_remote_state.vpc.outputs.shard_id}"
-  description = "beforegoing dev mysql SG"
+  description = "MySQL SG"
   vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
 
   tags = {
@@ -9,7 +9,7 @@ resource "aws_security_group" "beforegoingd_mysql" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "mysql_ing" {
-  security_group_id            = aws_security_group.beforegoingd_mysql.id
+  security_group_id            = aws_security_group.mysql.id
   from_port                    = var.port
   to_port                      = var.port
   ip_protocol                  = "tcp"

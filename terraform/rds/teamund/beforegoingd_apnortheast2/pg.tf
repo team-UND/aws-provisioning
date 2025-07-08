@@ -1,7 +1,7 @@
-resource "aws_db_parameter_group" "beforegoingd_mysql_pg" {
+resource "aws_db_parameter_group" "mysql_pg" {
   name        = "mysql-${data.terraform_remote_state.vpc.outputs.shard_id}"
   family      = "mysql8.0"
-  description = "beforegoingd RDS parameter group"
+  description = "MySQL parameter group"
 
   dynamic "parameter" {
     for_each = var.db_parameters
