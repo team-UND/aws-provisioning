@@ -10,6 +10,8 @@ locals {
     observability_sidecar_name = "prometheus"
     observability_image_url    = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_beforegoingd_prometheus_build_repository_url}:latest"
     service_port               = local.service_port
+    max_swap                   = 1024
+    swappiness                 = 60
     spring_profiles_active     = data.terraform_remote_state.vpc.outputs.billing_tag
     app_log_group_name         = aws_cloudwatch_log_group.app.name
     sidecar_log_group_name     = aws_cloudwatch_log_group.observability_sidecar.name
@@ -46,8 +48,9 @@ module "server" {
   private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
 
   # Shared Cluster Info
-  ecs_cluster_id   = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_default_id
-  ecs_cluster_name = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_default_name
+  ecs_cluster_id             = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_default_id
+  ecs_cluster_name           = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_default_name
+  ecs_capacity_provider_name = data.terraform_remote_state.cluster.outputs.aws_ecs_capacity_provider_default_name
 
   # Shared ALB Info
   alb_https_listener_arn = data.terraform_remote_state.cluster.outputs.aws_lb_listener_external_https_arn
@@ -67,8 +70,8 @@ module "server" {
   container_definitions_json  = local.container_definitions_json
 
   # Task Sizing
-  task_cpu    = "512" # 0.50 vCPU
-  task_memory = "512" # 512 MiB
+  task_cpu               = "512" # 0.50 vCPU
+  task_memory_hard_limit = "512" # 512 MiB
 
   # Auto Scaling
   container_desired_capacity = 1

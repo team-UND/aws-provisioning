@@ -102,7 +102,7 @@ resource "aws_ecs_task_definition" "default" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["EC2"]
   cpu                      = var.task_cpu
-  memory                   = var.task_memory
+  memory                   = var.task_memory_hard_limit
   execution_role_arn       = var.ecs_task_execution_role_arn
 
   container_definitions = var.container_definitions_json
@@ -114,12 +114,16 @@ resource "aws_ecs_service" "default" {
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.default.arn
   desired_count   = var.container_desired_capacity
-  launch_type     = "EC2"
 
   load_balancer {
     target_group_arn = aws_lb_target_group.default.arn
     container_name   = var.service_name
     container_port   = var.service_port
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = var.ecs_capacity_provider_name
+    weight            = 1
   }
 
   network_configuration {

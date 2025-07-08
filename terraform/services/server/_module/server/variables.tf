@@ -35,6 +35,11 @@ variable "ecs_cluster_id" {
   type        = string
 }
 
+variable "ecs_capacity_provider_name" {
+  description = "The name of the ECS capacity provider to use for the service"
+  type        = string
+}
+
 variable "ecs_cluster_name" {
   description = "The name of the shared ECS cluster"
   type        = string
@@ -96,10 +101,10 @@ variable "task_cpu" {
   default     = "256" # 0.25 vCPU
 }
 
-variable "task_memory" {
-  description = "The amount of memory (in MiB) to reserve for the container"
+variable "task_memory_hard_limit" {
+  description = "The absolute maximum amount of memory (in MiB) the task can use. This is a hard limit. Set to null to have no limit"
   type        = string
-  default     = "512" # 512 MiB
+  default     = "256" # 256 MiB
 }
 
 variable "container_definitions_json" {

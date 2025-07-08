@@ -25,3 +25,8 @@ output "aws_security_group_external_lb_id" {
   description = "The security group ID of the default ALB."
   value       = aws_security_group.external_lb.id
 }
+
+output "aws_ecs_capacity_provider_default_name" {
+  description = "The name of the default ECS Capacity Provider."
+  value       = aws_ecs_capacity_provider.default.name
+}

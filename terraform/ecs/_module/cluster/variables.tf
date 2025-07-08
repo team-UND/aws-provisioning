@@ -77,3 +77,15 @@ variable "bastion_aware_sg" {
 variable "home_sg" {
   description = "Office people IP list"
 }
+
+variable "swap_file_size_gb" {
+  description = "The size of the swap file in Gigabytes to create on each EC2 instance"
+  type        = number
+  default     = 2
+}
+
+variable "swappiness_value" {
+  description = "The swappiness kernel parameter value (0-100). Lower values reduce swap usage"
+  type        = number
+  default     = 10
+}

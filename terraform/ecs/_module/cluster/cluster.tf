@@ -127,7 +127,22 @@ resource "aws_launch_template" "lt" {
 
   user_data = base64encode(<<-EOF
     #!/bin/bash
+    # Configure the ECS agent to use the correct cluster
     echo "ECS_CLUSTER=${aws_ecs_cluster.default.name}" > /etc/ecs/ecs.config
+
+    # Create and enable a 2GB swap file if it doesn't exist
+    if [ ! -f /swapfile ]; then
+      fallocate -l ${var.swap_file_size_gb}G /swapfile
+      chmod 600 /swapfile
+      mkswap /swapfile
+      swapon /swapfile
+      echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+
+      # Tune swappiness to use swap only when absolutely necessary
+      # A lower value (ex. 10) is generally recommended for performance-sensitive applications
+      sysctl vm.swappiness=${var.swappiness_value}
+      echo 'vm.swappiness=${var.swappiness_value}' | tee -a /etc/sysctl.conf
+    fi
   EOF
   )
 
@@ -162,5 +177,36 @@ resource "aws_autoscaling_group" "default" {
     key                 = "Monitoring"
     value               = "enabled"
     propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "AmazonECSManaged"
+    value               = "true"
+    propagate_at_launch = true
+  }
+}
+
+resource "aws_ecs_capacity_provider" "default" {
+  name = "cp-${var.vpc_name}"
+  auto_scaling_group_provider {
+    auto_scaling_group_arn         = aws_autoscaling_group.default.arn
+    managed_termination_protection = "DISABLED"
+
+    managed_scaling {
+      status          = "ENABLED"
+      target_capacity = 100
+    }
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "default" {
+  cluster_name = aws_ecs_cluster.default.name
+
+  capacity_providers = [aws_ecs_capacity_provider.default.name]
+
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = aws_ecs_capacity_provider.default.name
   }
 }

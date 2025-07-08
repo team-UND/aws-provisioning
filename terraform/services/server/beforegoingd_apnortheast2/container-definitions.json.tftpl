@@ -35,6 +35,10 @@
         "value": "${spring_profiles_active}"
       }
     ],
+    "linuxParameters": {
+      "maxSwap": ${max_swap},
+      "swappiness": ${swappiness}
+    },
     "secrets": [
       {
         "name": "SPRING_DATASOURCE_ENDPOINT",

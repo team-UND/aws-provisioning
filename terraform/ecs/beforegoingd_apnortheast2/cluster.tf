@@ -24,6 +24,8 @@ module "cluster" {
   ec2_min_size         = 1
   ec2_max_size         = 2
   ec2_desired_capacity = 1
+  swap_file_size_gb    = 2
+  swappiness_value     = 70
 
   # Pass centralized tag variables
   lb_variables = var.lb_variables
