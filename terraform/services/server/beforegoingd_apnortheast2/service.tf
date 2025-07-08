@@ -14,7 +14,7 @@ locals {
     app_log_group_name         = aws_cloudwatch_log_group.app.name
     sidecar_log_group_name     = aws_cloudwatch_log_group.observability_sidecar.name
     aws_region                 = data.terraform_remote_state.vpc.outputs.aws_region
-    rdb_secrets_arn            = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:rds!db-3f27cc9e-2d8e-4d6e-9435-a0d7b7f65bc0-mS81wX"
+    rdb_secrets_arn            = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:rds!db-80ac3114-1cd0-4105-8b7c-9f24c1b78e56-2swVBu"
     app_secrets_arn            = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:SpringBoot-Secrets-shvyH2"
   }
 
@@ -67,8 +67,8 @@ module "server" {
   container_definitions_json  = local.container_definitions_json
 
   # Task Sizing
-  task_cpu    = "256"
-  task_memory = "512"
+  task_cpu    = "512" # 0.50 vCPU
+  task_memory = "512" # 512 MiB
 
   # Auto Scaling
   container_desired_capacity = 1
