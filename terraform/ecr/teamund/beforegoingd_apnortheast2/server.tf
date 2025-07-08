@@ -1,4 +1,4 @@
-resource "aws_ecr_repository" "server_build" {
+resource "aws_ecr_repository" "beforegoingd_server_build" {
   name                 = "beforegoingd-server"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration {

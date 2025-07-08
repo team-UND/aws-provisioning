@@ -6,9 +6,9 @@ locals {
   # Define any variables needed by the container definition template here
   template_vars = {
     service_name               = local.service_name
-    app_image_url              = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_server_build_repository_url}:latest"
+    app_image_url              = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_beforegoingd_server_build_repository_url}:latest"
     observability_sidecar_name = "prometheus"
-    observability_image_url    = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_prometheus_build_repository_url}:latest"
+    observability_image_url    = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_beforegoingd_prometheus_build_repository_url}:latest"
     service_port               = local.service_port
     spring_profiles_active     = data.terraform_remote_state.vpc.outputs.billing_tag
     app_log_group_name         = aws_cloudwatch_log_group.app.name

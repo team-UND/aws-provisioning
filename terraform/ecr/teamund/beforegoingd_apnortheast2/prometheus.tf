@@ -1,4 +1,4 @@
-resource "aws_ecr_repository" "prometheus_build" {
+resource "aws_ecr_repository" "beforegoingd_prometheus_build" {
   name                 = "beforegoingd-prometheus"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration {
