@@ -5,16 +5,17 @@ locals {
 
   # Define any variables needed by the container definition template here
   template_vars = {
-    service_name            = local.service_name
-    app_image_url           = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_server_build_repository_url}:latest"
-    observability_image_url = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_prometheus_build_repository_url}:latest"
-    service_port            = local.service_port
-    spring_profiles_active  = data.terraform_remote_state.vpc.outputs.billing_tag
-    app_log_group_name      = aws_cloudwatch_log_group.app.name
-    sidecar_log_group_name  = aws_cloudwatch_log_group.observability_sidecar.name
-    aws_region              = data.terraform_remote_state.vpc.outputs.aws_region
-    rdb_secrets_arn         = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:rds!db-4dcf15c3-d091-4c11-b01f-b9d6435b28c8-uR4sC3"
-    app_secrets_arn         = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:SpringBoot-Secrets-shvyH2"
+    service_name               = local.service_name
+    app_image_url              = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_server_build_repository_url}:latest"
+    observability_sidecar_name = "prometheus"
+    observability_image_url    = "${data.terraform_remote_state.ecr.outputs.aws_ecr_repository_prometheus_build_repository_url}:latest"
+    service_port               = local.service_port
+    spring_profiles_active     = data.terraform_remote_state.vpc.outputs.billing_tag
+    app_log_group_name         = aws_cloudwatch_log_group.app.name
+    sidecar_log_group_name     = aws_cloudwatch_log_group.observability_sidecar.name
+    aws_region                 = data.terraform_remote_state.vpc.outputs.aws_region
+    rdb_secrets_arn            = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:rds!db-3f27cc9e-2d8e-4d6e-9435-a0d7b7f65bc0-mS81wX"
+    app_secrets_arn            = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:SpringBoot-Secrets-shvyH2"
   }
 
   # Render the container definition template using the variables defined above

@@ -1,6 +1,6 @@
 [
   {
-    "name": "observability-sidecar",
+    "name": "${observability_sidecar_name}",
     "image": "${observability_image_url}",
     "essential": false,
     "logConfiguration": {
@@ -90,7 +90,7 @@
       }
     ],
     "dependsOn": [
-      { "containerName": "observability-sidecar", "condition": "START" }
+      { "containerName": "${observability_sidecar_name}", "condition": "START" }
     ]
   }
 ]
