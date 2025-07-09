@@ -5,6 +5,10 @@ variable "lb_variables" {
       beforegoingdapne2 = 0
     }
 
+    health_check_interval = {
+      beforegoingdapne2 = 20
+    }
+
     target_group_deregistration_delay = {
       beforegoingdapne2 = 0
     }

@@ -73,6 +73,8 @@ module "server" {
   task_cpu               = "512" # 0.50 vCPU
   task_memory_hard_limit = "512" # 512 MiB
 
+  health_check_grace_period_seconds = 90
+
   # Auto Scaling
   container_desired_capacity = 1
   container_min_capacity     = 1

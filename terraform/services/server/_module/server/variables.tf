@@ -144,3 +144,9 @@ variable "scale_out_cooldown" {
   type    = number
   default = 60 # 1 minute before scaling out again
 }
+
+variable "health_check_grace_period_seconds" {
+  description = "Seconds to ignore failing load balancer health checks on a new task. Gives the container time to start."
+  type        = number
+  default     = 60
+}

@@ -110,10 +110,11 @@ resource "aws_ecs_task_definition" "default" {
 
 # Application-specific ECS Service
 resource "aws_ecs_service" "default" {
-  name            = "service-${var.service_name}-${var.vpc_name}"
-  cluster         = var.ecs_cluster_id
-  task_definition = aws_ecs_task_definition.default.arn
-  desired_count   = var.container_desired_capacity
+  name                              = "service-${var.service_name}-${var.vpc_name}"
+  cluster                           = var.ecs_cluster_id
+  task_definition                   = aws_ecs_task_definition.default.arn
+  desired_count                     = var.container_desired_capacity
+  health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   load_balancer {
     target_group_arn = aws_lb_target_group.default.arn
