@@ -1,5 +1,3 @@
-### ECS Task Execution Role ###
-# 이 역할은 ECS Task가 ECR에서 컨테이너 이미지를 가져오고 CloudWatch에 로그를 쓰기 위해 사용합니다.
 resource "aws_iam_role" "ecs_task_execution" {
   name = "ecs-task-execution-${data.terraform_remote_state.vpc.outputs.shard_id}"
 
@@ -33,7 +31,7 @@ resource "aws_iam_policy" "secrets_manager_read" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
+resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   role       = aws_iam_role.ecs_task_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
