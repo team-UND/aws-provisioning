@@ -48,9 +48,3 @@ resource "aws_vpc_security_group_ingress_rule" "bastion_aware_ssh_ing" {
   ip_protocol                  = "tcp"
   referenced_security_group_id = aws_security_group.bastion.id
 }
-
-resource "aws_vpc_security_group_egress_rule" "bastion_aware_eg" {
-  security_group_id = aws_security_group.bastion_aware.id
-  ip_protocol       = "-1"
-  cidr_ipv4         = "0.0.0.0/0"
-}
