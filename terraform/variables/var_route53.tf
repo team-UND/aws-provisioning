@@ -1,4 +1,13 @@
 variable "r53_variables" {
+  type = object({
+
+    dev = object({
+      star_beforegoing_site_acm_arn_apnortheast2 = string
+      beforegoing_site_zone_id                   = string
+    })
+
+  })
+
   default = {
 
     dev = {

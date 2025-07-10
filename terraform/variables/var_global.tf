@@ -1,6 +1,112 @@
 # Remote State that will be used when creating other resources
 # You can add any resource here, if you want to refer from others
 variable "remote_state" {
+  type = object({
+
+    vpc = object({
+
+      beforegoingdapne2 = object({
+        region = string
+        bucket = string
+        key    = string
+      })
+
+    })
+
+    route53 = object({
+      teamund = object({
+
+        beforegoingdapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+    })
+
+    ecr = object({
+      teamund = object({
+
+        beforegoingdapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+    })
+
+    iam = object({
+      teamund = object({
+
+        beforegoingdapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+    })
+
+    networking = object({
+
+      lb = object({
+
+        beforegoingdapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
+    ecs = object({
+
+      cluster = object({
+
+        beforegoingdapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
+    services = object({
+
+      server = object({
+
+        beforegoingdapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
+    lambda = object({
+
+      function = object({
+
+        beforegoingdapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
+  })
+
   default = {
 
     # VPC
@@ -27,6 +133,19 @@ variable "remote_state" {
       }
     }
 
+    # ECR
+    ecr = {
+      teamund = {
+
+        beforegoingdapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+        }
+
+      }
+    }
+
     # IAM
     iam = {
       teamund = {
@@ -40,16 +159,19 @@ variable "remote_state" {
       }
     }
 
-    # ECR
-    ecr = {
-      teamund = {
+    # Networking
+    networking = {
+
+      lb = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/networking/lb/beforegoingd_apnortheast2/terraform.tfstate"
         }
+
       }
+
     }
 
     # ECS
@@ -81,40 +203,15 @@ variable "remote_state" {
       }
     }
 
-    # RDS
-    rds = {
-      teamund = {
-
-        beforegoingdapne2 = {
-          region = "ap-northeast-2"
-          bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/rds/teamund/beforegoingd_apnortheast2/terraform.tfstate"
-        }
-
-      }
-    }
-
     # Lambda
     lambda = {
-      teamund = {
+
+      function = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast2/terraform.tfstate"
-        }
-
-      }
-    }
-
-    # SNS
-    sns = {
-      teamund = {
-
-        beforegoingdapne2 = {
-          region = "ap-northeast-2"
-          bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/sns/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/lambda/function/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }
