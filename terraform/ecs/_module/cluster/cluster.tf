@@ -33,8 +33,8 @@ resource "aws_vpc_security_group_ingress_rule" "external_lb_https_ing" {
 resource "aws_vpc_security_group_egress_rule" "external_lb_eg" {
   security_group_id = aws_security_group.external_lb.id
   ip_protocol       = "-1"
-  cidr_ipv4         = "0.0.0.0/0"
-  description       = "Internal outbound any traffic"
+  cidr_ipv4         = var.vpc_cidr_block
+  description       = "Allow all outbound traffic to resources within the VPC"
 }
 
 # Security group for EC2 instances (Capacity Providers)
@@ -62,7 +62,6 @@ resource "aws_lb" "external" {
   # Home SG (Including office IPs) could be added if this services is internal service
   security_groups = [
     aws_security_group.external_lb.id,
-    var.home_sg
   ]
 
   # For HTTP service, application LB is recommended

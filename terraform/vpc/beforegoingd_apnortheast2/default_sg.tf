@@ -68,12 +68,3 @@ resource "aws_vpc_security_group_ingress_rule" "home_https_ing" {
     IP   = each.value
   }
 }
-
-resource "aws_vpc_security_group_egress_rule" "home_https_eg" {
-  security_group_id = aws_security_group.home.id
-  from_port         = 443
-  to_port           = 443
-  ip_protocol       = "tcp"
-  cidr_ipv4         = "0.0.0.0/0"
-  description       = "https any outbound"
-}

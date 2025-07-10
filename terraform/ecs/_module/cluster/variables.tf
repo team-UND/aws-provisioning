@@ -29,6 +29,11 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
+variable "vpc_cidr_block" {
+  description = "The CIDR block of the VPC"
+  type        = string
+}
+
 variable "ext_lb_ingress_cidrs" {
   description = "Ingress of security group of external load balancer"
 }
@@ -72,10 +77,6 @@ variable "ec2_desired_capacity" {
 
 variable "bastion_aware_sg" {
   description = "Allows ssh access from the bastion server"
-}
-
-variable "home_sg" {
-  description = "Office people IP list"
 }
 
 variable "swap_file_size_gb" {
