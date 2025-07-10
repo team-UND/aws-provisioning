@@ -50,19 +50,19 @@ output "shard_short_id" {
 # Public subnets
 output "public_subnet_ids" {
   description = "List of public subnet ID in VPC"
-  value       = aws_subnet.public.*.id
+  value       = aws_subnet.public[*].id
 }
 
 # Private subnets
 output "private_subnet_ids" {
   description = "List of private subnet ID in VPC"
-  value       = aws_subnet.private.*.id
+  value       = aws_subnet.private[*].id
 }
 
 # Private DB subnets
 output "private_db_subnet_ids" {
   description = "List of DB private subnet ID in VPC"
-  value       = aws_subnet.private_db.*.id
+  value       = aws_subnet.private_db[*].id
 }
 
 # Route53
@@ -99,7 +99,8 @@ output "aws_security_group_home_id" {
 
 # ETC
 output "bastion_ec2_public_ip" {
-  value = aws_instance.bastion_ec2.public_ip
+  description = "Public IP of bastion EC2"
+  value       = aws_instance.bastion_ec2.public_ip
 }
 
 output "aws_key_pair_bastion_ec2_key_name" {

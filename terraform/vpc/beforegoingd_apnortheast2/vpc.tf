@@ -21,22 +21,6 @@ resource "aws_internet_gateway" "default" {
 
 # NAT gateway
 resource "aws_nat_gateway" "default" {
-  # count = length(var.availability_zones)
-
-  # allocation_id = element(aws_eip.nat.*.id, count.index)
-
-  # Subnet setting
-  # nat[0] will be attatched to subnet[0]
-  # subnet_id = element(aws_subnet.public.*.id, count.index)
-
-  # tags = {
-  #   Name = "nat-gw${count.index}-${var.vpc_name}"
-  # }
-
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
-
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public[0].id
 
@@ -51,13 +35,6 @@ resource "aws_nat_gateway" "default" {
 
 # Elastic IP for NAT gateway
 resource "aws_eip" "nat" {
-  # count  = length(var.availability_zones)
-  # domain = "vpc"
-
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
-
   domain = "vpc"
 
   lifecycle {
@@ -73,7 +50,7 @@ resource "aws_subnet" "public" {
   vpc_id = aws_vpc.default.id
 
   cidr_block        = "10.${var.cidr_numeral}.${var.cidr_numeral_public[count.index]}.0/20"
-  availability_zone = element(var.availability_zones, count.index)
+  availability_zone = var.availability_zones[count.index]
 
   # Public IP will be assigned automatically when the instance is lauched in the public subnet
   map_public_ip_on_launch = true
@@ -95,7 +72,7 @@ resource "aws_route_table" "public" {
 # Route table association for public subnets
 resource "aws_route_table_association" "public" {
   count          = length(var.availability_zones)
-  subnet_id      = element(aws_subnet.public.*.id, count.index)
+  subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
@@ -107,7 +84,7 @@ resource "aws_subnet" "private" {
   vpc_id = aws_vpc.default.id
 
   cidr_block        = "10.${var.cidr_numeral}.${var.cidr_numeral_private[count.index]}.0/20"
-  availability_zone = element(var.availability_zones, count.index)
+  availability_zone = var.availability_zones[count.index]
 
   tags = {
     Name    = "private${count.index}-${var.vpc_name}"
@@ -117,14 +94,6 @@ resource "aws_subnet" "private" {
 
 # Route table for private subnets
 resource "aws_route_table" "private" {
-  # count  = length(var.availability_zones)
-  # vpc_id = aws_vpc.default.id
-
-  # tags = {
-  #   Name    = "private${count.index}rt-${var.vpc_name}"
-  #   Network = "Private"
-  # }
-
   vpc_id = aws_vpc.default.id
 
   tags = {
@@ -135,12 +104,8 @@ resource "aws_route_table" "private" {
 
 # Route table association for private subnets
 resource "aws_route_table_association" "private" {
-  # count     = length(var.availability_zones)
-  # subnet_id = element(aws_subnet.private.*.id, count.index)
-  # route_table_id = element(aws_route_table.private.*.id, count.index)
-
   count          = length(var.availability_zones)
-  subnet_id      = element(aws_subnet.private.*.id, count.index)
+  subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }
 
@@ -154,7 +119,7 @@ resource "aws_subnet" "private_db" {
   vpc_id = aws_vpc.default.id
 
   cidr_block        = "10.${var.cidr_numeral}.${var.cidr_numeral_private_db[count.index]}.0/20"
-  availability_zone = element(var.availability_zones, count.index)
+  availability_zone = var.availability_zones[count.index]
 
   tags = {
     Name    = "db-private${count.index}-${var.vpc_name}"
@@ -176,6 +141,6 @@ resource "aws_route_table" "private_db" {
 # Route table association for DB subnets
 resource "aws_route_table_association" "private_db" {
   count          = length(var.availability_zones)
-  subnet_id      = element(aws_subnet.private_db.*.id, count.index)
-  route_table_id = element(aws_route_table.private_db.*.id, count.index)
+  subnet_id      = aws_subnet.private_db[count.index].id
+  route_table_id = aws_route_table.private_db[count.index].id
 }
