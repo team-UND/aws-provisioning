@@ -1,3 +1,7 @@
+data "aws_secretsmanager_secret" "app_secrets" {
+  name = var.app_secret_name
+}
+
 locals {
   service_name      = "server"
   service_port      = 8080
@@ -17,7 +21,7 @@ locals {
     sidecar_log_group_name     = aws_cloudwatch_log_group.observability_sidecar.name
     aws_region                 = data.terraform_remote_state.vpc.outputs.aws_region
     rdb_secrets_arn            = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:rds!db-80ac3114-1cd0-4105-8b7c-9f24c1b78e56-2swVBu"
-    app_secrets_arn            = "arn:aws:secretsmanager:ap-northeast-2:116541189059:secret:SpringBoot-Secrets-shvyH2"
+    app_secrets_arn            = data.aws_secretsmanager_secret.app_secrets.arn
   }
 
   # Render the container definition template using the variables defined above
