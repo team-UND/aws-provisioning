@@ -1,1 +1,0 @@
-variable "subdomain_name" {}
