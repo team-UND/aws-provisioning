@@ -1,13 +1,16 @@
 variable "aws_region" {
-  default = "ap-northeast-2"
+  description = "AWS region to use"
+  type        = string
 }
 
 variable "vpc_name" {
   description = "The name of the VPC"
+  type        = string
 }
 
 variable "cidr_numeral" {
   description = "The VPC CIDR numeral (10.x.0.0/16)"
+  type        = string
 }
 
 variable "availability_zones" {
@@ -15,12 +18,9 @@ variable "availability_zones" {
   type        = list(string)
 }
 
-variable "availability_zones_without_b" {
-  description = "A comma-delimited list of availability zones except for ap-northeast-2b"
-  type        = list(string)
-}
-
 variable "cidr_numeral_public" {
+  description = "The public subnet CIDR numeral (10.x.x.0/20)"
+  type        = map(string)
   default = {
     0 = "0"
     1 = "16"
@@ -28,6 +28,8 @@ variable "cidr_numeral_public" {
 }
 
 variable "cidr_numeral_private" {
+  description = "The private subnet CIDR numeral (10.x.x.0/20)"
+  type        = map(string)
   default = {
     0 = "80"
     1 = "96"
@@ -35,6 +37,8 @@ variable "cidr_numeral_private" {
 }
 
 variable "cidr_numeral_private_db" {
+  description = "The DB private subnet CIDR numeral (10.x.x.0/20)"
+  type        = map(string)
   default = {
     0 = "160"
     1 = "176"
@@ -43,25 +47,32 @@ variable "cidr_numeral_private_db" {
 
 variable "internal_domain_name" {
   description = "Base domain name for internal"
+  type        = string
 }
 
 variable "shard_id" {
-  default = ""
+  description = "Shard ID for the VPC"
+  type        = string
 }
 
 variable "shard_short_id" {
-  default = ""
+  description = "Short shard ID for the VPC"
+  type        = string
 }
 
 variable "billing_tag" {
   description = "The AWS tag used to track AWS charges"
+  type        = string
 }
 
 variable "env_suffix" {
   description = "env suffix"
+  type        = string
 }
 
 variable "home_ips" {
+  description = "Home IPs for access"
+  type        = map(string)
   default = {
     Chori-home = "221.149.143.136/32"
   }
