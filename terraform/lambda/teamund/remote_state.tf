@@ -4,10 +4,10 @@ data "terraform_remote_state" "vpc" {
   config = merge(var.remote_state.vpc.beforegoingdapne2)
 }
 
-data "terraform_remote_state" "route53" {
+data "terraform_remote_state" "hosting_zone" {
   backend = "s3"
 
-  config = merge(var.remote_state.route53.teamund.beforegoingdapne2)
+  config = merge(var.remote_state.route53.hosting_zone.beforegoingdapne2)
 }
 
 data "terraform_remote_state" "iam" {
@@ -16,8 +16,8 @@ data "terraform_remote_state" "iam" {
   config = merge(var.remote_state.iam.teamund.beforegoingdapne2)
 }
 
-data "terraform_remote_state" "lb" {
+data "terraform_remote_state" "external_lb" {
   backend = "s3"
 
-  config = merge(var.remote_state.networking.lb.beforegoingdapne2)
+  config = merge(var.remote_state.networking.external_lb.beforegoingdapne2)
 }

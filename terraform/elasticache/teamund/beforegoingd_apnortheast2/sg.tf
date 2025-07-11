@@ -17,6 +17,6 @@ resource "aws_vpc_security_group_ingress_rule" "redis_ing" {
   from_port                    = var.port
   to_port                      = var.port
   ip_protocol                  = "tcp"
-  referenced_security_group_id = data.terraform_remote_state.server.outputs.aws_security_group_ecs_tasks_id
+  referenced_security_group_id = data.terraform_remote_state.server.outputs.aws_security_group_id
   description                  = "Internal redis service port from application"
 }

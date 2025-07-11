@@ -70,23 +70,28 @@ variable "domain_name" {
   type        = string
 }
 
-variable "route53_external_zone_id" {
-  description = "The Route 53 zone ID for the external domain"
+variable "route53_zone_id" {
+  description = "The Route 53 zone ID for the domain"
   type        = string
 }
 
 variable "lb_dns_name" {
-  description = "The DNS name of the external LB"
+  description = "The DNS name of the LB"
   type        = string
 }
 
 variable "lb_zone_id" {
-  description = "The zone ID of the external LB"
+  description = "The zone ID of the LB"
+  type        = string
+}
+
+variable "log_group_name" {
+  description = "The name of the CloudWatch log group for the Lambda function"
   type        = string
 }
 
 variable "log_retention_in_days" {
   description = "The number of days to retain logs in CloudWatch"
   type        = number
-  default     = 3
+  default     = 7
 }

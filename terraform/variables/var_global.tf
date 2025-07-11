@@ -14,7 +14,8 @@ variable "remote_state" {
     })
 
     route53 = object({
-      teamund = object({
+
+      hosting_zone = object({
 
         beforegoingdapne2 = object({
           region = string
@@ -23,10 +24,12 @@ variable "remote_state" {
         })
 
       })
+
     })
 
     ecr = object({
-      teamund = object({
+
+      repository = object({
 
         beforegoingdapne2 = object({
           region = string
@@ -35,6 +38,7 @@ variable "remote_state" {
         })
 
       })
+
     })
 
     iam = object({
@@ -51,7 +55,7 @@ variable "remote_state" {
 
     networking = object({
 
-      lb = object({
+      external_lb = object({
 
         beforegoingdapne2 = object({
           region = string
@@ -122,7 +126,8 @@ variable "remote_state" {
 
     # Route53
     route53 = {
-      teamund = {
+
+      hosting_zone = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
@@ -131,11 +136,13 @@ variable "remote_state" {
         }
 
       }
+
     }
 
     # ECR
     ecr = {
-      teamund = {
+
+      repository = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
@@ -144,6 +151,7 @@ variable "remote_state" {
         }
 
       }
+
     }
 
     # IAM
@@ -162,7 +170,7 @@ variable "remote_state" {
     # Networking
     networking = {
 
-      lb = {
+      external_lb = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
@@ -197,7 +205,7 @@ variable "remote_state" {
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/services/server/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/services/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }

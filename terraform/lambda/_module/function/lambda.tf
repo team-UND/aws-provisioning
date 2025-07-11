@@ -68,7 +68,7 @@ resource "aws_lb_target_group_attachment" "default" {
 resource "aws_route53_record" "default" {
   count = var.domain_name != null ? 1 : 0
 
-  zone_id        = var.route53_external_zone_id
+  zone_id        = var.route53_zone_id
   name           = var.domain_name
   type           = "A"
   set_identifier = var.aws_region
@@ -85,6 +85,6 @@ resource "aws_route53_record" "default" {
 }
 
 resource "aws_cloudwatch_log_group" "default" {
-  name              = "/aws/lambda/${aws_lambda_function.default.function_name}"
+  name              = var.log_group_name
   retention_in_days = var.log_retention_in_days
 }
