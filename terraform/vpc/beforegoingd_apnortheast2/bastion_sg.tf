@@ -9,7 +9,7 @@ resource "aws_security_group" "bastion" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "bastion_ssh_ing" {
+resource "aws_vpc_security_group_ingress_rule" "bastion_ssh" {
   for_each          = var.home_ips
   security_group_id = aws_security_group.bastion.id
   from_port         = 22
@@ -23,7 +23,7 @@ resource "aws_vpc_security_group_ingress_rule" "bastion_ssh_ing" {
   }
 }
 
-resource "aws_vpc_security_group_egress_rule" "bastion_eg" {
+resource "aws_vpc_security_group_egress_rule" "bastion" {
   security_group_id = aws_security_group.bastion.id
   ip_protocol       = "-1"
   cidr_ipv4         = "0.0.0.0/0"
@@ -41,7 +41,7 @@ resource "aws_security_group" "bastion_aware" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "bastion_aware_ssh_ing" {
+resource "aws_vpc_security_group_ingress_rule" "bastion_aware_ssh" {
   security_group_id            = aws_security_group.bastion_aware.id
   from_port                    = 22
   to_port                      = 22

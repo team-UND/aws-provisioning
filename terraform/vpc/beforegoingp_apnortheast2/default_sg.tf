@@ -10,7 +10,7 @@ resource "aws_security_group" "default" {
   }
 }
 
-resource "aws_vpc_security_group_egress_rule" "default_http_eg" {
+resource "aws_vpc_security_group_egress_rule" "default_http" {
   security_group_id = aws_security_group.default.id
   from_port         = 80
   to_port           = 80
@@ -19,7 +19,7 @@ resource "aws_vpc_security_group_egress_rule" "default_http_eg" {
   description       = "http any outbound"
 }
 
-resource "aws_vpc_security_group_egress_rule" "default_https_eg" {
+resource "aws_vpc_security_group_egress_rule" "default_https" {
   security_group_id = aws_security_group.default.id
   from_port         = 443
   to_port           = 443
@@ -41,7 +41,7 @@ resource "aws_security_group" "home" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "home_ssh_ing" {
+resource "aws_vpc_security_group_ingress_rule" "home_ssh" {
   for_each          = var.home_ips
   security_group_id = aws_security_group.home.id
   from_port         = 22
@@ -55,7 +55,7 @@ resource "aws_vpc_security_group_ingress_rule" "home_ssh_ing" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "home_https_ing" {
+resource "aws_vpc_security_group_ingress_rule" "home_https" {
   for_each          = var.home_ips
   security_group_id = aws_security_group.home.id
   from_port         = 443
