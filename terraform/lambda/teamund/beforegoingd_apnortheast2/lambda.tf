@@ -1,3 +1,7 @@
+data "aws_secretsmanager_secret" "app_secrets" {
+  name = "Lambda-Secrets"
+}
+
 locals {
   function_name = "sentry"
   shard_id      = data.terraform_remote_state.vpc.outputs.shard_id
@@ -21,7 +25,9 @@ module "function" {
   timeout     = 30
   memory_size = 128
 
-  env_variables = var.env_variables
+  env_variables = {
+    DISCORD_SECRET_ARN = data.aws_secretsmanager_secret.app_secrets.arn
+  }
 
   lb_https_listener_arn  = data.terraform_remote_state.external_lb.outputs.aws_lb_listener_https_arn
   listener_rule_priority = 150

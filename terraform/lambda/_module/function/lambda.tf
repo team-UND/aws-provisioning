@@ -17,7 +17,12 @@ resource "aws_lambda_function" "default" {
   memory_size = var.memory_size
 
   environment {
-    variables = var.env_variables.lambda[var.function_name]
+    variables = var.env_variables
+  }
+
+  logging_config {
+    log_group  = aws_cloudwatch_log_group.default.name
+    log_format = "Text"
   }
 
   tags = {
@@ -28,8 +33,6 @@ resource "aws_lambda_function" "default" {
 
 # Listener rule for the function
 resource "aws_lb_listener_rule" "default" {
-  count = var.domain_name != null ? 1 : 0
-
   listener_arn = var.lb_https_listener_arn
   priority     = var.listener_rule_priority
 
@@ -48,7 +51,7 @@ resource "aws_lb_listener_rule" "default" {
 resource "aws_lambda_permission" "lb" {
   statement_id  = "AllowExecutionFromLB"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.default.function_name
+  function_name = aws_lambda_function.default.arn
   principal     = "elasticloadbalancing.amazonaws.com"
   source_arn    = aws_lb_target_group.default.arn
 }
@@ -66,8 +69,6 @@ resource "aws_lb_target_group_attachment" "default" {
 }
 
 resource "aws_route53_record" "default" {
-  count = var.domain_name != null ? 1 : 0
-
   zone_id        = var.route53_zone_id
   name           = var.domain_name
   type           = "A"
@@ -80,7 +81,7 @@ resource "aws_route53_record" "default" {
   alias {
     name                   = var.lb_dns_name
     zone_id                = var.lb_zone_id
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 

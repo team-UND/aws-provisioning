@@ -1,10 +1,40 @@
 import json
 import os
 import urllib.request
+import boto3
+
+secrets_manager_client = None
+cached_secrets = {}
+
+def get_secret(secret_arn):
+    global secrets_manager_client
+    global cached_secrets
+
+    if secret_arn in cached_secrets:
+        return cached_secrets[secret_arn]
+
+    if secrets_manager_client is None:
+        region_name = os.environ.get("AWS_REGION")
+        secrets_manager_client = boto3.client(
+            service_name='secretsmanager',
+            region_name=region_name
+        )
+
+    try:
+        get_secret_value_response = secrets_manager_client.get_secret_value(
+            SecretId=secret_arn
+        )
+        secret_string = get_secret_value_response['SecretString']
+        
+        parsed_secret = json.loads(secret_string)
+        
+        cached_secrets[secret_arn] = parsed_secret
+        return parsed_secret
+    except Exception as e:
+        print(f"ERROR: Could not retrieve secret '{secret_arn}' from Secrets Manager: {e}")
+        raise e
 
 def lambda_handler(event, context):
-    discord_webhook_url = os.environ['DISCORD_WEBHOOK_URL']
-
     try:
         body = event.get('body')
         sentry_event = json.loads(body) if body else event
@@ -15,6 +45,17 @@ def lambda_handler(event, context):
             'statusCode': 400,
             'body': json.dumps('Invalid event format from Sentry.')
         }
+
+    try:
+        secret_arn = os.environ['DISCORD_SECRET_ARN']
+        app_secrets = get_secret(secret_arn)
+        discord_webhook_url = app_secrets['DISCORD_WEBHOOK_URL']
+    except KeyError as e:
+        print(f"ERROR: Missing required environment variable or secret key: {e}")
+        raise
+    except Exception:
+        print(f"CRITICAL ERROR: Halting execution due to secret retrieval failure.")
+        raise
 
     event_data = sentry_event.get('data', {}).get('event', {})
 
@@ -82,10 +123,12 @@ def lambda_handler(event, context):
     except urllib.error.HTTPError as e:
         error_response_body = e.read().decode('utf-8')
         print(f"ERROR: Failed to send Discord notification. HTTP Error: {e.code} - {e.reason}")
+        print(f"Failing event payload: {json.dumps(sentry_event)}")
         print(f"Response body from Discord: {error_response_body}")
         raise
     except Exception as e:
         print(f"CRITICAL ERROR: Unexpected error while sending Discord notification: {e}")
+        print(f"Failing event payload: {json.dumps(sentry_event)}")
         raise
 
     return {

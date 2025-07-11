@@ -108,13 +108,13 @@ resource "aws_lb_target_group" "default" {
 
   # Change the health check setting
   health_check {
-    interval            = 15
+    interval            = var.lb_variables.health_check.interval[var.shard_id]
     protocol            = "HTTP"
     port                = var.health_check_port
     path                = var.health_check_path
-    timeout             = 3
-    healthy_threshold   = 3
-    unhealthy_threshold = 2
+    timeout             = var.lb_variables.health_check.timeout[var.shard_id]
+    healthy_threshold   = var.lb_variables.health_check.healthy_threshold[var.shard_id]
+    unhealthy_threshold = var.lb_variables.health_check.unhealthy_threshold[var.shard_id]
     matcher             = "200"
   }
 
@@ -138,7 +138,7 @@ resource "aws_lb_listener_rule" "default" {
 }
 
 resource "aws_route53_record" "default" {
-  zone_id        = var.route53_external_zone_id
+  zone_id        = var.route53_zone_id
   name           = var.domain_name
   type           = "A"
   set_identifier = var.aws_region

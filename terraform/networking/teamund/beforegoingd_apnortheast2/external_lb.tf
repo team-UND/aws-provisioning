@@ -7,8 +7,9 @@ module "lb" {
   # Networking and VPC info from remote state
   vpc_name          = data.terraform_remote_state.vpc.outputs.vpc_name
   vpc_id            = data.terraform_remote_state.vpc.outputs.vpc_id
-  vpc_cidr_block    = data.terraform_remote_state.vpc.outputs.vpc_cidr_block
   lb_ingress_cidrs  = "0.0.0.0/0" # Allow traffic from anywhere to the ALB
+  lb_egress_cidrs   = "0.0.0.0/0" # Allow traffic to anywhere from the ALB
+  lb_type           = "application"
   public_subnet_ids = data.terraform_remote_state.vpc.outputs.public_subnet_ids
 
   # Security and Access

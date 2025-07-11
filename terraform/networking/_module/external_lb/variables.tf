@@ -13,19 +13,18 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "vpc_cidr_block" {
-  description = "The CIDR block of the VPC"
-  type        = string
-}
-
-variable "load_balancer_type" {
-  description = "Type of load balancer to create (application, network, gateway)"
-  type        = string
-  default     = "application"
-}
-
 variable "lb_ingress_cidrs" {
   description = "Ingress of security group of load balancer"
+  type        = string
+}
+
+variable "lb_egress_cidrs" {
+  description = "Egress of security group of load balancer"
+  type        = string
+}
+
+variable "lb_type" {
+  description = "Type of load balancer to create (application, network, gateway)"
   type        = string
 }
 

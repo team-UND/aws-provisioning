@@ -28,7 +28,7 @@ resource "aws_vpc_security_group_ingress_rule" "lb_https" {
 resource "aws_vpc_security_group_egress_rule" "lb" {
   security_group_id = aws_security_group.default.id
   ip_protocol       = "-1"
-  cidr_ipv4         = var.vpc_cidr_block
+  cidr_ipv4         = var.lb_egress_cidrs
   description       = "Allow all outbound traffic to resources within the VPC"
 }
 
@@ -45,7 +45,7 @@ resource "aws_lb" "default" {
   ]
 
   # For HTTP service, application LB is recommended
-  load_balancer_type = var.load_balancer_type
+  load_balancer_type = var.lb_type
 
   tags = var.lb_variables.lb.tags[var.shard_id]
 }

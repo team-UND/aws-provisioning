@@ -3,24 +3,24 @@ variable "lb_variables" {
 
     target_group_slow_start = map(number)
 
-    health_check_interval = map(number)
-
     target_group_deregistration_delay = map(number)
 
     lb_tg = object({
       tags = map(map(string))
     })
 
+    health_check = object({
+      interval            = map(number)
+      timeout             = map(number)
+      healthy_threshold   = map(number)
+      unhealthy_threshold = map(number)
+    })
   })
 
   default = {
 
     target_group_slow_start = {
       beforegoingdapne2 = 0
-    }
-
-    health_check_interval = {
-      beforegoingdapne2 = 20
     }
 
     target_group_deregistration_delay = {
@@ -38,6 +38,21 @@ variable "lb_variables" {
           stack   = "beforegoingd_apnortheast2"
         }
 
+      }
+    }
+
+    health_check = {
+      interval = {
+        beforegoingdapne2 = 15
+      }
+      timeout = {
+        beforegoingdapne2 = 5
+      }
+      healthy_threshold = {
+        beforegoingdapne2 = 3
+      }
+      unhealthy_threshold = {
+        beforegoingdapne2 = 2
       }
     }
   }

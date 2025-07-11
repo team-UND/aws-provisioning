@@ -48,14 +48,8 @@ variable "health_check_path" {
   type        = string
 }
 
-variable "container_desired_capacity" {
-  description = "Default number of containers to run for the service"
-  type        = number
-  default     = 1
-}
-
 variable "health_check_grace_period_seconds" {
-  description = "Seconds to ignore failing load balancer health checks on a new task. Gives the container time to start."
+  description = "Seconds to ignore failing load balancer health checks on a new task. Gives the container time to start"
   type        = number
   default     = 60
 }
@@ -76,18 +70,24 @@ variable "domain_name" {
 }
 
 variable "lb_dns_name" {
-  description = "The DNS name of the external LB"
+  description = "The DNS name of the LB"
   type        = string
 }
 
 variable "lb_zone_id" {
-  description = "The zone ID of the external LB"
+  description = "The zone ID of the LB"
   type        = string
 }
 
 variable "lb_security_group_id" {
-  description = "The security group ID of the external LB"
+  description = "The security group ID of the LB"
   type        = string
+}
+
+variable "container_desired_capacity" {
+  description = "Default number of containers to run for the service"
+  type        = number
+  default     = 1
 }
 
 variable "container_min_capacity" {
@@ -103,7 +103,7 @@ variable "container_max_capacity" {
 }
 
 variable "target_value" {
-  description = "Target average CPU utilization for the service. The autoscaler will adjust the number of containers to maintain this target."
+  description = "Target average CPU utilization for the service. The autoscaler will adjust the number of containers to maintain this target"
   type        = number
   default     = 80 # Target 80% average CPU utilization
 }
@@ -111,7 +111,7 @@ variable "target_value" {
 variable "scale_in_cooldown" {
   description = "Cooldown period after scaling in before allowing another scale in action"
   type        = number
-  default     = 300 # 5 minutes before scaling in
+  default     = 180 # 3 minutes before scaling in
 }
 
 variable "scale_out_cooldown" {
@@ -143,7 +143,7 @@ variable "container_definitions_json" {
 }
 
 variable "lb_https_listener_arn" {
-  description = "The ARN of the external LB's HTTPS listener"
+  description = "The ARN of the LB's HTTPS listener"
   type        = string
 }
 
@@ -152,8 +152,8 @@ variable "listener_rule_priority" {
   type        = number
 }
 
-variable "route53_external_zone_id" {
-  description = "r53 zone id"
+variable "route53_zone_id" {
+  description = "The ID of the Route 53 Hosted Zone"
   type        = string
 }
 

@@ -55,6 +55,11 @@ variable "memory_size" {
   default     = 128
 }
 
+variable "env_variables" {
+  description = "A map of environment variables for the Lambda function"
+  type        = map(string)
+}
+
 variable "lb_https_listener_arn" {
   description = "The ARN of the LB's HTTPS listener"
   type        = string

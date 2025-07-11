@@ -1,23 +1,23 @@
 variable "lb_variables" {
   type = object({
-
-    target_group_slow_start = map(number)
-
-    health_check_interval = map(number)
-
+    target_group_slow_start           = map(number)
     target_group_deregistration_delay = map(number)
 
     lb_tg = object({
       tags = map(map(string))
     })
 
+    health_check = object({
+      interval            = map(number)
+      timeout             = map(number)
+      healthy_threshold   = map(number)
+      unhealthy_threshold = map(number)
+    })
   })
 
   default = {
 
     target_group_slow_start = {}
-
-    health_check_interval = {}
 
     target_group_deregistration_delay = {}
 
@@ -25,5 +25,11 @@ variable "lb_variables" {
       tags = {}
     }
 
+    health_check = {
+      interval            = {}
+      timeout             = {}
+      healthy_threshold   = {}
+      unhealthy_threshold = {}
+    }
   }
 }

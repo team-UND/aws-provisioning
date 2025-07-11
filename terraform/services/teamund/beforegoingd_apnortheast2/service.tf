@@ -2,9 +2,9 @@ data "aws_secretsmanager_secret" "app_secrets" {
   name = "SpringBoot-Secrets"
 }
 
-# data "aws_secretsmanager_secret" "rdb_secrets" {
-#   name = "rds!db-51d83eb3-4310-495f-b5a9-2d1271d0da05"
-# }
+data "aws_secretsmanager_secret" "rdb_secrets" {
+  name = "rds!db-c84995b1-3fc0-410d-b3fe-367dade6103d"
+}
 
 locals {
   shard_id          = data.terraform_remote_state.vpc.outputs.shard_id
@@ -23,7 +23,7 @@ locals {
     spring_profiles_active = data.terraform_remote_state.vpc.outputs.billing_tag
     log_group_name         = local.log_group_name
     aws_region             = data.terraform_remote_state.vpc.outputs.aws_region
-    rdb_secrets_arn        = "temp"
+    rdb_secrets_arn        = data.aws_secretsmanager_secret.rdb_secrets.arn
     app_secrets_arn        = data.aws_secretsmanager_secret.app_secrets.arn
   }
 
@@ -42,9 +42,10 @@ module "server" {
   domain_name = "${local.service_name}-${data.terraform_remote_state.vpc.outputs.billing_tag}.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"
 
   # Port for service and healthcheck
-  service_port      = local.service_port
-  health_check_port = local.health_check_port
-  health_check_path = "/actuator/health"
+  service_port                      = local.service_port
+  health_check_port                 = local.health_check_port
+  health_check_path                 = "/actuator/health"
+  health_check_grace_period_seconds = 90
 
   # VPC Information via remote_state
   shard_id   = local.shard_id
@@ -65,8 +66,8 @@ module "server" {
   ecs_capacity_provider_name = data.terraform_remote_state.cluster.outputs.aws_ecs_capacity_provider_name
 
   # Route53 variables
-  route53_external_zone_id = var.r53_variables.dev.beforegoing_site_zone_id
-  listener_rule_priority   = 100
+  route53_zone_id        = var.r53_variables.dev.beforegoing_site_zone_id
+  listener_rule_priority = 100
 
   # Resource LoadBalancer variables
   lb_variables = var.lb_variables
@@ -75,16 +76,18 @@ module "server" {
   ecs_task_execution_role_arn = data.terraform_remote_state.iam.outputs.aws_iam_role_ecs_task_execution_arn
   container_definitions_json  = local.container_definitions_json
 
-  # Task Sizing
-  task_cpu               = "512" # 0.50 vCPU
-  task_memory_hard_limit = "512" # 512 MiB
-
-  health_check_grace_period_seconds = 60
-
   # Auto Scaling
   container_desired_capacity = 1
   container_min_capacity     = 1
   container_max_capacity     = 2
+
+  target_value       = 80  # Target 80% average CPU utilization
+  scale_in_cooldown  = 180 # 3 minutes before scaling in
+  scale_out_cooldown = 60  # 1 minute before scaling out again
+
+  # Task Sizing
+  task_cpu               = "512" # 0.50 vCPU
+  task_memory_hard_limit = "512" # 512 MiB
 
   log_group_name        = local.log_group_name
   log_retention_in_days = 7
