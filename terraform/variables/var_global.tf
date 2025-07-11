@@ -167,7 +167,7 @@ variable "remote_state" {
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/networking/lb/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/networking/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }
