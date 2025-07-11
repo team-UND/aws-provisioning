@@ -1,20 +1,7 @@
 [
   {
-    "name": "${observability_sidecar_name}",
-    "image": "${observability_image_url}",
-    "essential": false,
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "${sidecar_log_group_name}",
-        "awslogs-region": "${aws_region}",
-        "awslogs-stream-prefix": "${service_name}-observability"
-      }
-    }
-  },
-  {
     "name": "${service_name}",
-    "image": "${app_image_url}",
+    "image": "${image_url}",
     "essential": true,
     "portMappings": [
       {
@@ -24,9 +11,9 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${app_log_group_name}",
+        "awslogs-group": "${log_group_name}",
         "awslogs-region": "${aws_region}",
-        "awslogs-stream-prefix": "${service_name}-app"
+        "awslogs-stream-prefix": "${service_name}"
       }
     },
     "environment": [
@@ -58,7 +45,7 @@
       },
       {
         "name": "SPRING_DATASOURCE_PASSWORD",
-        "valueFrom": "${rdb_secrets_arn}:password::"
+        "valueFrom": "${rdb_secrets_arn}"
       },
       {
         "name": "SPRING_REDIS_HOST",
@@ -92,9 +79,6 @@
         "name": "SENTRY_DSN",
         "valueFrom": "${app_secrets_arn}:SENTRY_DSN::"
       }
-    ],
-    "dependsOn": [
-      { "containerName": "${observability_sidecar_name}", "condition": "START" }
     ]
   }
 ]
