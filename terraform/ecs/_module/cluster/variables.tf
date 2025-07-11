@@ -1,22 +1,21 @@
 variable "shard_id" {
   description = "Text used to identify shard of infrastructure components"
+  type        = string
 }
 
 variable "aws_region" {
   description = "The AWS region to deploy the shard storage layer into"
+  type        = string
 }
 
 variable "vpc_name" {
   description = "The unique VPC name this storage layer belongs to"
+  type        = string
 }
 
 variable "vpc_id" {
   description = "The AWS ID of the VPC this shard is being deployed into"
-}
-
-variable "availability_zone" {
-  description = "A comma-delimited list of availability zones for the VPC"
-  default     = "ap-northeast-2a"
+  type        = string
 }
 
 variable "public_subnet_ids" {
@@ -29,23 +28,15 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
-variable "vpc_cidr_block" {
-  description = "The CIDR block of the VPC"
-  type        = string
-}
-
-variable "ext_lb_ingress_cidrs" {
-  description = "Ingress of security group of external load balancer"
-}
-
-variable "acm_external_ssl_certificate_arn" {
-  description = "ssl cert id"
-}
-
 variable "instance_type" {
   description = "EC2 Instance type"
   type        = string
   default     = "t2.micro"
+}
+
+variable "iam_instance_profile_name" {
+  description = "Name of IAM instance profile"
+  type        = string
 }
 
 variable "private_ec2_key_name" {
@@ -53,8 +44,9 @@ variable "private_ec2_key_name" {
   type        = string
 }
 
-variable "iam_instance_profile_name" {
-  description = "Name of IAM instance profile"
+variable "bastion_aware_sg" {
+  description = "Allows ssh access from the bastion server"
+  type        = string
 }
 
 variable "ec2_min_size" {
@@ -73,10 +65,6 @@ variable "ec2_desired_capacity" {
   description = "Auto Scaling desired capacity"
   type        = number
   default     = 1
-}
-
-variable "bastion_aware_sg" {
-  description = "Allows ssh access from the bastion server"
 }
 
 variable "swap_file_size_gb" {

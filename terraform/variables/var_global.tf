@@ -182,7 +182,7 @@ variable "remote_state" {
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/ecs/cluster/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/ecs/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }
@@ -211,7 +211,7 @@ variable "remote_state" {
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/lambda/function/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }
