@@ -21,4 +21,4 @@ terraform/**/*.backup
 
 .DS_Store
 
-terraform/lambda/teamund/beforegoingd_apnortheast2/terraform.tfvars
+terraform/lambda/teamund/variables/var_env.tf
