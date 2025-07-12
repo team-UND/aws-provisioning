@@ -1,6 +1,10 @@
 variable "lb_variables" {
+  description = "Variables for the LB"
+
   type = object({
-    target_group_slow_start           = map(number)
+
+    target_group_slow_start = map(number)
+
     target_group_deregistration_delay = map(number)
 
     lb_tg = object({
@@ -13,6 +17,7 @@ variable "lb_variables" {
       healthy_threshold   = map(number)
       unhealthy_threshold = map(number)
     })
+
   })
 
   default = {

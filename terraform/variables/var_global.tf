@@ -1,6 +1,8 @@
 # Remote State that will be used when creating other resources
 # You can add any resource here, if you want to refer from others
 variable "remote_state" {
+  description = "Remote state configuration for various resources"
+
   type = object({
 
     vpc = object({

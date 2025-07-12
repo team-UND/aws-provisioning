@@ -1,4 +1,6 @@
 variable "lb_variables" {
+  description = "Variables for the LB"
+
   type = object({
 
     target_group_slow_start = map(number)

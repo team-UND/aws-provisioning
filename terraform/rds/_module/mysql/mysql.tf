@@ -29,7 +29,7 @@ resource "aws_route53_record" "mysql" {
   zone_id = var.route53_zone_id
   name    = var.domain_name
   type    = "CNAME"
-  ttl     = 60
+  ttl     = 300
   records = [aws_db_instance.mysql.address]
 }
 

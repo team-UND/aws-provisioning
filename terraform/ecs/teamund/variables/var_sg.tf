@@ -1,4 +1,6 @@
 variable "sg_variables" {
+  description = "Security group variables for the ECS cluster"
+
   type = object({
 
     ec2 = object({

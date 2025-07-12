@@ -1,4 +1,6 @@
 variable "r53_variables" {
+  description = "Variables for Route53 configuration"
+
   type = object({
 
     dev = object({
