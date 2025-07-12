@@ -8,11 +8,6 @@ variable "shard_id" {
   type        = string
 }
 
-variable "referenced_security_group_id" {
-  description = "The security group ID that will be referenced by the DB instance"
-  type        = string
-}
-
 variable "subnet_ids" {
   description = "A comma-delimited list of subnets for the VPC"
   type        = list(string)

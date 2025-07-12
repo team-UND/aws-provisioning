@@ -9,15 +9,6 @@ resource "aws_security_group" "redis" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "redis" {
-  security_group_id            = aws_security_group.redis.id
-  from_port                    = var.port
-  to_port                      = var.port
-  ip_protocol                  = "tcp"
-  referenced_security_group_id = var.referenced_security_group_id
-  description                  = "Redis service port from application"
-}
-
 resource "aws_elasticache_subnet_group" "redis" {
   name       = "redis-${var.shard_id}"
   subnet_ids = var.subnet_ids

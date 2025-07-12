@@ -2,10 +2,6 @@ data "aws_secretsmanager_secret" "app_secrets" {
   name = "SpringBoot-Secrets"
 }
 
-data "aws_secretsmanager_secret" "rdb_secrets" {
-  name = "rds!db-b6ff1b15-d686-49c6-8988-1372208fc2d1"
-}
-
 locals {
   shard_id          = data.terraform_remote_state.vpc.outputs.shard_id
   service_name      = "server"
@@ -17,21 +13,40 @@ locals {
   template_vars = {
     aws_region                  = data.terraform_remote_state.vpc.outputs.aws_region
     service_name                = local.service_name
-    image_url                   = "${data.terraform_remote_state.repository.outputs.aws_ecr_repository_beforegoingd_server_build_repository_url}:latest"
+    image_url                   = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
     container_cpu_limit         = 432
     container_memory_hard_limit = 432
     container_memory_soft_limit = 432
     max_swap                    = 1024
     swappiness                  = 70
     service_port                = local.service_port
+    health_check_port           = local.health_check_port
     spring_profiles_active      = data.terraform_remote_state.vpc.outputs.billing_tag
     log_group_name              = local.log_group_name
-    rdb_secrets_arn             = data.aws_secretsmanager_secret.rdb_secrets.arn
+    rdb_secrets_arn             = data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
     app_secrets_arn             = data.aws_secretsmanager_secret.app_secrets.arn
   }
 
   # Render the container definition template using the variables defined above
   container_definitions_json = templatefile("${path.module}/container-definitions.json.tftpl", local.template_vars)
+}
+
+resource "aws_vpc_security_group_ingress_rule" "mysql" {
+  description                  = "Allow traffic from service to MySQL"
+  security_group_id            = data.terraform_remote_state.mysql.outputs.aws_security_group_id
+  from_port                    = data.terraform_remote_state.mysql.outputs.port
+  to_port                      = data.terraform_remote_state.mysql.outputs.port
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = module.server.aws_security_group_id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "redis" {
+  description                  = "Allow traffic from service to Redis"
+  security_group_id            = data.terraform_remote_state.redis.outputs.aws_security_group_id
+  from_port                    = data.terraform_remote_state.redis.outputs.port
+  to_port                      = data.terraform_remote_state.redis.outputs.port
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = module.server.aws_security_group_id
 }
 
 # Use module for service
@@ -59,7 +74,7 @@ module "server" {
 
   # Shared LB Info
   lb_https_listener_arn = data.terraform_remote_state.external_lb.outputs.aws_lb_listener_https_arn
-  lb_security_group_id  = data.terraform_remote_state.external_lb.outputs.aws_security_group_lb_id
+  lb_security_group_id  = data.terraform_remote_state.external_lb.outputs.aws_security_group_id
   lb_dns_name           = data.terraform_remote_state.external_lb.outputs.aws_lb_dns_name
   lb_zone_id            = data.terraform_remote_state.external_lb.outputs.aws_lb_zone_id
 

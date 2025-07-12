@@ -33,3 +33,15 @@ data "terraform_remote_state" "cluster" {
 
   config = merge(var.remote_state.ecs.cluster.beforegoingdapne2)
 }
+
+data "terraform_remote_state" "mysql" {
+  backend = "s3"
+
+  config = merge(var.remote_state.rds.mysql.beforegoingdapne2)
+}
+
+data "terraform_remote_state" "redis" {
+  backend = "s3"
+
+  config = merge(var.remote_state.elasticache.redis.beforegoingdapne2)
+}

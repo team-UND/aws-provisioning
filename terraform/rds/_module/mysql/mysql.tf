@@ -8,14 +8,6 @@ resource "aws_security_group" "mysql" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "mysql" {
-  security_group_id            = aws_security_group.mysql.id
-  from_port                    = var.port
-  to_port                      = var.port
-  ip_protocol                  = "tcp"
-  referenced_security_group_id = var.referenced_security_group_id
-}
-
 resource "aws_db_subnet_group" "mysql" {
   name       = "mysql-${var.shard_id}"
   subnet_ids = var.subnet_ids

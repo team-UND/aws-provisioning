@@ -15,6 +15,16 @@
       "maxSwap": ${max_swap},
       "swappiness": ${swappiness}
     },
+    "healthCheck": {
+      "command": [
+        "CMD-SHELL",
+        "wget --quiet --spider http://localhost:${health_check_port}/actuator/health"
+      ],
+      "interval": 15,
+      "timeout": 5,
+      "retries": 3,
+      "startPeriod": 90
+    },
     "environment": [
       {
         "name": "SPRING_PROFILES_ACTIVE",

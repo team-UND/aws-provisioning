@@ -83,9 +83,9 @@ variable "remote_state" {
 
     })
 
-    services = object({
+    rds = object({
 
-      server = object({
+      mysql = object({
 
         beforegoingdapne2 = object({
           region = string
@@ -97,9 +97,9 @@ variable "remote_state" {
 
     })
 
-    lambda = object({
+    elasticache = object({
 
-      function = object({
+      redis = object({
 
         beforegoingdapne2 = object({
           region = string
@@ -199,29 +199,30 @@ variable "remote_state" {
 
     }
 
-    # Services
-    services = {
+    # RDS
+    rds = {
 
-      server = {
+      mysql = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/services/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/rds/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }
+
     }
 
-    # Lambda
-    lambda = {
+    # ElastiCache
+    elasticache = {
 
-      function = {
+      redis = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/elasticache/teamund/beforegoingd_apnortheast2/terraform.tfstate"
         }
 
       }

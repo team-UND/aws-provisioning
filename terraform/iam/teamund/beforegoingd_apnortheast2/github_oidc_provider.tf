@@ -64,8 +64,8 @@ resource "aws_iam_policy" "github_actions" {
           "ecr:DescribeImages"
         ]
         Resource = [
-          data.terraform_remote_state.repository.outputs.aws_ecr_repository_beforegoingd_server_build_arn,
-          data.terraform_remote_state.repository.outputs.aws_ecr_repository_beforegoingd_prometheus_build_arn
+          data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_arn,
+          data.terraform_remote_state.repository.outputs.aws_ecr_repository_prometheus_build_arn
         ]
       },
       {

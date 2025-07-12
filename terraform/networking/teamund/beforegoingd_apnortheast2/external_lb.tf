@@ -1,4 +1,4 @@
-module "lb" {
+module "external_lb" {
   source = "../../_module/external_lb"
 
   # Environment-specific identifiers
