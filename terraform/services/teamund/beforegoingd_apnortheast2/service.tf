@@ -3,7 +3,7 @@ data "aws_secretsmanager_secret" "app_secrets" {
 }
 
 data "aws_secretsmanager_secret" "rdb_secrets" {
-  name = "rds!db-18983252-9174-44ab-94f1-ece17fb39f04"
+  name = "rds!db-b0ab3cad-ea66-41cd-bdd3-d27e30c9c1ef"
 }
 
 locals {
@@ -39,7 +39,7 @@ module "server" {
   service_name = local.service_name
 
   # Domain Name
-  domain_name = "${local.service_name}-${data.terraform_remote_state.vpc.outputs.billing_tag}.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"
+  domain_name = "${local.service_name}-dev.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"
 
   # Port for service and healthcheck
   service_port                      = local.service_port
