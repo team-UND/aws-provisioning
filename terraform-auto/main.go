@@ -58,7 +58,7 @@ func loadConfig(path string) (*Config, error) {
 }
 
 func runTerraformApply(cfg *Config) error {
-	// Apply order: vpc -> lb, ecs (parallel) -> lambda
+	// Apply order: vpc -> rds, elasticache, networking, ecs (parallel) -> services, lambda (parallel)
 
 	// 1. vpc
 	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[0])
@@ -66,11 +66,11 @@ func runTerraformApply(cfg *Config) error {
 		return err
 	}
 
-	// 2. lb, ecs (parallel)
+	// 2. rds, elasticache, networking, ecs (parallel)
 	var wg sync.WaitGroup
-	errCh := make(chan error, 2)
+	errCh := make(chan error, 4)
 
-	for _, dir := range cfg.Directories[1:3] {
+	for _, dir := range cfg.Directories[1:5] {
 		wg.Add(1)
 		go func(d string) {
 			defer wg.Done()
@@ -90,29 +90,41 @@ func runTerraformApply(cfg *Config) error {
 		}
 	}
 
-	// 3. lambda
-	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[3])
-	if err := runTerraformCommand(cfg.Directories[3], "apply"); err != nil {
-		return err
+	// 3. services, lambda (parallel)
+	var wg2 sync.WaitGroup
+	errCh2 := make(chan error, 2)
+
+	for _, dir := range cfg.Directories[5:7] {
+		wg2.Add(1)
+		go func(d string) {
+			defer wg2.Done()
+			fmt.Printf("Running terraform apply in %s\n", d)
+			if err := runTerraformCommand(d, "apply"); err != nil {
+				errCh2 <- err
+			}
+		}(dir)
+	}
+
+	wg2.Wait()
+	close(errCh2)
+
+	for err := range errCh2 {
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
 func runTerraformDestroy(cfg *Config) error {
-	// Destroy order: lambda -> lb, ecs (parallel) -> vpc
+	// Destroy order: services, lambda (parallel) -> rds, elasticache, networking, ecs (parallel) -> vpc
 
-	// 1. lambda
-	fmt.Printf("Running terraform destroy in %s\n", cfg.Directories[3])
-	if err := runTerraformCommand(cfg.Directories[3], "destroy"); err != nil {
-		return err
-	}
-
-	// 2. lb, ecs (parallel)
+	// 1. services, lambda (parallel)
 	var wg sync.WaitGroup
 	errCh := make(chan error, 2)
 
-	for _, dir := range cfg.Directories[1:3] {
+	for _, dir := range cfg.Directories[5:7] {
 		wg.Add(1)
 		go func(d string) {
 			defer wg.Done()
@@ -127,6 +139,30 @@ func runTerraformDestroy(cfg *Config) error {
 	close(errCh)
 
 	for err := range errCh {
+		if err != nil {
+			return err
+		}
+	}
+
+	// 2. rds, elasticache, networking, ecs (parallel)
+	var wg2 sync.WaitGroup
+	errCh2 := make(chan error, 4)
+
+	for _, dir := range cfg.Directories[1:5] {
+		wg2.Add(1)
+		go func(d string) {
+			defer wg2.Done()
+			fmt.Printf("Running terraform destroy in %s\n", d)
+			if err := runTerraformCommand(d, "destroy"); err != nil {
+				errCh2 <- err
+			}
+		}(dir)
+	}
+
+	wg2.Wait()
+	close(errCh2)
+
+	for err := range errCh2 {
 		if err != nil {
 			return err
 		}
@@ -159,8 +195,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	if len(cfg.Directories) < 4 {
-		fmt.Fprintln(os.Stderr, "Error: config must have at least 4 directories")
+	if len(cfg.Directories) < 7 {
+		fmt.Fprintln(os.Stderr, "Error: config must have at least 7 directories")
 		os.Exit(1)
 	}
 
