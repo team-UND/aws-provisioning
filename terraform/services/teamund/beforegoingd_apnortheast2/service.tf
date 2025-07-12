@@ -87,7 +87,7 @@ module "server" {
 
   # Task Sizing
   task_cpu               = "512" # 0.50 vCPU
-  task_memory_hard_limit = "512" # 512 MiB
+  task_memory_hard_limit = "474" # 474 MiB
 
   log_group_name        = local.log_group_name
   log_retention_in_days = 7
