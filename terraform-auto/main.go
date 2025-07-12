@@ -58,7 +58,7 @@ func loadConfig(path string) (*Config, error) {
 }
 
 func runTerraformApply(cfg *Config) error {
-	// Apply order: VPC → Prometheus → Server → RDS, ElastiCache, CodeDeploy
+	// Apply order: vpc -> lb, ecs (parallel) -> lambda
 
 	// 1. vpc
 	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[0])
@@ -66,23 +66,11 @@ func runTerraformApply(cfg *Config) error {
 		return err
 	}
 
-	// 2. prometheus
-	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[2])
-	if err := runTerraformCommand(cfg.Directories[2], "apply"); err != nil {
-		return err
-	}
-
-	// 3. server
-	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[1])
-	if err := runTerraformCommand(cfg.Directories[1], "apply"); err != nil {
-		return err
-	}
-
-	// 4. rds, elasticache, codedeploy
+	// 2. lb, ecs (parallel)
 	var wg sync.WaitGroup
-	errCh := make(chan error, 3)
+	errCh := make(chan error, 2)
 
-	for _, dir := range cfg.Directories[3:6] {
+	for _, dir := range cfg.Directories[1:3] {
 		wg.Add(1)
 		go func(d string) {
 			defer wg.Done()
@@ -102,17 +90,29 @@ func runTerraformApply(cfg *Config) error {
 		}
 	}
 
+	// 3. lambda
+	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[3])
+	if err := runTerraformCommand(cfg.Directories[3], "apply"); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func runTerraformDestroy(cfg *Config) error {
-	// Destroy order: RDS, ElastiCache, CodeDeploy → Server → Prometheus → VPC
+	// Destroy order: lambda -> lb, ecs (parallel) -> vpc
 
-	// 1. rds, elasticache, codedeploy
+	// 1. lambda
+	fmt.Printf("Running terraform destroy in %s\n", cfg.Directories[3])
+	if err := runTerraformCommand(cfg.Directories[3], "destroy"); err != nil {
+		return err
+	}
+
+	// 2. lb, ecs (parallel)
 	var wg sync.WaitGroup
-	errCh := make(chan error, 3)
+	errCh := make(chan error, 2)
 
-	for _, dir := range cfg.Directories[3:6] {
+	for _, dir := range cfg.Directories[1:3] {
 		wg.Add(1)
 		go func(d string) {
 			defer wg.Done()
@@ -132,19 +132,7 @@ func runTerraformDestroy(cfg *Config) error {
 		}
 	}
 
-	// 2. server
-	fmt.Printf("Running terraform destroy in %s\n", cfg.Directories[1])
-	if err := runTerraformCommand(cfg.Directories[1], "destroy"); err != nil {
-		return err
-	}
-
-	// 3. prometheus
-	fmt.Printf("Running terraform destroy in %s\n", cfg.Directories[2])
-	if err := runTerraformCommand(cfg.Directories[2], "destroy"); err != nil {
-		return err
-	}
-
-	// 4. vpc
+	// 3. vpc
 	fmt.Printf("Running terraform destroy in %s\n", cfg.Directories[0])
 	if err := runTerraformCommand(cfg.Directories[0], "destroy"); err != nil {
 		return err
@@ -171,8 +159,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	if len(cfg.Directories) < 6 {
-		fmt.Fprintln(os.Stderr, "Error: config must have at least 6 directories")
+	if len(cfg.Directories) < 4 {
+		fmt.Fprintln(os.Stderr, "Error: config must have at least 4 directories")
 		os.Exit(1)
 	}
 
