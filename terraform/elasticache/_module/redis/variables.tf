@@ -45,7 +45,7 @@ variable "node_type" {
 
 variable "port" {
   description = "The port on which the DB accepts connections"
-  type        = string
+  type        = number
 }
 
 variable "num_cache_clusters" {

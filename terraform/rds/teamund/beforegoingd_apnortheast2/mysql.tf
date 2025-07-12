@@ -9,6 +9,7 @@ module "mysql" {
 
   route53_zone_id = data.terraform_remote_state.vpc.outputs.route53_internal_zone_id
   domain_name     = "mysql-dev"
+  port            = 3006
 
   engine_version             = "8.0"
   auto_minor_version_upgrade = true
@@ -19,7 +20,6 @@ module "mysql" {
 
   username                        = "team_UND_Beforegoing_admin"
   db_name                         = "beforegoingd"
-  port                            = 3006
   manage_master_user_password     = true
   multi_az                        = false
   publicly_accessible             = false

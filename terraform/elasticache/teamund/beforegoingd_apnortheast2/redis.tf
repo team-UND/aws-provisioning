@@ -8,8 +8,8 @@ module "redis" {
   subnet_ids                   = data.terraform_remote_state.vpc.outputs.private_db_subnet_ids
 
   route53_zone_id = data.terraform_remote_state.vpc.outputs.route53_internal_zone_id
-  domain_name     = var.internal_domain_name
-  port            = var.port
+  domain_name     = "redis-dev"
+  port            = 6079
 
   engine_version             = "7.0"
   auto_minor_version_upgrade = true

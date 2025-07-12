@@ -70,7 +70,7 @@ variable "db_name" {
 
 variable "port" {
   description = "The port on which the DB accepts connections"
-  type        = string
+  type        = number
 }
 
 variable "manage_master_user_password" {
