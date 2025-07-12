@@ -1,36 +1,25 @@
-resource "aws_db_subnet_group" "mysql" {
-  name       = "mysql-${data.terraform_remote_state.vpc.outputs.shard_id}"
-  subnet_ids = data.terraform_remote_state.vpc.outputs.private_db_subnet_ids
+module "mysql" {
+  source = "../../_module/mysql"
 
-  tags = {
-    Name = "mysql-${data.terraform_remote_state.vpc.outputs.shard_id}"
-  }
-}
+  vpc_id   = data.terraform_remote_state.vpc.outputs.vpc_id
+  shard_id = data.terraform_remote_state.vpc.outputs.shard_id
 
-resource "aws_route53_record" "mysql" {
-  zone_id = data.terraform_remote_state.vpc.outputs.route53_internal_zone_id
-  name    = var.internal_domain_name
-  type    = "CNAME"
-  ttl     = 60
-  records = [aws_db_instance.mysql.address]
-}
+  referenced_security_group_id = data.terraform_remote_state.server.outputs.aws_security_group_id
+  subnet_ids                   = data.terraform_remote_state.vpc.outputs.private_db_subnet_ids
 
-resource "aws_db_instance" "mysql" {
-  identifier                 = "mysql-${data.terraform_remote_state.vpc.outputs.shard_id}"
-  engine                     = "mysql"
+  route53_zone_id = data.terraform_remote_state.vpc.outputs.route53_internal_zone_id
+  domain_name     = "mysql-dev"
+
   engine_version             = "8.0"
   auto_minor_version_upgrade = true
   instance_class             = "db.t3.micro"
   allocated_storage          = 20
   max_allocated_storage      = 0
   storage_type               = "gp2"
-  parameter_group_name       = aws_db_parameter_group.mysql_pg.name
-  vpc_security_group_ids     = [aws_security_group.mysql.id]
-  db_subnet_group_name       = aws_db_subnet_group.mysql.name
 
-  username                        = var.username
-  db_name                         = var.db_name
-  port                            = var.port
+  username                        = "team_UND_Beforegoing_admin"
+  db_name                         = "beforegoingd"
+  port                            = 3006
   manage_master_user_password     = true
   multi_az                        = false
   publicly_accessible             = false
@@ -38,8 +27,6 @@ resource "aws_db_instance" "mysql" {
   copy_tags_to_snapshot           = true
   enabled_cloudwatch_logs_exports = ["general"]
   skip_final_snapshot             = true
-
-  tags = {
-    Name = "mysql-${data.terraform_remote_state.vpc.outputs.shard_id}"
-  }
+  family                          = "mysql8.0"
+  pg_variables                    = var.pg_variables
 }

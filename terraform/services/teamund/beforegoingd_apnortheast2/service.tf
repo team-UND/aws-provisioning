@@ -3,7 +3,7 @@ data "aws_secretsmanager_secret" "app_secrets" {
 }
 
 data "aws_secretsmanager_secret" "rdb_secrets" {
-  name = "rds!db-c84995b1-3fc0-410d-b3fe-367dade6103d"
+  name = "rds!db-18983252-9174-44ab-94f1-ece17fb39f04"
 }
 
 locals {
