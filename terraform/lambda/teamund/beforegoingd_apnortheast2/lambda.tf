@@ -19,7 +19,7 @@ module "function" {
 
   function_name = local.function_name
   handler       = "function.lambda_handler"
-  role          = data.terraform_remote_state.iam.outputs.aws_iam_role_lambda_execution_arn
+  role          = data.terraform_remote_state.iam.outputs.aws_iam_role_lambda_arn
 
   runtime     = "python3.12"
   timeout     = 30

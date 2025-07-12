@@ -3,7 +3,7 @@ data "aws_secretsmanager_secret" "app_secrets" {
 }
 
 data "aws_secretsmanager_secret" "rdb_secrets" {
-  name = "rds!db-b0ab3cad-ea66-41cd-bdd3-d27e30c9c1ef"
+  name = "rds!db-b6ff1b15-d686-49c6-8988-1372208fc2d1"
 }
 
 locals {
@@ -67,6 +67,7 @@ module "server" {
   ecs_cluster_id             = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_id
   ecs_cluster_name           = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_name
   ecs_capacity_provider_name = data.terraform_remote_state.cluster.outputs.aws_ecs_capacity_provider_name
+  enable_execute_command     = true
 
   # Route53 variables
   route53_zone_id        = var.r53_variables.dev.beforegoing_site_zone_id
@@ -76,6 +77,7 @@ module "server" {
   lb_variables = var.lb_variables
 
   # IAM & ECR
+  ecs_task_role_arn           = data.terraform_remote_state.iam.outputs.aws_iam_role_ecs_task_arn
   ecs_task_execution_role_arn = data.terraform_remote_state.iam.outputs.aws_iam_role_ecs_task_execution_arn
   container_definitions_json  = local.container_definitions_json
 

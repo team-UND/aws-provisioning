@@ -54,6 +54,11 @@ variable "health_check_grace_period_seconds" {
   default     = 60
 }
 
+variable "enable_execute_command" {
+  description = "Enable ECS Exec for the service"
+  type        = bool
+}
+
 variable "ecs_capacity_provider_name" {
   description = "The name of the ECS capacity provider to use for the service"
   type        = string
@@ -130,8 +135,13 @@ variable "task_memory" {
   type        = string
 }
 
+variable "ecs_task_role_arn" {
+  description = "ARN of the IAM role for ECS task"
+  type        = string
+}
+
 variable "ecs_task_execution_role_arn" {
-  description = "ARN of the IAM role for ECS task execution. Allows pulling images from ECR and sending logs to CloudWatch"
+  description = "ARN of the IAM role for ECS task execution"
   type        = string
 }
 

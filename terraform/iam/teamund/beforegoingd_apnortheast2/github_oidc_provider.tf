@@ -79,9 +79,12 @@ resource "aws_iam_policy" "github_actions" {
         Resource = "*"
       },
       {
-        Effect   = "Allow"
-        Action   = "iam:PassRole"
-        Resource = aws_iam_role.ecs_task_execution.arn
+        Effect = "Allow"
+        Action = "iam:PassRole"
+        Resource = [
+          aws_iam_role.ecs_task_execution.arn,
+          aws_iam_role.ecs_task.arn
+        ]
       }
     ]
   })

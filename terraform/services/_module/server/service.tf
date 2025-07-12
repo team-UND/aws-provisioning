@@ -4,6 +4,7 @@ resource "aws_ecs_service" "default" {
   task_definition                   = aws_ecs_task_definition.default.arn
   desired_count                     = var.container_desired_capacity
   health_check_grace_period_seconds = var.health_check_grace_period_seconds
+  enable_execute_command            = var.enable_execute_command
 
   load_balancer {
     target_group_arn = aws_lb_target_group.default.arn
@@ -57,6 +58,7 @@ resource "aws_ecs_task_definition" "default" {
   requires_compatibilities = ["EC2"]
   cpu                      = var.task_cpu
   memory                   = var.task_memory
+  task_role_arn            = var.ecs_task_role_arn
   execution_role_arn       = var.ecs_task_execution_role_arn
 
   container_definitions = var.container_definitions_json
