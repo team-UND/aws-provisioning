@@ -3,9 +3,22 @@
     "name": "${service_name}",
     "image": "${image_url}",
     "essential": true,
+    "cpu": ${container_cpu_limit},
+    "memory": ${container_memory_hard_limit},
+    "memoryReservation": ${container_memory_soft_limit},
     "portMappings": [
       {
         "containerPort": ${service_port}
+      }
+    ],
+    "linuxParameters": {
+      "maxSwap": ${max_swap},
+      "swappiness": ${swappiness}
+    },
+    "environment": [
+      {
+        "name": "SPRING_PROFILES_ACTIVE",
+        "value": "${spring_profiles_active}"
       }
     ],
     "logConfiguration": {
@@ -15,16 +28,6 @@
         "awslogs-region": "${aws_region}",
         "awslogs-stream-prefix": "${service_name}"
       }
-    },
-    "environment": [
-      {
-        "name": "SPRING_PROFILES_ACTIVE",
-        "value": "${spring_profiles_active}"
-      }
-    ],
-    "linuxParameters": {
-      "maxSwap": ${max_swap},
-      "swappiness": ${swappiness}
     },
     "secrets": [
       {

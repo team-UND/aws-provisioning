@@ -15,16 +15,19 @@ locals {
 
   # Define any variables needed by the container definition template here
   template_vars = {
-    service_name           = local.service_name
-    image_url              = "${data.terraform_remote_state.repository.outputs.aws_ecr_repository_beforegoingd_server_build_repository_url}:latest"
-    service_port           = local.service_port
-    max_swap               = 1024
-    swappiness             = 60
-    spring_profiles_active = data.terraform_remote_state.vpc.outputs.billing_tag
-    log_group_name         = local.log_group_name
-    aws_region             = data.terraform_remote_state.vpc.outputs.aws_region
-    rdb_secrets_arn        = data.aws_secretsmanager_secret.rdb_secrets.arn
-    app_secrets_arn        = data.aws_secretsmanager_secret.app_secrets.arn
+    aws_region                  = data.terraform_remote_state.vpc.outputs.aws_region
+    service_name                = local.service_name
+    image_url                   = "${data.terraform_remote_state.repository.outputs.aws_ecr_repository_beforegoingd_server_build_repository_url}:latest"
+    container_cpu_limit         = 432
+    container_memory_hard_limit = 432
+    container_memory_soft_limit = 432
+    max_swap                    = 1024
+    swappiness                  = 70
+    service_port                = local.service_port
+    spring_profiles_active      = data.terraform_remote_state.vpc.outputs.billing_tag
+    log_group_name              = local.log_group_name
+    rdb_secrets_arn             = data.aws_secretsmanager_secret.rdb_secrets.arn
+    app_secrets_arn             = data.aws_secretsmanager_secret.app_secrets.arn
   }
 
   # Render the container definition template using the variables defined above
@@ -86,8 +89,8 @@ module "server" {
   scale_out_cooldown = 60  # 1 minute before scaling out again
 
   # Task Sizing
-  task_cpu               = "512" # 0.50 vCPU
-  task_memory_hard_limit = "474" # 474 MiB
+  task_cpu    = "432" # 0.421875 vCPU
+  task_memory = "432" # 432 MiB
 
   log_group_name        = local.log_group_name
   log_retention_in_days = 7

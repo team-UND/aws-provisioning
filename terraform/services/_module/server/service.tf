@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "default" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["EC2"]
   cpu                      = var.task_cpu
-  memory                   = var.task_memory_hard_limit
+  memory                   = var.task_memory
   execution_role_arn       = var.ecs_task_execution_role_arn
 
   container_definitions = var.container_definitions_json

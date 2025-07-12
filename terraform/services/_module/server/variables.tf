@@ -123,13 +123,11 @@ variable "scale_out_cooldown" {
 variable "task_cpu" {
   description = "The number of CPU units to reserve for the container. 1024 is 1 vCPU"
   type        = string
-  default     = "256" # 0.25 vCPU
 }
 
-variable "task_memory_hard_limit" {
-  description = "The absolute maximum amount of memory (in MiB) the task can use. This is a hard limit. Set to null to have no limit"
+variable "task_memory" {
+  description = "The absolute maximum amount of memory (in MiB) the task can use"
   type        = string
-  default     = "256" # 256 MiB
 }
 
 variable "ecs_task_execution_role_arn" {
