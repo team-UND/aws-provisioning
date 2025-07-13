@@ -58,19 +58,20 @@ func loadConfig(path string) (*Config, error) {
 }
 
 func runTerraformApply(cfg *Config) error {
-	// Apply order: vpc -> rds, elasticache, networking, ecs (parallel) -> services, lambda (parallel)
+	// Apply order: vpc -> rds, elasticache, networking (parallel) -> iam -> ecs -> services, lambda (parallel)
 
 	// 1. vpc
 	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[0])
 	if err := runTerraformCommand(cfg.Directories[0], "apply"); err != nil {
 		return err
 	}
+	fmt.Println("Step 1 (vpc) completed.")
 
-	// 2. rds, elasticache, networking, ecs (parallel)
+	// 2. rds, elasticache, networking (parallel)
 	var wg sync.WaitGroup
-	errCh := make(chan error, 4)
+	errCh := make(chan error, 3)
 
-	for _, dir := range cfg.Directories[1:5] {
+	for _, dir := range cfg.Directories[1:4] {
 		wg.Add(1)
 		go func(d string) {
 			defer wg.Done()
@@ -80,21 +81,34 @@ func runTerraformApply(cfg *Config) error {
 			}
 		}(dir)
 	}
-
 	wg.Wait()
 	close(errCh)
-
 	for err := range errCh {
 		if err != nil {
 			return err
 		}
 	}
+	fmt.Println("Step 2 (rds, elasticache, networking) completed.")
 
-	// 3. services, lambda (parallel)
+	// 3. iam
+	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[4])
+	if err := runTerraformCommand(cfg.Directories[4], "apply"); err != nil {
+		return err
+	}
+	fmt.Println("Step 3 (iam) completed.")
+
+	// 4. ecs
+	fmt.Printf("Running terraform apply in %s\n", cfg.Directories[5])
+	if err := runTerraformCommand(cfg.Directories[5], "apply"); err != nil {
+		return err
+	}
+	fmt.Println("Step 4 (ecs) completed.")
+
+	// 5. services, lambda (parallel)
 	var wg2 sync.WaitGroup
 	errCh2 := make(chan error, 2)
 
-	for _, dir := range cfg.Directories[5:7] {
+	for _, dir := range cfg.Directories[6:8] {
 		wg2.Add(1)
 		go func(d string) {
 			defer wg2.Done()
@@ -104,27 +118,26 @@ func runTerraformApply(cfg *Config) error {
 			}
 		}(dir)
 	}
-
 	wg2.Wait()
 	close(errCh2)
-
 	for err := range errCh2 {
 		if err != nil {
 			return err
 		}
 	}
+	fmt.Println("Step 5 (services, lambda) completed.")
 
 	return nil
 }
 
 func runTerraformDestroy(cfg *Config) error {
-	// Destroy order: services, lambda (parallel) -> rds, elasticache, networking, ecs (parallel) -> vpc
+	// Destroy order: services, lambda (parallel) -> ecs -> iam -> rds, elasticache, networking (parallel) -> vpc
 
 	// 1. services, lambda (parallel)
 	var wg sync.WaitGroup
 	errCh := make(chan error, 2)
 
-	for _, dir := range cfg.Directories[5:7] {
+	for _, dir := range cfg.Directories[6:8] {
 		wg.Add(1)
 		go func(d string) {
 			defer wg.Done()
@@ -134,21 +147,34 @@ func runTerraformDestroy(cfg *Config) error {
 			}
 		}(dir)
 	}
-
 	wg.Wait()
 	close(errCh)
-
 	for err := range errCh {
 		if err != nil {
 			return err
 		}
 	}
+	fmt.Println("Step 1 (services, lambda) destroyed.")
 
-	// 2. rds, elasticache, networking, ecs (parallel)
+	// 2. ecs
+	fmt.Printf("Running terraform destroy in %s\n", cfg.Directories[5])
+	if err := runTerraformCommand(cfg.Directories[5], "destroy"); err != nil {
+		return err
+	}
+	fmt.Println("Step 2 (ecs) destroyed.")
+
+	// 3. iam
+	fmt.Printf("Running terraform destroy in %s\n", cfg.Directories[4])
+	if err := runTerraformCommand(cfg.Directories[4], "destroy"); err != nil {
+		return err
+	}
+	fmt.Println("Step 3 (iam) destroyed.")
+
+	// 4. rds, elasticache, networking (parallel)
 	var wg2 sync.WaitGroup
-	errCh2 := make(chan error, 4)
+	errCh2 := make(chan error, 3)
 
-	for _, dir := range cfg.Directories[1:5] {
+	for _, dir := range cfg.Directories[1:4] {
 		wg2.Add(1)
 		go func(d string) {
 			defer wg2.Done()
@@ -158,17 +184,16 @@ func runTerraformDestroy(cfg *Config) error {
 			}
 		}(dir)
 	}
-
 	wg2.Wait()
 	close(errCh2)
-
 	for err := range errCh2 {
 		if err != nil {
 			return err
 		}
 	}
+	fmt.Println("Step 4 (rds, elasticache, networking) destroyed.")
 
-	// 3. vpc
+	// 5. vpc
 	fmt.Printf("Running terraform destroy in %s\n", cfg.Directories[0])
 	if err := runTerraformCommand(cfg.Directories[0], "destroy"); err != nil {
 		return err
@@ -195,8 +220,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	if len(cfg.Directories) < 7 {
-		fmt.Fprintln(os.Stderr, "Error: config must have at least 7 directories")
+	if len(cfg.Directories) < 8 {
+		fmt.Fprintln(os.Stderr, "Error: config must have at least 8 directories")
 		os.Exit(1)
 	}
 

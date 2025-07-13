@@ -3,6 +3,7 @@ directories:
   - ../terraform/rds/teamund/beforegoingd_apnortheast2
   - ../terraform/elasticache/teamund/beforegoingd_apnortheast2
   - ../terraform/networking/teamund/beforegoingd_apnortheast2
+  - ../terraform/iam/teamund/beforegoingd_apnortheast2
   - ../terraform/ecs/teamund/beforegoingd_apnortheast2
   - ../terraform/services/teamund/beforegoingd_apnortheast2
   - ../terraform/lambda/teamund/beforegoingd_apnortheast2
