@@ -76,43 +76,12 @@ output "route53_internal_zone_id" {
   value       = aws_route53_zone.internal.id
 }
 
-# Security group
-output "aws_security_group_bastion_id" {
-  description = "ID of bastion security group"
-  value       = aws_security_group.bastion.id
-}
-
-output "aws_security_group_bastion_aware_id" {
-  description = "ID of bastion aware security group"
-  value       = aws_security_group.bastion_aware.id
-}
-
 output "aws_security_group_default_id" {
   description = "ID of default security group"
   value       = aws_security_group.default.id
 }
 
-output "aws_security_group_home_id" {
-  description = "ID of home security group"
-  value       = aws_security_group.home.id
-}
-
 # ETC
-output "bastion_ec2_public_ip" {
-  description = "Public IP of bastion EC2"
-  value       = aws_instance.bastion_ec2.public_ip
-}
-
-output "aws_key_pair_bastion_ec2_key_name" {
-  description = "Name of Bastion EC2 key"
-  value       = aws_key_pair.bastion_ec2_key.key_name
-}
-
-output "aws_key_pair_private_ec2_key_name" {
-  description = "Name of Private EC2 key"
-  value       = aws_key_pair.private_ec2_key.key_name
-}
-
 output "env_suffix" {
   description = "Suffix of the environment"
   value       = var.env_suffix

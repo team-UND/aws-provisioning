@@ -70,20 +70,13 @@ variable "env_suffix" {
   type        = string
 }
 
-variable "home_ips" {
-  description = "Home IPs for access"
-  type        = map(string)
-  default = {
-    Chori-home = "221.149.143.136/32"
-  }
+variable "create_interface_endpoints" {
+  description = "Controls whether to create the interface VPC endpoints"
+  type        = bool
+  default     = false
 }
 
-variable "bastion_ec2_key_name" {
-  description = "Bastion EC2 key-pair"
-  type        = string
-}
-
-variable "private_ec2_key_name" {
-  description = "Private EC2 key-pair"
-  type        = string
+variable "enable_ha_nat_gateway" {
+  description = "Controls whether to create a highly available NAT gateway"
+  type        = bool
 }

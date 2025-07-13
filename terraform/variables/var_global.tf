@@ -57,7 +57,7 @@ variable "remote_state" {
 
     networking = object({
 
-      external_lb = object({
+      ext_lb = object({
 
         beforegoingdapne2 = object({
           region = string
@@ -172,7 +172,7 @@ variable "remote_state" {
     # Networking
     networking = {
 
-      external_lb = {
+      ext_lb = {
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"

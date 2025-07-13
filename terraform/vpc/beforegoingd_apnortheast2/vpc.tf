@@ -21,11 +21,13 @@ resource "aws_internet_gateway" "default" {
 
 # NAT gateway
 resource "aws_nat_gateway" "default" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public[0].id
+  count = var.enable_ha_nat_gateway ? length(var.availability_zones) : 1
+
+  allocation_id = aws_eip.nat[count.index].id
+  subnet_id     = aws_subnet.public[count.index].id
 
   tags = {
-    Name = "nat-gw-${var.vpc_name}"
+    Name = "nat-gw${count.index}-${var.vpc_name}"
   }
 
   lifecycle {
@@ -35,10 +37,15 @@ resource "aws_nat_gateway" "default" {
 
 # Elastic IP for NAT gateway
 resource "aws_eip" "nat" {
+  count  = var.enable_ha_nat_gateway ? length(var.availability_zones) : 1
   domain = "vpc"
 
   lifecycle {
     create_before_destroy = true
+  }
+
+  tags = {
+    Name = "nat-eip${count.index}-${var.vpc_name}"
   }
 }
 
@@ -65,7 +72,8 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.default.id
 
   tags = {
-    Name = "publicrt-${var.vpc_name}"
+    Name    = "public-rt-${var.vpc_name}"
+    Network = "Public"
   }
 }
 
@@ -94,10 +102,11 @@ resource "aws_subnet" "private" {
 
 # Route table for private subnets
 resource "aws_route_table" "private" {
+  count  = length(var.availability_zones)
   vpc_id = aws_vpc.default.id
 
   tags = {
-    Name    = "privatert-${var.vpc_name}"
+    Name    = "private${count.index}-rt-${var.vpc_name}"
     Network = "Private"
   }
 }
@@ -106,7 +115,7 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private" {
   count          = length(var.availability_zones)
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
+  route_table_id = aws_route_table.private[count.index].id
 }
 
 # DB private subnets
@@ -122,7 +131,7 @@ resource "aws_subnet" "private_db" {
   availability_zone = var.availability_zones[count.index]
 
   tags = {
-    Name    = "db-private${count.index}-${var.vpc_name}"
+    Name    = "private${count.index}db-${var.vpc_name}"
     Network = "Private"
   }
 }
@@ -133,7 +142,7 @@ resource "aws_route_table" "private_db" {
   vpc_id = aws_vpc.default.id
 
   tags = {
-    Name    = "privatedb${count.index}rt-${var.vpc_name}"
+    Name    = "privatedb${count.index}-rt-${var.vpc_name}"
     Network = "Private"
   }
 }

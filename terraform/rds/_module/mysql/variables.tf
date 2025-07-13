@@ -3,6 +3,11 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "vpc_name" {
+  description = "The unique VPC name this storage layer belongs to"
+  type        = string
+}
+
 variable "shard_id" {
   description = "The shard ID which will be used to distinguish the env of resources"
   type        = string

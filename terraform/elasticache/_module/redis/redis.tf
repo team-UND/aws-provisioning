@@ -1,11 +1,11 @@
 # Security Group for redis elasticache
 resource "aws_security_group" "redis" {
-  name        = "redis-${var.shard_id}"
-  description = "Redis Security Group"
+  description = "Redis SG for ${var.shard_id}"
+  name        = "redis-sg-${var.vpc_name}"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "redis-${var.shard_id}"
+    Name = "redis-sg-${var.vpc_name}"
   }
 }
 
@@ -14,7 +14,7 @@ resource "aws_elasticache_subnet_group" "redis" {
   subnet_ids = var.subnet_ids
 
   tags = {
-    Name = "redis-${var.shard_id}"
+    Name = "redis-${var.vpc_name}"
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_elasticache_replication_group" "redis_cluster" {
   automatic_failover_enabled = var.automatic_failover_enabled
 
   tags = {
-    Name = "redis-${var.shard_id}"
+    Name = "redis-${var.vpc_name}"
   }
 }
 

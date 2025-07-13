@@ -4,17 +4,18 @@ data "aws_ssm_parameter" "ecs_optimized_ami" {
 }
 
 resource "aws_security_group" "ec2" {
+  description = "EC2 SG for ${var.shard_id}"
   name        = "ec2-sg-${var.vpc_name}"
-  description = "${var.vpc_name} instance security group"
   vpc_id      = var.vpc_id
 
   tags = var.sg_variables.ec2.tags[var.shard_id]
 }
 
 resource "aws_vpc_security_group_egress_rule" "ec2" {
+  description       = "Allow traffic from the ECS Task"
   security_group_id = aws_security_group.ec2.id
   ip_protocol       = "-1"
-  cidr_ipv4         = "0.0.0.0/0"
+  cidr_ipv4         = var.ec2_egress_cidr
 }
 
 # ECS Cluster & Compute Capacity (EC2 ASG)
@@ -26,7 +27,6 @@ resource "aws_launch_template" "lt" {
   name_prefix   = "lt-${var.vpc_name}"
   image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type = var.instance_type
-  key_name      = var.private_ec2_key_name
 
   iam_instance_profile {
     name = var.iam_instance_profile_name
@@ -53,7 +53,7 @@ resource "aws_launch_template" "lt" {
   EOF
   )
 
-  vpc_security_group_ids = [aws_security_group.ec2.id, var.bastion_aware_sg]
+  vpc_security_group_ids = [aws_security_group.ec2.id]
 
   tag_specifications {
     resource_type = "instance"

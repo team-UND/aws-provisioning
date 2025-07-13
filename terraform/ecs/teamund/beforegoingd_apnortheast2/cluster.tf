@@ -8,13 +8,12 @@ module "cluster" {
   aws_region         = data.terraform_remote_state.vpc.outputs.aws_region
   vpc_name           = data.terraform_remote_state.vpc.outputs.vpc_name
   vpc_id             = data.terraform_remote_state.vpc.outputs.vpc_id
+  ec2_egress_cidr    = "0.0.0.0/0" # Allow traffic from the EC2 instances to anywhere
   public_subnet_ids  = data.terraform_remote_state.vpc.outputs.public_subnet_ids
   private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
 
   # Security and Access
-  private_ec2_key_name      = data.terraform_remote_state.vpc.outputs.aws_key_pair_private_ec2_key_name
   iam_instance_profile_name = data.terraform_remote_state.iam.outputs.aws_iam_instance_profile_ec2_name
-  bastion_aware_sg          = data.terraform_remote_state.vpc.outputs.aws_security_group_bastion_aware_id
 
   # EC2 Instance configuration for the cluster
   instance_type        = "t2.micro"

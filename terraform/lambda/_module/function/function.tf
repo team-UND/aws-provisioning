@@ -20,13 +20,21 @@ resource "aws_lambda_function" "default" {
     variables = var.env_variables
   }
 
+  dynamic "vpc_config" {
+    for_each = var.vpc_config != null ? [1] : []
+    content {
+      subnet_ids         = var.vpc_config.subnet_ids
+      security_group_ids = var.vpc_config.security_group_ids
+    }
+  }
+
   logging_config {
     log_group  = aws_cloudwatch_log_group.default.name
     log_format = "Text"
   }
 
   tags = {
-    Name        = "${var.function_name}-${var.shard_id}"
+    Name        = "lambda-${var.function_name}-${var.vpc_name}"
     Environment = var.billing_tag
   }
 }

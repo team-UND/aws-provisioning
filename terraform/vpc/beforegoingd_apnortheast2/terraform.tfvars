@@ -22,13 +22,8 @@ billing_tag = "dev"
 # d means development
 env_suffix = "d"
 
-# Change here to your office or house
-home_ips = {
-  Chori-home           = "221.149.143.136/32",
-  Chori-school         = "210.106.232.184/32",
-  Chori-library        = "118.221.199.11/32",
-  Chori-school-library = "210.106.232.204/32"
-}
+# Set to false to save costs in non-essential environments
+create_interface_endpoints = false
 
-bastion_ec2_key_name = "bastion_ec2_key_pair.pem"
-private_ec2_key_name = "private_ec2_key_pair.pem"
+# Enable highly available NAT gateway
+enable_ha_nat_gateway = true

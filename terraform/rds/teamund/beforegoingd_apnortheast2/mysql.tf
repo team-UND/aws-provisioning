@@ -2,6 +2,7 @@ module "mysql" {
   source = "../../_module/mysql"
 
   vpc_id     = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_name   = data.terraform_remote_state.vpc.outputs.vpc_name
   shard_id   = data.terraform_remote_state.vpc.outputs.shard_id
   subnet_ids = data.terraform_remote_state.vpc.outputs.private_db_subnet_ids
 

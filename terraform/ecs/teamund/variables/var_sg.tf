@@ -7,7 +7,7 @@ variable "sg_variables" {
       tags = map(map(string))
     })
 
-    external_lb = object({
+    ext_lb = object({
       tags = map(map(string))
     })
 
@@ -19,7 +19,7 @@ variable "sg_variables" {
       tags = {
 
         beforegoingdapne2 = {
-          Name    = "beforegoingd_apnortheast2-ec2-sg"
+          Name    = "ec2-sg-beforegoingd_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
           env     = "dev"
@@ -29,11 +29,11 @@ variable "sg_variables" {
       }
     }
 
-    external_lb = {
+    ext_lb = {
       tags = {
 
         beforegoingdapne2 = {
-          Name    = "beforegoingd_apnortheast2-external-lb-sg"
+          Name    = "ext-lb-sg-beforegoingd_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
           env     = "dev"

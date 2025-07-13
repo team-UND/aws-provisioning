@@ -71,7 +71,8 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.default.id
 
   tags = {
-    Name = "publicrt-${var.vpc_name}"
+    Name    = "publicrt-${var.vpc_name}"
+    Network = "Public"
   }
 }
 

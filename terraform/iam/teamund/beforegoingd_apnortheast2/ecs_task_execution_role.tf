@@ -23,9 +23,13 @@ resource "aws_iam_policy" "ecs_task_execution_secrets_manager_read" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = "secretsmanager:GetSecretValue"
-        Resource = "*"
+        Effect = "Allow"
+        Action = "secretsmanager:GetSecretValue"
+        # Grant access only to the specific secrets required by the Spring Boot application
+        Resource = [
+          "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:SpringBoot-Secrets-*",
+          data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
+        ]
       },
     ]
   })

@@ -33,6 +33,11 @@ variable "service_name" {
   type        = string
 }
 
+variable "task_egress_cidr" {
+  description = "CIDR block for egress traffic from the ECS task"
+  type        = string
+}
+
 variable "service_port" {
   description = "Service port"
   type        = number

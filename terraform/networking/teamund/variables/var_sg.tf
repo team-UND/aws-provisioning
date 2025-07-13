@@ -15,7 +15,7 @@ variable "sg_variables" {
       tags = {
 
         beforegoingdapne2 = {
-          Name    = "beforegoingd_apnortheast2-external-lb-sg"
+          Name    = "ext-lb-sg-beforegoingd_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
           env     = "dev"

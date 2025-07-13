@@ -1,8 +1,3 @@
-variable "shard_id" {
-  description = "Text used to identify shard of infrastructure components"
-  type        = string
-}
-
 variable "aws_region" {
   description = "The AWS region to deploy the shard storage layer into"
   type        = string
@@ -15,6 +10,16 @@ variable "vpc_name" {
 
 variable "vpc_id" {
   description = "The AWS ID of the VPC this shard is being deployed into"
+  type        = string
+}
+
+variable "shard_id" {
+  description = "Text used to identify shard of infrastructure components"
+  type        = string
+}
+
+variable "ec2_egress_cidr" {
+  description = "CIDR block for egress traffic from ECS tasks"
   type        = string
 }
 
@@ -36,16 +41,6 @@ variable "instance_type" {
 
 variable "iam_instance_profile_name" {
   description = "Name of IAM instance profile"
-  type        = string
-}
-
-variable "private_ec2_key_name" {
-  description = "Private EC2 key-pair"
-  type        = string
-}
-
-variable "bastion_aware_sg" {
-  description = "Allows ssh access from the bastion server"
   type        = string
 }
 

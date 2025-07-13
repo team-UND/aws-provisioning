@@ -14,11 +14,11 @@ variable "vpc_id" {
 }
 
 variable "lb_ingress_cidrs" {
-  description = "Ingress of security group of load balancer"
-  type        = string
+  description = "A map of allowed ingress CIDR blocks for the LB. Key is a description, value is the CIDR"
+  type        = map(string)
 }
 
-variable "lb_egress_cidrs" {
+variable "lb_egress_cidr" {
   description = "Egress of security group of load balancer"
   type        = string
 }

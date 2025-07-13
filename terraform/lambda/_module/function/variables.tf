@@ -3,6 +3,20 @@ variable "aws_region" {
   type        = string
 }
 
+variable "vpc_name" {
+  description = "The unique VPC name this storage layer belongs to"
+  type        = string
+}
+
+variable "vpc_config" {
+  description = "VPC configuration for the Lambda function. If not provided, the function is not deployed into a VPC"
+  type = object({
+    subnet_ids         = list(string)
+    security_group_ids = list(string)
+  })
+  default = null
+}
+
 variable "shard_id" {
   description = "Shard ID for the VPC"
   type        = string

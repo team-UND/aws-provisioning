@@ -65,17 +65,17 @@ resource "aws_ecs_task_definition" "default" {
 }
 
 resource "aws_security_group" "default" {
-  description = "ECS Tasks Security Group for ${var.service_name} in ${var.vpc_name}"
-  name        = "tasks-sg-${var.service_name}-${var.vpc_name}"
+  description = "ECS Task SG for ${var.shard_id}"
+  name        = "task-sg-${var.service_name}-${var.vpc_name}"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.service_name}-${var.vpc_name}-tasks-sg"
+    Name = "task-sg-${var.service_name}-${var.vpc_name}"
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "tasks_lb_app" {
-  description                  = "Allow application traffic from the LB"
+resource "aws_vpc_security_group_ingress_rule" "lb_task_app" {
+  description                  = "Allow traffic from the LB to the ECS Task application"
   security_group_id            = aws_security_group.default.id
   from_port                    = var.service_port
   to_port                      = var.service_port
@@ -83,8 +83,8 @@ resource "aws_vpc_security_group_ingress_rule" "tasks_lb_app" {
   referenced_security_group_id = var.lb_security_group_id
 }
 
-resource "aws_vpc_security_group_ingress_rule" "tasks_lb_health_check" {
-  description                  = "Allow health check traffic from the LB"
+resource "aws_vpc_security_group_ingress_rule" "lb_task_health_check" {
+  description                  = "Allow traffic from the LB to the ECS Task health check"
   security_group_id            = aws_security_group.default.id
   from_port                    = var.health_check_port
   to_port                      = var.health_check_port
@@ -92,11 +92,11 @@ resource "aws_vpc_security_group_ingress_rule" "tasks_lb_health_check" {
   referenced_security_group_id = var.lb_security_group_id
 }
 
-resource "aws_vpc_security_group_egress_rule" "tasks" {
-  description       = "Allow all outbound traffic from ECS Tasks"
+resource "aws_vpc_security_group_egress_rule" "task" {
+  description       = "Allow traffic from the ECS Task"
   security_group_id = aws_security_group.default.id
   ip_protocol       = "-1"
-  cidr_ipv4         = "0.0.0.0/0"
+  cidr_ipv4         = var.task_egress_cidr
 }
 
 resource "aws_lb_target_group" "default" {

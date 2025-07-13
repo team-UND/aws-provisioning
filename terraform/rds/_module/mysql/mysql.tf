@@ -1,10 +1,10 @@
 resource "aws_security_group" "mysql" {
-  name        = "mysql-${var.shard_id}"
-  description = "MySQL SG"
+  description = "MySQL SG for ${var.shard_id}"
+  name        = "mysql-sg-${var.vpc_name}"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "mysql-${var.shard_id}"
+    Name = "mysql-sg-${var.vpc_name}"
   }
 }
 
@@ -13,7 +13,7 @@ resource "aws_db_subnet_group" "mysql" {
   subnet_ids = var.subnet_ids
 
   tags = {
-    Name = "mysql-${var.shard_id}"
+    Name = "mysql-${var.vpc_name}"
   }
 }
 
@@ -50,7 +50,7 @@ resource "aws_db_instance" "mysql" {
   skip_final_snapshot             = var.skip_final_snapshot
 
   tags = {
-    Name = "mysql-${var.shard_id}"
+    Name = "mysql-${var.vpc_name}"
   }
 }
 
