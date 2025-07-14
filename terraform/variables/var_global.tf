@@ -7,6 +7,12 @@ variable "remote_state" {
 
     vpc = object({
 
+      beforegoingdapne1 = object({
+        region = string
+        bucket = string
+        key    = string
+      })
+
       beforegoingdapne2 = object({
         region = string
         bucket = string
@@ -32,6 +38,12 @@ variable "remote_state" {
     ecr = object({
 
       repository = object({
+
+        beforegoingdapne1 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
 
         beforegoingdapne2 = object({
           region = string
@@ -118,6 +130,12 @@ variable "remote_state" {
     # VPC
     vpc = {
 
+      beforegoingdapne1 = {
+        region = "ap-northeast-1"
+        bucket = "teamund-apnortheast1-tfstate"
+        key    = "aws-provisioning/terraform/vpc/beforegoingd_apnortheast1/terraform.tfstate"
+      }
+
       beforegoingdapne2 = {
         region = "ap-northeast-2"
         bucket = "teamund-apnortheast2-tfstate"
@@ -145,6 +163,12 @@ variable "remote_state" {
     ecr = {
 
       repository = {
+
+        beforegoingdapne1 = {
+          region = "ap-northeast-1"
+          bucket = "teamund-apnortheast1-tfstate"
+          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+        }
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
