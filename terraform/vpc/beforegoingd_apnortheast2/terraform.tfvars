@@ -13,8 +13,7 @@ internal_domain_name = "beforegoing.internal"
 
 # shard_id will be used later when creating other resources
 # With shard_id, you could distinguish which environment the resource belongs to 
-shard_id       = "beforegoingdapne2"
-shard_short_id = "beforegoing01d"
+shard_id = "beforegoingdapne2"
 
 # Billing tag in this VPC
 billing_tag = "dev"

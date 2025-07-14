@@ -55,11 +55,6 @@ variable "shard_id" {
   type        = string
 }
 
-variable "shard_short_id" {
-  description = "Short shard ID for the VPC"
-  type        = string
-}
-
 variable "billing_tag" {
   description = "The AWS tag used to track AWS charges"
   type        = string

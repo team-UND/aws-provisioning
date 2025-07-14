@@ -42,11 +42,6 @@ output "shard_id" {
   value       = var.shard_id
 }
 
-output "shard_short_id" {
-  description = "Shorter version of shard ID"
-  value       = var.shard_short_id
-}
-
 # Public subnets
 output "public_subnet_ids" {
   description = "List of public subnet ID in VPC"
