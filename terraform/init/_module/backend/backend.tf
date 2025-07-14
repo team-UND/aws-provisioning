@@ -1,23 +1,15 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.95.0"
-    }
-  }
-}
-
 provider "aws" {
-  region = "ap-northeast-2"
+  region = var.region
 }
 
 # S3 bucket for backend
 resource "aws_s3_bucket" "tfstate" {
-  bucket = "${var.account_id}-apnortheast2-tfstate"
+  bucket = "${var.account_id}-${replace(var.region, "-", "")}-tfstate"
 }
 
 resource "aws_s3_bucket_versioning" "tfstate_versioning" {
   bucket = aws_s3_bucket.tfstate.id
+
   versioning_configuration {
     status = "Enabled"
   }
@@ -33,8 +25,4 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
     name = "LockID"
     type = "S"
   }
-}
-
-variable "account_id" {
-  default = "teamund"
 }
