@@ -1,0 +1,29 @@
+{
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Untagged images expire after ${untagged_image_expiration_days} days",
+            "selection": {
+                "tagStatus": "untagged",
+                "countType": "sinceImagePushed",
+                "countUnit": "days",
+                "countNumber": ${untagged_image_expiration_days}
+            },
+            "action": {
+                "type": "expire"
+            }
+        },
+        {
+            "rulePriority": 2,
+            "description": "Tagged images expire when there are more than ${tagged_image_retention_count} images",
+            "selection": {
+                "tagStatus": "any",
+                "countType": "imageCountMoreThan",
+                "countNumber": ${tagged_image_retention_count}
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+}
