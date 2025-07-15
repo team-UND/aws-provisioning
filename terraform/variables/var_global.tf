@@ -58,6 +58,12 @@ variable "remote_state" {
     iam = object({
       teamund = object({
 
+        beforegoingdapne1 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
         beforegoingdapne2 = object({
           region = string
           bucket = string
@@ -99,6 +105,12 @@ variable "remote_state" {
 
       mysql = object({
 
+        beforegoingdapne1 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
         beforegoingdapne2 = object({
           region = string
           bucket = string
@@ -112,6 +124,12 @@ variable "remote_state" {
     elasticache = object({
 
       redis = object({
+
+        beforegoingdapne1 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
 
         beforegoingdapne2 = object({
           region = string
@@ -167,7 +185,7 @@ variable "remote_state" {
         beforegoingdapne1 = {
           region = "ap-northeast-1"
           bucket = "teamund-apnortheast1-tfstate"
-          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast1/terraform.tfstate"
         }
 
         beforegoingdapne2 = {
@@ -183,6 +201,12 @@ variable "remote_state" {
     # IAM
     iam = {
       teamund = {
+
+        beforegoingdapne1 = {
+          region = "ap-northeast-1"
+          bucket = "teamund-apnortheast1-tfstate"
+          key    = "aws-provisioning/terraform/iam/teamund/beforegoingd_apnortheast1/terraform.tfstate"
+        }
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
@@ -228,6 +252,12 @@ variable "remote_state" {
 
       mysql = {
 
+        beforegoingdapne1 = {
+          region = "ap-northeast-1"
+          bucket = "teamund-apnortheast1-tfstate"
+          key    = "aws-provisioning/terraform/rds/teamund/beforegoingd_apnortheast1/terraform.tfstate"
+        }
+
         beforegoingdapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
@@ -242,6 +272,12 @@ variable "remote_state" {
     elasticache = {
 
       redis = {
+
+        beforegoingdapne1 = {
+          region = "ap-northeast-1"
+          bucket = "teamund-apnortheast1-tfstate"
+          key    = "aws-provisioning/terraform/elasticache/teamund/beforegoingd_apnortheast1/terraform.tfstate"
+        }
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
