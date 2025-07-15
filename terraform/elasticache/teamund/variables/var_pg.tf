@@ -22,6 +22,17 @@ variable "pg_variables" {
 
     parameters = {
 
+      beforegoingdapne1 = [
+        {
+          name  = "cluster-enabled"
+          value = "no"
+        },
+        {
+          name  = "maxmemory-policy"
+          value = "volatile-lru"
+        }
+      ],
+
       beforegoingdapne2 = [
         {
           name  = "cluster-enabled"
