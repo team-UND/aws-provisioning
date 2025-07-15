@@ -36,5 +36,6 @@ variable "lb_variables" {
       healthy_threshold   = {}
       unhealthy_threshold = {}
     }
+
   }
 }

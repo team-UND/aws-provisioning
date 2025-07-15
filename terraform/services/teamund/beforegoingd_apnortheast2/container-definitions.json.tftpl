@@ -54,7 +54,7 @@
       },
       {
         "name": "SPRING_DATASOURCE_USERNAME",
-        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_USERNAME::"
+        "valueFrom": "${rdb_secrets_arn}:username::"
       },
       {
         "name": "SPRING_DATASOURCE_PASSWORD",
@@ -89,8 +89,8 @@
         "valueFrom": "${app_secrets_arn}:REFRESH_TOKEN_EXPIRE_TIME::"
       },
       {
-        "name": "SENTRY_DSN",
-        "valueFrom": "${app_secrets_arn}:SENTRY_DSN::"
+        "name": "PROD_SENTRY_DSN",
+        "valueFrom": "${app_secrets_arn}:PROD_SENTRY_DSN::"
       }
     ]
   }

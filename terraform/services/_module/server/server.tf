@@ -110,14 +110,14 @@ resource "aws_lb_target_group" "default" {
 
   # Change the health check setting
   health_check {
-    interval            = var.lb_variables.health_check.interval[var.shard_id]
     protocol            = "HTTP"
     port                = var.health_check_port
     path                = var.health_check_path
+    matcher             = "200"
+    interval            = var.lb_variables.health_check.interval[var.shard_id]
     timeout             = var.lb_variables.health_check.timeout[var.shard_id]
     healthy_threshold   = var.lb_variables.health_check.healthy_threshold[var.shard_id]
     unhealthy_threshold = var.lb_variables.health_check.unhealthy_threshold[var.shard_id]
-    matcher             = "200"
   }
 
   tags = var.lb_variables.lb_tg.tags[var.shard_id]
