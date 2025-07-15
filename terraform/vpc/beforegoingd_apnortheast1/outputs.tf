@@ -60,7 +60,6 @@ output "private_db_subnet_ids" {
   value       = aws_subnet.private_db[*].id
 }
 
-/*
 # Route53
 output "route53_internal_domain_name" {
   description = "Internal domain name for VPC"
@@ -71,7 +70,6 @@ output "route53_internal_zone_id" {
   description = "Internal zone ID for VPC"
   value       = aws_route53_zone.internal.id
 }
-*/
 
 output "aws_security_group_default_id" {
   description = "ID of default security group"
