@@ -20,5 +20,3 @@ terraform/**/*.backup
 .idea
 
 .DS_Store
-
-terraform/lambda/teamund/variables/var_env.tf
