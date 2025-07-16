@@ -25,6 +25,12 @@ variable "remote_state" {
 
       hosting_zone = object({
 
+        beforegoingdapne1 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
         beforegoingdapne2 = object({
           region = string
           bucket = string
@@ -166,6 +172,12 @@ variable "remote_state" {
     route53 = {
 
       hosting_zone = {
+
+        beforegoingdapne1 = {
+          region = "ap-northeast-1"
+          bucket = "teamund-apnortheast1-tfstate"
+          key    = "aws-provisioning/terraform/route53/teamund/beforegoing.store/terraform.tfstate"
+        }
 
         beforegoingdapne2 = {
           region = "ap-northeast-2"
