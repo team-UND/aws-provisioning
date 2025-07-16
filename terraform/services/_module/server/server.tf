@@ -111,8 +111,8 @@ resource "aws_lb_target_group" "default" {
   # Change the health check setting
   health_check {
     protocol            = "HTTP"
-    port                = var.health_check_port
     path                = var.health_check_path
+    port                = var.health_check_port
     matcher             = "200"
     interval            = var.lb_variables.health_check.interval[var.shard_id]
     timeout             = var.lb_variables.health_check.timeout[var.shard_id]
@@ -127,15 +127,15 @@ resource "aws_lb_listener_rule" "default" {
   listener_arn = var.lb_https_listener_arn
   priority     = var.listener_rule_priority
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.default.arn
-  }
-
   condition {
     host_header {
       values = [var.domain_name]
     }
+  }
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.default.arn
   }
 }
 

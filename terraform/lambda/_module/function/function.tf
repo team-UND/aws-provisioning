@@ -44,15 +44,15 @@ resource "aws_lb_listener_rule" "default" {
   listener_arn = var.lb_https_listener_arn
   priority     = var.listener_rule_priority
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.default.arn
-  }
-
   condition {
     host_header {
       values = [var.domain_name]
     }
+  }
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.default.arn
   }
 }
 
@@ -89,7 +89,7 @@ resource "aws_route53_record" "default" {
   alias {
     name                   = var.lb_dns_name
     zone_id                = var.lb_zone_id
-    evaluate_target_health = false
+    evaluate_target_health = true
   }
 }
 
