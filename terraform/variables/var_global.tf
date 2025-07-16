@@ -13,7 +13,7 @@ variable "remote_state" {
         key    = string
       })
 
-      beforegoingdapne2 = object({
+      beforegoingpapne2 = object({
         region = string
         bucket = string
         key    = string
@@ -160,10 +160,10 @@ variable "remote_state" {
         key    = "aws-provisioning/terraform/vpc/beforegoingd_apnortheast1/terraform.tfstate"
       }
 
-      beforegoingdapne2 = {
+      beforegoingpapne2 = {
         region = "ap-northeast-2"
         bucket = "teamund-apnortheast2-tfstate"
-        key    = "aws-provisioning/terraform/vpc/beforegoingd_apnortheast2/terraform.tfstate"
+        key    = "aws-provisioning/terraform/vpc/beforegoingp_apnortheast2/terraform.tfstate"
       }
 
     }
