@@ -39,9 +39,9 @@ variable "pg_variables" {
           value        = "1200"
           apply_method = "immediate"
         }
-      ],
+      ]
 
-      beforegoingdapne2 = [
+      beforegoingpapne2 = [
         {
           name         = "time_zone"
           value        = "Asia/Seoul"

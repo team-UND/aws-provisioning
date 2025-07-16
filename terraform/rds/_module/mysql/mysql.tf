@@ -9,8 +9,9 @@ resource "aws_security_group" "mysql" {
 }
 
 resource "aws_db_subnet_group" "mysql" {
-  name       = "mysql-${var.shard_id}"
-  subnet_ids = var.subnet_ids
+  description = "MySQL Subnet Group for ${var.shard_id}"
+  name        = "mysql-${var.shard_id}"
+  subnet_ids  = var.subnet_ids
 
   tags = {
     Name = "mysql-${var.vpc_name}"
@@ -55,9 +56,9 @@ resource "aws_db_instance" "mysql" {
 }
 
 resource "aws_db_parameter_group" "mysql" {
+  description = "MySQL parameter group for ${var.shard_id}"
   name        = "mysql-${var.shard_id}"
   family      = var.family
-  description = "MySQL parameter group"
 
   dynamic "parameter" {
     for_each = var.pg_variables.parameters[var.shard_id]
