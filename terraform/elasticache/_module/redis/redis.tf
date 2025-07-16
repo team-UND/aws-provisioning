@@ -43,7 +43,7 @@ resource "aws_elasticache_replication_group" "redis_cluster" {
 # Route53 Record for elasticache
 resource "aws_route53_record" "redis" {
   zone_id = var.route53_zone_id
-  name    = var.domain_name
+  name    = var.subdomain_name
   type    = "CNAME"
   ttl     = 300
   records = [aws_elasticache_replication_group.redis_cluster.primary_endpoint_address]

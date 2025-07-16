@@ -7,7 +7,7 @@ module "mysql" {
   subnet_ids = data.terraform_remote_state.vpc.outputs.private_db_subnet_ids
 
   route53_zone_id = data.terraform_remote_state.vpc.outputs.route53_internal_zone_id
-  domain_name     = "mysql-dev"
+  subdomain_name  = "mysql"
   port            = 3006
 
   engine_version             = "8.0"
@@ -17,7 +17,7 @@ module "mysql" {
   max_allocated_storage      = 0
   storage_type               = "gp2"
 
-  username                        = "team_UND_Beforegoing_admin"
+  username                        = "team_UND_Beforegoing_dev_admin"
   db_name                         = "beforegoingd"
   manage_master_user_password     = true
   multi_az                        = false

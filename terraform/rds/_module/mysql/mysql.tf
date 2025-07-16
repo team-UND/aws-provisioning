@@ -19,7 +19,7 @@ resource "aws_db_subnet_group" "mysql" {
 
 resource "aws_route53_record" "mysql" {
   zone_id = var.route53_zone_id
-  name    = var.domain_name
+  name    = var.subdomain_name
   type    = "CNAME"
   ttl     = 300
   records = [aws_db_instance.mysql.address]

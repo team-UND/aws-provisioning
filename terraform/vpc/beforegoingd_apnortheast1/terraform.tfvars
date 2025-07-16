@@ -9,7 +9,7 @@ cidr_numeral = "10"
 # Availability Zone list
 availability_zones = ["ap-northeast-1a", "ap-northeast-1c"]
 
-internal_domain_name = "beforegoing.internal"
+internal_domain_name = "beforegoingd.internal"
 
 # shard_id will be used later when creating other resources
 # With shard_id, you could distinguish which environment the resource belongs to 

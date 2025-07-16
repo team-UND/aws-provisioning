@@ -23,8 +23,8 @@ variable "route53_zone_id" {
   type        = string
 }
 
-variable "domain_name" {
-  description = "Domain Name"
+variable "subdomain_name" {
+  description = "Subdomain Name"
   type        = string
 }
 
