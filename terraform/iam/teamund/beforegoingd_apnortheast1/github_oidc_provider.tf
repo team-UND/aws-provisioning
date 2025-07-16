@@ -18,7 +18,8 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 resource "aws_iam_role" "github_oidc" {
-  name = "github-oidc-${data.terraform_remote_state.vpc.outputs.shard_id}"
+  description = "Role for GitHub Actions OIDC"
+  name        = "github-oidc-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -44,8 +45,8 @@ resource "aws_iam_role" "github_oidc" {
 }
 
 resource "aws_iam_policy" "github_actions" {
-  name        = "github-actions-${data.terraform_remote_state.vpc.outputs.shard_id}"
   description = "Policy for GitHub Actions OIDC role to deploy to ECR and App Runner"
+  name        = "github-actions-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -68,6 +69,7 @@ resource "aws_iam_policy" "github_actions" {
           "ecr:DescribeImages"
         ]
         Resource = [
+          # ECR repositories for server and observability
           data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_arn
         ]
       },

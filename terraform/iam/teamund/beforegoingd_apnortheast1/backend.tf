@@ -1,6 +1,4 @@
 terraform {
-  required_version = ">= 1.10.5"
-
   backend "s3" {
     bucket         = "teamund-apnortheast1-tfstate"
     key            = "aws-provisioning/terraform/iam/teamund/beforegoingd_apnortheast1/terraform.tfstate"
