@@ -2,5 +2,5 @@
 module "hosting_zone" {
   source = "../../_module/hosting_zone"
 
-  route53_zone_name = "beforegoing.site"
+  route53_zone_name = var.route53_zone_name
 }
