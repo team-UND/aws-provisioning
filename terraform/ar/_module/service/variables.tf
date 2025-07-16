@@ -83,6 +83,36 @@ variable "ar_egress_cidr" {
   type        = string
 }
 
+variable "autoscaling_min_size" {
+  description = "Minimum number of active instances for auto scaling"
+  type        = number
+}
+
+variable "autoscaling_max_size" {
+  description = "Maximum number of active instances for auto scaling"
+  type        = number
+}
+
+variable "autoscaling_max_concurrency" {
+  description = "Maximum number of concurrent requests per instance"
+  type        = number
+}
+
+variable "domain_name" {
+  description = "Domain Name"
+  type        = string
+}
+
+variable "subdomain_name" {
+  description = "Subdomain Name"
+  type        = string
+}
+
+variable "enable_www_subdomain" {
+  description = "Whether to enable the www subdomain for the service"
+  type        = bool
+}
+
 variable "enable_observability" {
   description = "If true, enables AWS X-Ray tracing for the App Runner service"
   type        = bool

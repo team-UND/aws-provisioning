@@ -1,4 +1,4 @@
-resource "aws_apprunner_service" "server" {
+resource "aws_apprunner_service" "default" {
   service_name = "ar-${var.service_name}-${var.vpc_name}"
 
   source_configuration {
@@ -25,6 +25,8 @@ resource "aws_apprunner_service" "server" {
     memory            = var.memory
   }
 
+  auto_scaling_configuration_arn = aws_apprunner_auto_scaling_configuration_version.default.arn
+
   network_configuration {
     egress_configuration {
       egress_type       = "VPC"
@@ -47,7 +49,7 @@ resource "aws_apprunner_service" "server" {
   }
 
   tags = {
-    Name = "${var.service_name}-${var.shard_id}"
+    Name = "${var.service_name}-${var.vpc_name}"
   }
 }
 
@@ -68,10 +70,29 @@ resource "aws_vpc_security_group_egress_rule" "ap" {
   cidr_ipv4         = var.ar_egress_cidr
 }
 
+resource "aws_apprunner_auto_scaling_configuration_version" "default" {
+  auto_scaling_configuration_name = "${var.service_name}-${var.vpc_name}"
+
+  min_size        = var.autoscaling_min_size
+  max_size        = var.autoscaling_max_size
+  max_concurrency = var.autoscaling_max_concurrency
+
+  tags = {
+    Name = "${var.service_name}-ar-as-${var.vpc_name}"
+  }
+}
+
 resource "aws_apprunner_vpc_connector" "default" {
-  vpc_connector_name = "${var.service_name}-vpc-connector-${var.shard_id}"
+  vpc_connector_name = "${var.service_name}-${var.vpc_name}"
   subnets            = var.subnet_ids
   security_groups    = [aws_security_group.default.id]
+}
+
+resource "aws_apprunner_custom_domain_association" "default" {
+  service_arn = aws_apprunner_service.default.arn
+
+  domain_name          = "${var.subdomain_name}.${var.domain_name}"
+  enable_www_subdomain = var.enable_www_subdomain
 }
 
 resource "aws_apprunner_observability_configuration" "default" {
@@ -84,6 +105,6 @@ resource "aws_apprunner_observability_configuration" "default" {
   }
 
   tags = {
-    Name = "${var.service_name}-obs-config-${var.shard_id}"
+    Name = "${var.service_name}-obs-config-${var.vpc_name}"
   }
 }

@@ -19,7 +19,7 @@ variable "lb_variables" {
     health_check = {
       protocol            = "HTTP"
       path                = "/actuator/health"
-      interval            = 15
+      interval            = 20
       timeout             = 20
       healthy_threshold   = 3
       unhealthy_threshold = 2

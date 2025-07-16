@@ -35,6 +35,10 @@ module "service" {
   image_tag             = "latest"
   image_repository_type = "ECR"
 
+  domain_name          = data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name
+  subdomain_name       = var.subdomain_name
+  enable_www_subdomain = false
+
   container_port = 8080
 
   environment_variables = {
@@ -60,8 +64,12 @@ module "service" {
   auto_deploy = false
 
   instance_role_arn = data.terraform_remote_state.iam.outputs.aws_iam_role_ar_instance_arn
-  cpu               = 256
-  memory            = 512
+  cpu               = 512
+  memory            = 1024
+
+  autoscaling_min_size        = 1
+  autoscaling_max_size        = 2
+  autoscaling_max_concurrency = 200
 
   subnet_ids     = data.terraform_remote_state.vpc.outputs.private_subnet_ids
   ar_egress_cidr = "0.0.0.0/0"
