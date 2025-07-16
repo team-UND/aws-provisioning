@@ -99,7 +99,7 @@ def lambda_handler(event, context):
     ]
 
     discord_data = {
-        "content": "Sentry Issue",
+        "content": "Sentry Issue 📊",
         "embeds": [
             {
                 "title": title,
