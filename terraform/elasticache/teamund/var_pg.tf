@@ -31,9 +31,9 @@ variable "pg_variables" {
           name  = "maxmemory-policy"
           value = "volatile-lru"
         }
-      ],
+      ]
 
-      beforegoingdapne2 = [
+      beforegoingpapne2 = [
         {
           name  = "cluster-enabled"
           value = "no"
