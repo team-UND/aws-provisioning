@@ -70,13 +70,13 @@ variable "remote_state" {
           key    = string
         })
 
-        apnortheast1 = object({
+        beforegoingdapne1 = object({
           region = string
           bucket = string
           key    = string
         })
 
-        apnortheast2 = object({
+        beforegoingpapne2 = object({
           region = string
           bucket = string
           key    = string
@@ -85,9 +85,9 @@ variable "remote_state" {
       })
     })
 
-    networking = object({
+    lb = object({
 
-      ext_lb = object({
+      internal = object({
 
         beforegoingpapne2 = object({
           region = string
@@ -226,30 +226,30 @@ variable "remote_state" {
           key    = "aws-provisioning/terraform/iam/teamund/global/terraform.tfstate"
         }
 
-        apnortheast1 = {
+        beforegoingdapne1 = {
           region = "ap-northeast-1"
           bucket = "teamund-apnortheast1-tfstate"
-          key    = "aws-provisioning/terraform/iam/teamund/apnortheast1/terraform.tfstate"
+          key    = "aws-provisioning/terraform/iam/teamund/beforegoingd_apnortheast1/terraform.tfstate"
         }
 
-        apnortheast2 = {
+        beforegoingpapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/iam/teamund/apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/iam/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }
     }
 
-    # Networking
-    networking = {
+    # LB
+    lb = {
 
-      ext_lb = {
+      internal = {
 
         beforegoingpapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/networking/teamund/beforegoingp_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/lb/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }
