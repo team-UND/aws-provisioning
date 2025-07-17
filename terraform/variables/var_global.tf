@@ -31,7 +31,7 @@ variable "remote_state" {
           key    = string
         })
 
-        beforegoingdapne2 = object({
+        beforegoingpapne2 = object({
           region = string
           bucket = string
           key    = string
@@ -51,7 +51,7 @@ variable "remote_state" {
           key    = string
         })
 
-        beforegoingdapne2 = object({
+        beforegoingpapne2 = object({
           region = string
           bucket = string
           key    = string
@@ -64,13 +64,19 @@ variable "remote_state" {
     iam = object({
       teamund = object({
 
-        beforegoingdapne1 = object({
+        global = object({
           region = string
           bucket = string
           key    = string
         })
 
-        beforegoingdapne2 = object({
+        apnortheast1 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+        apnortheast2 = object({
           region = string
           bucket = string
           key    = string
@@ -83,7 +89,7 @@ variable "remote_state" {
 
       ext_lb = object({
 
-        beforegoingdapne2 = object({
+        beforegoingpapne2 = object({
           region = string
           bucket = string
           key    = string
@@ -97,7 +103,7 @@ variable "remote_state" {
 
       cluster = object({
 
-        beforegoingdapne2 = object({
+        beforegoingpapne2 = object({
           region = string
           bucket = string
           key    = string
@@ -117,7 +123,7 @@ variable "remote_state" {
           key    = string
         })
 
-        beforegoingdapne2 = object({
+        beforegoingpapne2 = object({
           region = string
           bucket = string
           key    = string
@@ -137,7 +143,7 @@ variable "remote_state" {
           key    = string
         })
 
-        beforegoingdapne2 = object({
+        beforegoingpapne2 = object({
           region = string
           bucket = string
           key    = string
@@ -179,7 +185,7 @@ variable "remote_state" {
           key    = "aws-provisioning/terraform/route53/teamund/beforegoing.store/terraform.tfstate"
         }
 
-        beforegoingdapne2 = {
+        beforegoingpapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
           key    = "aws-provisioning/terraform/route53/teamund/beforegoing.site/terraform.tfstate"
@@ -200,10 +206,10 @@ variable "remote_state" {
           key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast1/terraform.tfstate"
         }
 
-        beforegoingdapne2 = {
+        beforegoingpapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/ecr/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }
@@ -214,16 +220,22 @@ variable "remote_state" {
     iam = {
       teamund = {
 
-        beforegoingdapne1 = {
-          region = "ap-northeast-1"
-          bucket = "teamund-apnortheast1-tfstate"
-          key    = "aws-provisioning/terraform/iam/teamund/beforegoingd_apnortheast1/terraform.tfstate"
+        global = {
+          region = "us-east-1"
+          bucket = "teamund-global-tfstate"
+          key    = "aws-provisioning/terraform/iam/teamund/global/terraform.tfstate"
         }
 
-        beforegoingdapne2 = {
+        apnortheast1 = {
+          region = "ap-northeast-1"
+          bucket = "teamund-apnortheast1-tfstate"
+          key    = "aws-provisioning/terraform/iam/teamund/apnortheast1/terraform.tfstate"
+        }
+
+        apnortheast2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/iam/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/iam/teamund/apnortheast2/terraform.tfstate"
         }
 
       }
@@ -234,10 +246,10 @@ variable "remote_state" {
 
       ext_lb = {
 
-        beforegoingdapne2 = {
+        beforegoingpapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/networking/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/networking/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }
@@ -249,10 +261,10 @@ variable "remote_state" {
 
       cluster = {
 
-        beforegoingdapne2 = {
+        beforegoingpapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/ecs/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/ecs/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }
@@ -270,10 +282,10 @@ variable "remote_state" {
           key    = "aws-provisioning/terraform/rds/teamund/beforegoingd_apnortheast1/terraform.tfstate"
         }
 
-        beforegoingdapne2 = {
+        beforegoingpapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/rds/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/rds/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }
@@ -291,10 +303,10 @@ variable "remote_state" {
           key    = "aws-provisioning/terraform/elasticache/teamund/beforegoingd_apnortheast1/terraform.tfstate"
         }
 
-        beforegoingdapne2 = {
+        beforegoingpapne2 = {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
-          key    = "aws-provisioning/terraform/elasticache/teamund/beforegoingd_apnortheast2/terraform.tfstate"
+          key    = "aws-provisioning/terraform/elasticache/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }
