@@ -1,5 +1,6 @@
 resource "aws_iam_role" "ecs_task" {
-  name = "ecs-task-${data.terraform_remote_state.vpc.outputs.shard_id}"
+  description = "Role for ECS tasks"
+  name        = "ecs-task-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -16,8 +17,8 @@ resource "aws_iam_role" "ecs_task" {
 }
 
 resource "aws_iam_policy" "ecs_task_exec" {
-  name        = "ecs-task-exec-${data.terraform_remote_state.vpc.outputs.shard_id}"
   description = "Allow ECS Exec functionality"
+  name        = "ecs-task-exec-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   policy = jsonencode({
     Version = "2012-10-17"

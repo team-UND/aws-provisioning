@@ -1,1 +1,1 @@
-data "aws_caller_identity" "current" {}
+../caller_identity.tf

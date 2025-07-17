@@ -1,5 +1,6 @@
 resource "aws_iam_role" "ec2" {
-  name = "ec2-${data.terraform_remote_state.vpc.outputs.shard_id}"
+  description = "Role for EC2 instances in ECS cluster"
+  name        = "ec2-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -21,7 +22,7 @@ resource "aws_iam_role" "ec2" {
 }
 
 resource "aws_iam_instance_profile" "ec2" {
-  name = "ec2-${data.terraform_remote_state.vpc.outputs.shard_id}"
+  name = "ec2-${data.terraform_remote_state.vpc.outputs.vpc_name}"
   role = aws_iam_role.ec2.name
 }
 

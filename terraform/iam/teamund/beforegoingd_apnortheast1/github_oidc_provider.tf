@@ -1,20 +1,7 @@
 locals {
-  org_name   = "team-UND"
-  repo_names = ["beforegoing-server", "observability"]
-}
-
-data "tls_certificate" "github" {
-  url = "https://token.actions.githubusercontent.com"
-}
-
-resource "aws_iam_openid_connect_provider" "github" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
-
-  tags = {
-    Name = "github-oidc-${data.terraform_remote_state.vpc.outputs.vpc_name}"
-  }
+  org_name    = "team-UND"
+  repo_names  = ["beforegoing-server", "observability"]
+  branch_name = "develop"
 }
 
 resource "aws_iam_role" "github_oidc" {
@@ -27,7 +14,7 @@ resource "aws_iam_role" "github_oidc" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.github.arn
+          Federated = data.terraform_remote_state.iam.outputs.aws_iam_openid_connect_provider_github_arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
@@ -35,7 +22,7 @@ resource "aws_iam_role" "github_oidc" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
             "token.actions.githubusercontent.com:sub" = flatten([
               for repo in local.repo_names :
-              "repo:${local.org_name}/${repo}:ref:refs/heads/develop"
+              "repo:${local.org_name}/${repo}:ref:refs/heads/${local.branch_name}"
             ])
           }
         }

@@ -1,5 +1,6 @@
 resource "aws_iam_role" "lambda" {
-  name = "lambda-${data.terraform_remote_state.vpc.outputs.shard_id}"
+  description = "Role for Lambda functions"
+  name        = "lambda-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -21,8 +22,8 @@ resource "aws_iam_role" "lambda" {
 }
 
 resource "aws_iam_policy" "lambda_secrets_manager_read" {
-  name        = "lambda-secrets-manager-read-${data.terraform_remote_state.vpc.outputs.shard_id}"
   description = "Policy for EC2 to read secrets from Secrets Manager"
+  name        = "lambda-secrets-manager-read-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -30,8 +31,10 @@ resource "aws_iam_policy" "lambda_secrets_manager_read" {
       {
         Effect = "Allow"
         Action = "secretsmanager:GetSecretValue"
-        # Grant access only to secrets starting with "Lambda-Secrets-"
-        Resource = "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:Lambda-Secrets-*"
+        Resource = [
+          # Add secret ARNs here
+          "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:prod/sentry/lambda-*"
+        ]
       },
     ]
   })

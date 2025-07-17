@@ -1,5 +1,6 @@
 resource "aws_iam_role" "ecs_task_execution" {
-  name = "ecs-task-execution-${data.terraform_remote_state.vpc.outputs.shard_id}"
+  description = "Role for ECS task execution"
+  name        = "ecs-task-execution-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -16,8 +17,8 @@ resource "aws_iam_role" "ecs_task_execution" {
 }
 
 resource "aws_iam_policy" "ecs_task_execution_secrets_manager_read" {
-  name        = "ecs-task-execution-secrets-manager-read-${data.terraform_remote_state.vpc.outputs.shard_id}"
   description = "Policy for EC2 to read secrets from Secrets Manager"
+  name        = "ecs-task-execution-secrets-manager-read-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -25,9 +26,9 @@ resource "aws_iam_policy" "ecs_task_execution_secrets_manager_read" {
       {
         Effect = "Allow"
         Action = "secretsmanager:GetSecretValue"
-        # Grant access only to the specific secrets required by the Spring Boot application
         Resource = [
-          "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:SpringBoot-Secrets-*",
+          # Add secret ARNs here
+          "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:prod/server/springboot-*",
           data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
         ]
       },

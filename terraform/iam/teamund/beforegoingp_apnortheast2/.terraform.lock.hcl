@@ -25,7 +25,8 @@ provider "registry.terraform.io/hashicorp/aws" {
 }
 
 provider "registry.terraform.io/hashicorp/tls" {
-  version = "4.1.0"
+  version     = "4.1.0"
+  constraints = "~> 4.1.0"
   hashes = [
     "h1:UklaKJOCynnEJbpCVN0zJKIJ3SvO7RQJ00/6grBatnw=",
     "zh:14c35d89307988c835a7f8e26f1b83ce771e5f9b41e407f86a644c0152089ac2",

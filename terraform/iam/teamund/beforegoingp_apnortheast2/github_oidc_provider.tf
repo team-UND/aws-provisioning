@@ -1,20 +1,12 @@
 locals {
-  org_name   = "team-UND"
-  repo_names = ["beforegoing-server", "observability"]
-}
-
-data "tls_certificate" "github" {
-  url = "https://token.actions.githubusercontent.com"
-}
-
-resource "aws_iam_openid_connect_provider" "github" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
+  org_name    = "team-UND"
+  repo_names  = ["beforegoing-server", "observability"]
+  branch_name = "develop"
 }
 
 resource "aws_iam_role" "github_oidc" {
-  name = "github-oidc-${data.terraform_remote_state.vpc.outputs.shard_id}"
+  description = "Role for GitHub Actions OIDC"
+  name        = "github-oidc-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -22,7 +14,7 @@ resource "aws_iam_role" "github_oidc" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.github.arn
+          Federated = data.terraform_remote_state.iam.outputs.aws_iam_openid_connect_provider_github_arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
@@ -30,7 +22,7 @@ resource "aws_iam_role" "github_oidc" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
             "token.actions.githubusercontent.com:sub" = flatten([
               for repo in local.repo_names :
-              "repo:${local.org_name}/${repo}:ref:refs/heads/main"
+              "repo:${local.org_name}/${repo}:ref:refs/heads/${local.branch_name}"
             ])
           }
         }
@@ -40,8 +32,8 @@ resource "aws_iam_role" "github_oidc" {
 }
 
 resource "aws_iam_policy" "github_actions" {
-  name        = "github-actions-${data.terraform_remote_state.vpc.outputs.shard_id}"
   description = "Policy for GitHub Actions OIDC role"
+  name        = "github-actions-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -64,6 +56,7 @@ resource "aws_iam_policy" "github_actions" {
           "ecr:DescribeImages"
         ]
         Resource = [
+          # ECR repositories for server and observability
           data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_arn,
           data.terraform_remote_state.repository.outputs.aws_ecr_repository_prometheus_build_arn
         ]
