@@ -64,7 +64,8 @@ resource "aws_iam_policy" "github_actions" {
         Effect = "Allow"
         Action = [
           "apprunner:StartDeployment",
-          "apprunner:DescribeService"
+          "apprunner:DescribeService",
+          "apprunner:UpdateService"
         ]
         Resource = "arn:aws:apprunner:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:service/*"
       }
