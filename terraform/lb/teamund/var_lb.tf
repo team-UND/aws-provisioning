@@ -15,7 +15,7 @@ variable "lb_variables" {
       tags = {
 
         beforegoingdapne2 = {
-          Name    = "ext-lb-beforegoingd_apnortheast2"
+          Name    = "internal-lb-beforegoingd_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
           env     = "dev"
