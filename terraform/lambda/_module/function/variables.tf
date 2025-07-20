@@ -14,7 +14,6 @@ variable "vpc_config" {
     subnet_ids         = list(string)
     security_group_ids = list(string)
   })
-  default = null
 }
 
 variable "shard_id" {
@@ -72,36 +71,6 @@ variable "memory_size" {
 variable "env_variables" {
   description = "A map of environment variables for the Lambda function"
   type        = map(string)
-}
-
-variable "lb_https_listener_arn" {
-  description = "The ARN of the LB's HTTPS listener"
-  type        = string
-}
-
-variable "listener_rule_priority" {
-  description = "The priority for the listener rule. Must be unique per listener"
-  type        = number
-}
-
-variable "domain_name" {
-  description = "The domain name for the function, if applicable"
-  type        = string
-}
-
-variable "route53_zone_id" {
-  description = "The Route 53 zone ID for the domain"
-  type        = string
-}
-
-variable "lb_dns_name" {
-  description = "The DNS name of the LB"
-  type        = string
-}
-
-variable "lb_zone_id" {
-  description = "The zone ID of the LB"
-  type        = string
 }
 
 variable "log_group_name" {

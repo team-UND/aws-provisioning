@@ -49,8 +49,3 @@ resource "aws_iam_role_policy_attachment" "lambda_secrets_manager_read" {
   role       = aws_iam_role.lambda.name
   policy_arn = aws_iam_policy.lambda_secrets_manager_read.arn
 }
-
-resource "aws_iam_role_policy_attachment" "lambda_vpc_access" {
-  role       = aws_iam_role.lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-}

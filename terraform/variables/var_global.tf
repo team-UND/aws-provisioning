@@ -153,6 +153,20 @@ variable "remote_state" {
 
     })
 
+    lambda = object({
+
+      function = object({
+
+        beforegoingpapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
   })
 
   default = {
@@ -307,6 +321,20 @@ variable "remote_state" {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
           key    = "aws-provisioning/terraform/elasticache/teamund/beforegoingp_apnortheast2/terraform.tfstate"
+        }
+
+      }
+    }
+
+    # Lambda
+    lambda = {
+
+      function = {
+
+        beforegoingpapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }
