@@ -7,7 +7,7 @@ locals {
   service_name      = "server"
   service_port      = 8080
   health_check_port = 10090
-  log_group_name    = "/services/${local.shard_id}/${local.service_name}"
+  log_group_name    = "/services/${local.service_name}/${local.shard_id}"
 
   # Define any variables needed by the container definition template here
   template_vars = {
@@ -56,9 +56,6 @@ module "server" {
   # Name of service
   service_name = local.service_name
 
-  # Domain Name
-  domain_name = "${local.service_name}-dev.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"
-
   # Port for service and healthcheck
   task_egress_cidr                  = "0.0.0.0/0" # Allow traffic from the ECS task to anywhere
   service_port                      = local.service_port
@@ -68,29 +65,22 @@ module "server" {
 
   # VPC Information via remote_state
   shard_id   = local.shard_id
-  aws_region = data.terraform_remote_state.vpc.outputs.aws_region
   vpc_id     = data.terraform_remote_state.vpc.outputs.vpc_id
   vpc_name   = data.terraform_remote_state.vpc.outputs.vpc_name
   subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
 
-  # Shared LB Info
-  lb_https_listener_arn = data.terraform_remote_state.ext_lb.outputs.aws_lb_listener_https_arn
-  lb_security_group_id  = data.terraform_remote_state.ext_lb.outputs.aws_security_group_id
-  lb_dns_name           = data.terraform_remote_state.ext_lb.outputs.aws_lb_dns_name
-  lb_zone_id            = data.terraform_remote_state.ext_lb.outputs.aws_lb_zone_id
+  # LB Info
+  lb_https_listener_arn       = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_https_arn
+  lb_security_group_id        = data.terraform_remote_state.int_lb.outputs.aws_security_group_id
+  listener_rule_path_patterns = ["/server/*"]
+  listener_rule_priority      = 100
+  lb_variables                = var.lb_variables
 
   # Shared Cluster Info
   ecs_cluster_id             = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_id
   ecs_cluster_name           = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_name
   ecs_capacity_provider_name = data.terraform_remote_state.cluster.outputs.aws_ecs_capacity_provider_name
   enable_execute_command     = true
-
-  # Route53 variables
-  route53_zone_id        = var.r53_variables.dev.beforegoing_site_zone_id
-  listener_rule_priority = 100
-
-  # Resource LoadBalancer variables
-  lb_variables = var.lb_variables
 
   # IAM & ECR
   ecs_task_role_arn           = data.terraform_remote_state.iam.outputs.aws_iam_role_ecs_task_arn

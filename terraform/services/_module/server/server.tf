@@ -128,31 +128,14 @@ resource "aws_lb_listener_rule" "default" {
   priority     = var.listener_rule_priority
 
   condition {
-    host_header {
-      values = [var.domain_name]
+    path_pattern {
+      values = var.listener_rule_path_patterns
     }
   }
 
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.default.arn
-  }
-}
-
-resource "aws_route53_record" "default" {
-  zone_id        = var.route53_zone_id
-  name           = var.domain_name
-  type           = "A"
-  set_identifier = var.aws_region
-
-  latency_routing_policy {
-    region = var.aws_region
-  }
-
-  alias {
-    name                   = var.lb_dns_name
-    zone_id                = var.lb_zone_id
-    evaluate_target_health = true
   }
 }
 

@@ -1,15 +1,10 @@
-variable "aws_region" {
-  description = "AWS region to use"
+variable "vpc_id" {
+  description = "The AWS ID of the VPC this shard is being deployed into"
   type        = string
 }
 
 variable "vpc_name" {
   description = "The name of the VPC"
-  type        = string
-}
-
-variable "vpc_id" {
-  description = "The AWS ID of the VPC this shard is being deployed into"
   type        = string
 }
 
@@ -74,19 +69,9 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "domain_name" {
-  description = "Domain Name"
-  type        = string
-}
-
-variable "lb_dns_name" {
-  description = "The DNS name of the LB"
-  type        = string
-}
-
-variable "lb_zone_id" {
-  description = "The zone ID of the LB"
-  type        = string
+variable "listener_rule_path_patterns" {
+  description = "List of path patterns for the listener rule"
+  type        = list(string)
 }
 
 variable "lb_security_group_id" {
@@ -163,11 +148,6 @@ variable "lb_https_listener_arn" {
 variable "listener_rule_priority" {
   description = "The priority for the listener rule. Must be unique per listener"
   type        = number
-}
-
-variable "route53_zone_id" {
-  description = "The ID of the Route 53 Hosted Zone"
-  type        = string
 }
 
 variable "log_group_name" {
