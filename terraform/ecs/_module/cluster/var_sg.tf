@@ -7,19 +7,11 @@ variable "sg_variables" {
       tags = map(map(string))
     })
 
-    ext_lb = object({
-      tags = map(map(string))
-    })
-
   })
 
   default = {
 
     ec2 = {
-      tags = {}
-    }
-
-    ext_lb = {
       tags = {}
     }
 
