@@ -14,12 +14,12 @@ variable "lb_variables" {
     lb = {
       tags = {
 
-        beforegoingdapne2 = {
-          Name    = "internal-lb-beforegoingd_apnortheast2"
+        beforegoingpapne2 = {
+          Name    = "internal-lb-beforegoingp_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
-          env     = "dev"
-          stack   = "beforegoingd_apnortheast2"
+          env     = "prod"
+          stack   = "beforegoingp_apnortheast2"
         }
 
       }
