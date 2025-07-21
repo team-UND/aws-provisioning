@@ -87,18 +87,23 @@ module "server" {
   ecs_task_execution_role_arn = data.terraform_remote_state.iam.outputs.aws_iam_role_ecs_task_execution_arn
   container_definitions_json  = local.container_definitions_json
 
+  # Autoscaling
+  deployment_controller_type         = "ECS"
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 100
+
   # Auto Scaling
   container_desired_capacity = 1
   container_min_capacity     = 1
   container_max_capacity     = 2
 
-  target_value       = 80  # Target 80% average CPU utilization
+  target_value       = 90  # Target 90% average CPU utilization
   scale_in_cooldown  = 180 # 3 minutes before scaling in
   scale_out_cooldown = 60  # 1 minute before scaling out again
 
   # Task Sizing
-  task_cpu    = "432" # 0.421875 vCPU
-  task_memory = "432" # 432 MiB
+  task_cpu    = "400" # 0.390625 vCPU
+  task_memory = "400" # 400 MiB
 
   log_group_name        = local.log_group_name
   log_retention_in_days = 7

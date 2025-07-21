@@ -79,40 +79,49 @@ variable "lb_security_group_id" {
   type        = string
 }
 
+variable "deployment_controller_type" {
+  description = "value"
+  type        = string
+}
+
+variable "deployment_maximum_percent" {
+  description = "The upper limit (as a percentage of desired_count) of the number of tasks that are allowed in the RUNNING or PENDING state during a deployment"
+  type        = number
+}
+
+variable "deployment_minimum_healthy_percent" {
+  description = "The lower limit (as a percentage of desired_count) of the number of tasks that must remain in the RUNNING state during a deployment"
+  type        = number
+}
+
 variable "container_desired_capacity" {
   description = "Default number of containers to run for the service"
   type        = number
-  default     = 1
 }
 
 variable "container_min_capacity" {
   description = "Minimum number of containers to run for the service"
   type        = number
-  default     = 1
 }
 
 variable "container_max_capacity" {
   description = "Maximum number of containers to run for the service"
   type        = number
-  default     = 2
 }
 
 variable "target_value" {
   description = "Target average CPU utilization for the service. The autoscaler will adjust the number of containers to maintain this target"
   type        = number
-  default     = 80 # Target 80% average CPU utilization
 }
 
 variable "scale_in_cooldown" {
   description = "Cooldown period after scaling in before allowing another scale in action"
   type        = number
-  default     = 180 # 3 minutes before scaling in
 }
 
 variable "scale_out_cooldown" {
   description = "Cooldown period after scaling out before allowing another scale out action"
   type        = number
-  default     = 60 # 1 minute before scaling out again
 }
 
 variable "task_cpu" {

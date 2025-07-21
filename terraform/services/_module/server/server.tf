@@ -22,6 +22,13 @@ resource "aws_ecs_service" "default" {
     security_groups = [aws_security_group.default.id]
   }
 
+  deployment_controller {
+    type = var.deployment_controller_type
+  }
+
+  deployment_maximum_percent         = var.deployment_maximum_percent
+  deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent
+
   depends_on = [aws_lb_listener_rule.default]
 }
 
