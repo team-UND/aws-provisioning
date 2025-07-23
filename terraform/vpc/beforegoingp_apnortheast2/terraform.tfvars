@@ -25,4 +25,4 @@ env_suffix = "p"
 create_interface_endpoints = false
 
 # Enable highly available NAT gateway
-enable_ha_nat_gateway = true
+enable_ha_nat_gateway = false
