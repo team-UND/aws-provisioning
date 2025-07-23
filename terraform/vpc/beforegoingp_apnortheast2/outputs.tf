@@ -97,3 +97,8 @@ output "billing_tag" {
   description = "The environment value for biliing consolidation."
   value       = var.billing_tag
 }
+
+output "home_ips" {
+  description = "A map of allowed IP addresses/CIDRs for the home/office security group"
+  value       = var.home_ips
+}

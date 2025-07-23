@@ -74,6 +74,11 @@ variable "env_suffix" {
   type        = string
 }
 
+variable "home_ips" {
+  description = "A map of allowed IP addresses/CIDRs for the home/office security group. The keys are for description only"
+  type        = map(string)
+}
+
 variable "create_interface_endpoints" {
   description = "Controls whether to create the interface VPC endpoints"
   type        = bool

@@ -21,6 +21,10 @@ billing_tag = "prod"
 # p means production
 env_suffix = "p"
 
+home_ips = {
+  "Chori-home" = "221.149.143.136/32"
+}
+
 # Set to false to save costs in non-essential environments
 create_interface_endpoints = false
 
