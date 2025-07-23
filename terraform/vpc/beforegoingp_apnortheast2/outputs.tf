@@ -60,6 +60,17 @@ output "private_db_subnet_ids" {
   value       = aws_subnet.private_db[*].id
 }
 
+# Observability private subnets
+output "private_observability_subnet_ids" {
+  description = "List of private observability subnet ID in VPC"
+  value       = aws_subnet.private_observability[*].id
+}
+
+output "private_observability_subnet_cidrs" {
+  description = "CIDR blocks for the private observability subnets"
+  value       = aws_subnet.private_observability[*].cidr_block
+}
+
 # Route53
 output "route53_internal_domain_name" {
   description = "Internal domain name for VPC"

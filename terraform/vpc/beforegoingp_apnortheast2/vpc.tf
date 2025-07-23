@@ -153,3 +153,38 @@ resource "aws_route_table_association" "private_db" {
   subnet_id      = aws_subnet.private_db[count.index].id
   route_table_id = aws_route_table.private_db[count.index].id
 }
+
+# Observability private subnets
+# This subnet is for observability tools like Prometheus
+# Subnet will use cidr with /24
+# The number of available IP is 256 (Including reserved IP from AWS)
+resource "aws_subnet" "private_observability" {
+  count  = length(var.availability_zones)
+  vpc_id = aws_vpc.default.id
+
+  cidr_block        = "10.${var.cidr_numeral}.${var.cidr_numeral_private_observability[count.index]}.0/24"
+  availability_zone = var.availability_zones[count.index]
+
+  tags = {
+    Name    = "private${count.index}observability-${var.vpc_name}"
+    Network = "Private"
+  }
+}
+
+# Route table for DB subnets
+resource "aws_route_table" "private_observability" {
+  count  = length(var.availability_zones)
+  vpc_id = aws_vpc.default.id
+
+  tags = {
+    Name    = "privateobservability${count.index}-rt-${var.vpc_name}"
+    Network = "Private"
+  }
+}
+
+# Route table association for observability subnets
+resource "aws_route_table_association" "private_observability" {
+  count          = length(var.availability_zones)
+  subnet_id      = aws_subnet.private_observability[count.index].id
+  route_table_id = aws_route_table.private_observability[count.index].id
+}

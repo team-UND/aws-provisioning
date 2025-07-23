@@ -60,6 +60,51 @@ resource "aws_vpc_security_group_ingress_rule" "task_redis" {
   referenced_security_group_id = module.server.aws_security_group_id
 }
 
+# Allow access to the Actuator endpoint only from the Prometheus server
+# And block all other access
+resource "aws_lb_listener_rule" "actuator_allow" {
+  listener_arn = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_https_arn
+  priority     = 98
+
+  action {
+    type             = "forward"
+    target_group_arn = module.server.aws_lb_target_group_arn
+  }
+
+  condition {
+    path_pattern {
+      values = [local.prometheus_path]
+    }
+  }
+
+  condition {
+    source_ip {
+      # Allow traffic from the observability subnets where Prometheus will be running
+      values = data.terraform_remote_state.vpc.outputs.private_observability_subnet_cidrs
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "actuator_block" {
+  listener_arn = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_https_arn
+  priority     = 99
+
+  action {
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Forbidden"
+      status_code  = "403"
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = [local.actuator_path, local.prometheus_path]
+    }
+  }
+}
+
 # Use module for service
 module "server" {
   source = "../../_module/server"

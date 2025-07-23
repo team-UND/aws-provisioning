@@ -45,6 +45,15 @@ variable "cidr_numeral_private_db" {
   }
 }
 
+variable "cidr_numeral_private_observability" {
+  description = "The Observability private subnet CIDR numeral (10.x.x.0/24)"
+  type        = map(string)
+  default = {
+    0 = "240"
+    1 = "248"
+  }
+}
+
 variable "internal_domain_name" {
   description = "Base domain name for internal"
   type        = string
