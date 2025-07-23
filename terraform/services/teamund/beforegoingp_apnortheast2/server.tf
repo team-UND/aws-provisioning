@@ -1,5 +1,9 @@
 data "aws_secretsmanager_secret" "app_secrets" {
-  name = "SpringBoot-Secrets"
+  name = "prod/server/springboot"
+}
+
+data "aws_secretsmanager_secret" "prometheus_secrets" {
+  name = "prod/prometheus"
 }
 
 locals {
@@ -25,6 +29,7 @@ locals {
     log_group_name              = local.log_group_name
     rdb_secrets_arn             = data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
     app_secrets_arn             = data.aws_secretsmanager_secret.app_secrets.arn
+    prometheus_secrets_arn      = data.aws_secretsmanager_secret.prometheus_secrets.arn
   }
 
   # Render the container definition template using the variables defined above

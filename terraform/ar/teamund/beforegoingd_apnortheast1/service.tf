@@ -2,6 +2,10 @@ data "aws_secretsmanager_secret" "app_secrets" {
   name = "dev/server/springboot"
 }
 
+data "aws_secretsmanager_secret" "prometheus_secrets" {
+  name = "dev/prometheus"
+}
+
 resource "aws_vpc_security_group_ingress_rule" "ar_mysql" {
   description                  = "Allow traffic from the App Runner to the MySQL"
   security_group_id            = data.terraform_remote_state.mysql.outputs.aws_security_group_id
@@ -58,7 +62,9 @@ module "service" {
     JWT_SECRET                      = "${data.aws_secretsmanager_secret.app_secrets.arn}:JWT_SECRET::"
     ACCESS_TOKEN_EXPIRE_TIME        = "${data.aws_secretsmanager_secret.app_secrets.arn}:ACCESS_TOKEN_EXPIRE_TIME::"
     REFRESH_TOKEN_EXPIRE_TIME       = "${data.aws_secretsmanager_secret.app_secrets.arn}:REFRESH_TOKEN_EXPIRE_TIME::"
-    DEV_SENTRY_DSN                  = "${data.aws_secretsmanager_secret.app_secrets.arn}:DEV_SENTRY_DSN::"
+    SENTRY_DSN                      = "${data.aws_secretsmanager_secret.app_secrets.arn}:SENTRY_DSN::"
+    PROMETHEUS_USERNAME             = "${data.aws_secretsmanager_secret.prometheus_secrets.arn}:USERNAME::"
+    PROMETHEUS_PASSWORD             = "${data.aws_secretsmanager_secret.prometheus_secrets.arn}:PASSWORD::"
   }
 
   auto_deploy = false

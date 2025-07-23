@@ -29,6 +29,7 @@ resource "aws_iam_policy" "ecs_task_execution_secrets_manager_read" {
         Resource = [
           # Add secret ARNs here
           "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:prod/server/springboot-*",
+          "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:prod/prometheus-*",
           data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
         ]
       },

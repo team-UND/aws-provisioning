@@ -8,7 +8,10 @@
     "memoryReservation": ${container_memory_soft_limit},
     "portMappings": [
       {
-        "containerPort": ${service_port}
+        "containerPort": ${service_port},
+      },
+      {
+        "containerPort": ${health_check_port}
       }
     ],
     "linuxParameters": {
@@ -31,6 +34,11 @@
         "value": "${spring_profiles_active}"
       }
     ],
+    "dockerLabels": {
+      "prometheus.io/scrape": "true",
+      "prometheus.io/path": "/actuator/prometheus",
+      "prometheus.io/port": "10090"
+    },
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -89,8 +97,16 @@
         "valueFrom": "${app_secrets_arn}:REFRESH_TOKEN_EXPIRE_TIME::"
       },
       {
-        "name": "PROD_SENTRY_DSN",
-        "valueFrom": "${app_secrets_arn}:PROD_SENTRY_DSN::"
+        "name": "SENTRY_DSN",
+        "valueFrom": "${app_secrets_arn}:SENTRY_DSN::"
+      },
+      {
+        "name": "PROMETHEUS_USERNAME",
+        "valueFrom": "${prometheus_secrets_arn}:USERNAME::"
+      },
+      {
+        "name": "PROMETHEUS_PASSWORD",
+        "valueFrom": "${prometheus_secrets_arn}:PASSWORD::"
       }
     ]
   }
