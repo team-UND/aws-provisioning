@@ -4,7 +4,7 @@ resource "aws_security_group" "default" {
   name        = "internal-lb-sg-${var.vpc_name}"
   vpc_id      = var.vpc_id
 
-  tags = var.sg_variables.lb.tags[var.shard_id]
+  tags = var.sg_variables.internal.tags[var.shard_id]
 }
 
 resource "aws_vpc_security_group_egress_rule" "lb" {
@@ -22,7 +22,7 @@ resource "aws_lb" "default" {
   subnets            = var.private_subnet_ids
   security_groups    = [aws_security_group.default.id]
 
-  tags = var.lb_variables.lb.tags[var.shard_id]
+  tags = var.lb_variables.internal.tags[var.shard_id]
 }
 
 # For security, the HTTP listener should not be used

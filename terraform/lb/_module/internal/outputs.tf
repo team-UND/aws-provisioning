@@ -4,7 +4,7 @@ output "aws_security_group_id" {
 }
 
 output "aws_lb_arn" {
-  description = "The ARN of the internal Application Load Balancer"
+  description = "The ARN of the internal Load Balancer"
   value       = aws_lb.default.arn
 }
 
@@ -19,6 +19,6 @@ output "aws_lb_zone_id" {
 }
 
 output "aws_lb_listener_http_arn" {
-  description = "The ARN of the internal ALB's HTTP listener"
+  description = "The ARN of the internal LB's HTTP listener"
   value       = aws_lb_listener.http.arn
 }

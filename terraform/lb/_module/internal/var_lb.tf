@@ -3,7 +3,7 @@ variable "lb_variables" {
 
   type = object({
 
-    lb = object({
+    internal = object({
       tags = map(map(string))
     })
 
@@ -11,7 +11,7 @@ variable "lb_variables" {
 
   default = {
 
-    lb = {
+    internal = {
       tags = {}
     }
 
