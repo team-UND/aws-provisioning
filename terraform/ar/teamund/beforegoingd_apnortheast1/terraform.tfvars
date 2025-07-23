@@ -1,1 +1,1 @@
-subdomain_name = "server"
+subdomain_name = "api"

@@ -11,6 +11,9 @@ locals {
   service_name      = "server"
   service_port      = 8080
   health_check_port = 10090
+  actuator_path     = "/server/actuator"
+  health_check_path = "${local.actuator_path}/health"
+  prometheus_path   = "${local.actuator_path}/prometheus"
   log_group_name    = "/services/${local.service_name}/${local.shard_id}"
 
   # Define any variables needed by the container definition template here
@@ -25,6 +28,9 @@ locals {
     swappiness                  = 70
     service_port                = local.service_port
     health_check_port           = local.health_check_port
+    health_check_path           = local.health_check_path
+    prometheus_path             = local.prometheus_path
+    prometheus_enable           = true
     spring_profiles_active      = data.terraform_remote_state.vpc.outputs.billing_tag
     log_group_name              = local.log_group_name
     rdb_secrets_arn             = data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
@@ -65,7 +71,7 @@ module "server" {
   task_egress_cidr                  = "0.0.0.0/0" # Allow traffic from the ECS task to anywhere
   service_port                      = local.service_port
   health_check_port                 = local.health_check_port
-  health_check_path                 = "/actuator/health"
+  health_check_path                 = local.health_check_path
   health_check_grace_period_seconds = 90
 
   # VPC Information via remote_state

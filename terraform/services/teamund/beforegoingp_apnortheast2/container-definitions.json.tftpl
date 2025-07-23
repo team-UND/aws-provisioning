@@ -21,7 +21,7 @@
     "healthCheck": {
       "command": [
         "CMD-SHELL",
-        "wget --quiet --spider http://localhost:${health_check_port}/actuator/health"
+        "wget --quiet --spider http://localhost:${health_check_port}${health_check_path}"
       ],
       "interval": 15,
       "timeout": 5,
@@ -35,9 +35,9 @@
       }
     ],
     "dockerLabels": {
-      "prometheus.io/scrape": "true",
-      "prometheus.io/path": "/actuator/prometheus",
-      "prometheus.io/port": "10090"
+      "prometheus.io/scrape": "${prometheus_enable}",
+      "prometheus.io/path": "${prometheus_path}",
+      "prometheus.io/port": "${health_check_port}"
     },
     "logConfiguration": {
       "logDriver": "awslogs",
