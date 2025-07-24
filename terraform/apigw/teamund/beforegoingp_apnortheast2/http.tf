@@ -18,8 +18,6 @@ module "http" {
   vpc_name = data.terraform_remote_state.vpc.outputs.vpc_name
   shard_id = local.shard_id
 
-  domain_name        = data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name
-  subdomain_name     = "api"
   private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
 
   lb_security_group_id = data.terraform_remote_state.int_lb.outputs.aws_security_group_id
@@ -32,6 +30,7 @@ module "http" {
   }
   lb_route_key = "ANY /{proxy+}"
 
+  cors_allow_origins = ["https://*.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"]
   cors_allow_methods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
   cors_allow_headers = ["*"]
 

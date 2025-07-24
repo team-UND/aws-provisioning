@@ -18,16 +18,6 @@ variable "lb_security_group_id" {
   type        = string
 }
 
-variable "domain_name" {
-  description = "Domain name for the API Gateway"
-  type        = string
-}
-
-variable "subdomain_name" {
-  description = "Subdomain name for the API Gateway"
-  type        = string
-}
-
 variable "private_subnet_ids" {
   description = "A comma-delimited list of private subnets for the VPC"
   type        = list(string)
@@ -46,6 +36,11 @@ variable "lambda_integrations" {
       route_key = string
     })
   )
+}
+
+variable "cors_allow_origins" {
+  description = "A list of allowed origins for CORS"
+  type        = list(string)
 }
 
 variable "cors_allow_methods" {

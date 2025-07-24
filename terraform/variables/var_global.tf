@@ -167,6 +167,34 @@ variable "remote_state" {
 
     })
 
+    apigw = object({
+
+      http = object({
+
+        beforegoingpapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
+    waf = object({
+
+      acl = object({
+
+        beforegoingpapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
   })
 
   default = {
@@ -335,6 +363,34 @@ variable "remote_state" {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
           key    = "aws-provisioning/terraform/lambda/teamund/beforegoingp_apnortheast2/terraform.tfstate"
+        }
+
+      }
+    }
+
+    # API Gateway
+    apigw = {
+
+      http = {
+
+        beforegoingpapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/apigw/teamund/beforegoingp_apnortheast2/terraform.tfstate"
+        }
+
+      }
+    }
+
+    # WAF
+    waf = {
+
+      acl = {
+
+        beforegoingpapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/waf/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }

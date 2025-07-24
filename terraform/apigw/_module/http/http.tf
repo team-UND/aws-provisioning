@@ -1,8 +1,3 @@
-data "aws_acm_certificate" "default" {
-  domain   = "*.${var.domain_name}"
-  statuses = ["ISSUED"]
-}
-
 resource "aws_security_group" "vpclink" {
   description = "VPC Link SG for ${var.shard_id}"
   name        = "vpclink-sg-${var.vpc_name}"
@@ -38,7 +33,7 @@ resource "aws_apigatewayv2_api" "default" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["https://*.${var.domain_name}"]
+    allow_origins = var.cors_allow_origins
     allow_methods = var.cors_allow_methods
     allow_headers = var.cors_allow_headers
   }
@@ -116,22 +111,6 @@ resource "aws_lambda_permission" "apigw" {
   function_name = each.value.arn
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.default.execution_arn}/${aws_apigatewayv2_stage.default.name}/${each.value.route_key}"
-}
-
-resource "aws_apigatewayv2_domain_name" "default" {
-  domain_name = "${var.subdomain_name}.${var.domain_name}"
-
-  domain_name_configuration {
-    certificate_arn = data.aws_acm_certificate.default.arn
-    endpoint_type   = "REGIONAL"
-    security_policy = "TLS_1_2"
-  }
-}
-
-resource "aws_apigatewayv2_api_mapping" "default" {
-  api_id      = aws_apigatewayv2_api.default.id
-  domain_name = aws_apigatewayv2_domain_name.default.id
-  stage       = aws_apigatewayv2_stage.default.id
 }
 
 # CloudWatch Log Group for API Gateway Access Logs
