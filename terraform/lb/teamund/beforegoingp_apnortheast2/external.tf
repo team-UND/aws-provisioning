@@ -11,7 +11,7 @@ module "external" {
   shard_id = data.terraform_remote_state.vpc.outputs.shard_id
 
   # Allow traffic from the ALB to within the VPC
-  lb_ingress_cidrs  = data.terraform_remote_state.vpc.home_ips
+  lb_ingress_cidrs  = data.terraform_remote_state.vpc.outputs.home_ips
   lb_egress_cidr    = data.terraform_remote_state.vpc.outputs.vpc_cidr_block
   lb_type           = "application"
   public_subnet_ids = data.terraform_remote_state.vpc.outputs.public_subnet_ids
