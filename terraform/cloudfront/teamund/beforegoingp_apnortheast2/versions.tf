@@ -1,1 +1,1 @@
-../../_module/cloudfront/versions.tf
+../../_module/distribution/versions.tf
