@@ -1,15 +1,14 @@
 data "aws_secretsmanager_secret" "app_secrets" {
-  name = "Lambda-Secrets"
+  name = "prod/sentry/lambda"
 }
 
 locals {
-  function_name      = "sentry"
-  vpc_name           = data.terraform_remote_state.vpc.outputs.vpc_name
-  shard_id           = data.terraform_remote_state.vpc.outputs.shard_id
-  lambda_egress_cidr = "0.0.0.0/0" # Allow traffic from the Lambda to anywhere
+  function_name = "sentry"
+  vpc_name      = data.terraform_remote_state.vpc.outputs.vpc_name
+  shard_id      = data.terraform_remote_state.vpc.outputs.shard_id
 }
 
-module "function" {
+module "sentry" {
   source = "../../_module/function"
 
   aws_region  = data.terraform_remote_state.vpc.outputs.aws_region
@@ -17,12 +16,12 @@ module "function" {
   shard_id    = local.shard_id
   billing_tag = data.terraform_remote_state.vpc.outputs.billing_tag
 
-  source_file_path = "${path.module}/function.py"
-  output_path      = "${path.module}/function.zip"
+  source_file_path = "${path.module}/${local.function_name}.py"
+  output_path      = "${path.module}/${local.function_name}.zip"
 
   function_name = local.function_name
-  handler       = "function.lambda_handler"
-  role          = data.terraform_remote_state.iam.outputs.aws_iam_role_lambda_arn
+  handler       = "${local.function_name}.lambda_handler"
+  role          = data.terraform_remote_state.iam.outputs.aws_iam_role_sentry_arn
 
   runtime     = "python3.12"
   timeout     = 30

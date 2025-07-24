@@ -24,7 +24,7 @@ module "http" {
   lb_listener_arn      = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn
   lambda_integrations = {
     sentry = {
-      arn : data.terraform_remote_state.function.outputs.aws_lambda_function_arn,
+      arn : data.terraform_remote_state.function.outputs.sentry_lambda_function_arn,
       route_key : "POST /sentry/{proxy+}"
     }
   }

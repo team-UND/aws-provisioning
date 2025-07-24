@@ -1,6 +1,6 @@
-resource "aws_iam_role" "lambda" {
-  description = "Role for Lambda functions"
-  name        = "lambda-${data.terraform_remote_state.vpc.outputs.vpc_name}"
+resource "aws_iam_role" "sentry" {
+  description = "Role for Sentry Lambda function"
+  name        = "sentry-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -16,14 +16,14 @@ resource "aws_iam_role" "lambda" {
   })
 
   tags = {
-    Name        = "lambda-${data.terraform_remote_state.vpc.outputs.vpc_name}"
+    Name        = "sentry-${data.terraform_remote_state.vpc.outputs.vpc_name}"
     Environment = data.terraform_remote_state.vpc.outputs.billing_tag
   }
 }
 
-resource "aws_iam_policy" "lambda_secrets_manager_read" {
-  description = "Policy for EC2 to read secrets from Secrets Manager"
-  name        = "lambda-secrets-manager-read-${data.terraform_remote_state.vpc.outputs.vpc_name}"
+resource "aws_iam_policy" "sentry_secrets_read" {
+  description = "Policy for Sentry Lambda function to read secrets from Secrets Manager"
+  name        = "sentry-secrets-read-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -40,12 +40,12 @@ resource "aws_iam_policy" "lambda_secrets_manager_read" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_execution" {
-  role       = aws_iam_role.lambda.name
+resource "aws_iam_role_policy_attachment" "sentry_execution" {
+  role       = aws_iam_role.sentry.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_secrets_manager_read" {
-  role       = aws_iam_role.lambda.name
-  policy_arn = aws_iam_policy.lambda_secrets_manager_read.arn
+resource "aws_iam_role_policy_attachment" "sentry_secrets_read" {
+  role       = aws_iam_role.sentry.name
+  policy_arn = aws_iam_policy.sentry_secrets_read.arn
 }

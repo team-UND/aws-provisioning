@@ -21,7 +21,7 @@ resource "random_string" "default" {
 
 # Store the secret securely in AWS Secrets Manager
 resource "aws_secretsmanager_secret" "default" {
-  name = "prod/cloudfront/origin-verify-secret"
+  name = "prod/origin-verify/cloudfront"
 }
 
 resource "aws_secretsmanager_secret_version" "default" {
