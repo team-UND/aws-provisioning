@@ -1,11 +1,5 @@
-data "aws_secretsmanager_secret" "app_secrets" {
+data "aws_secretsmanager_secret" "sentry_lambda" {
   name = "prod/sentry/lambda"
-}
-
-locals {
-  function_name = "sentry"
-  vpc_name      = data.terraform_remote_state.vpc.outputs.vpc_name
-  shard_id      = data.terraform_remote_state.vpc.outputs.shard_id
 }
 
 module "sentry" {
@@ -16,23 +10,23 @@ module "sentry" {
   shard_id    = local.shard_id
   billing_tag = data.terraform_remote_state.vpc.outputs.billing_tag
 
-  source_file_path = "${path.module}/${local.function_name}.py"
-  output_path      = "${path.module}/${local.function_name}.zip"
+  source_file_path = "${path.module}/${var.sentry_function_name}.py"
+  output_path      = "${path.module}/${var.sentry_function_name}.zip"
 
-  function_name = local.function_name
-  handler       = "${local.function_name}.lambda_handler"
+  function_name = var.sentry_function_name
+  handler       = "${var.sentry_function_name}.lambda_handler"
   role          = data.terraform_remote_state.iam.outputs.aws_iam_role_sentry_arn
 
-  runtime     = "python3.12"
-  timeout     = 30
-  memory_size = 128
+  runtime     = var.sentry_runtime
+  timeout     = var.sentry_timeout
+  memory_size = var.sentry_memory_size
 
   env_variables = {
-    DISCORD_SECRET_ARN = data.aws_secretsmanager_secret.app_secrets.arn
+    DISCORD_SECRET_ARN = data.aws_secretsmanager_secret.sentry_lambda.arn
   }
 
   vpc_config = null
 
-  log_group_name        = "/lambda/${local.function_name}/${local.shard_id}"
+  log_group_name        = "/lambda/${var.sentry_function_name}/${local.shard_id}"
   log_retention_in_days = 7
 }

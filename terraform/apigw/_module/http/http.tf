@@ -39,6 +39,19 @@ resource "aws_apigatewayv2_api" "default" {
   }
 }
 
+resource "aws_apigatewayv2_authorizer" "default" {
+  count = var.authorizer_lambda_function_arn != null ? 1 : 0
+
+  api_id                            = aws_apigatewayv2_api.default.id
+  authorizer_type                   = "REQUEST"
+  authorizer_uri                    = var.authorizer_lambda_function_arn
+  authorizer_result_ttl_in_seconds  = var.authorizer_result_ttl_in_seconds
+  identity_sources                  = ["$request.header.X-Origin-Verify"]
+  name                              = "header-based-authorizer"
+  authorizer_payload_format_version = "2.0"
+  enable_simple_responses           = true
+}
+
 resource "aws_apigatewayv2_integration" "lambdas" {
   for_each = var.lambda_integrations
 
@@ -63,15 +76,19 @@ resource "aws_apigatewayv2_integration" "lb" {
 resource "aws_apigatewayv2_route" "lambdas" {
   for_each = var.lambda_integrations
 
-  api_id    = aws_apigatewayv2_api.default.id
-  route_key = each.value.route_key
-  target    = "integrations/${aws_apigatewayv2_integration.lambdas[each.key].id}"
+  api_id             = aws_apigatewayv2_api.default.id
+  route_key          = each.value.route_key
+  authorization_type = var.authorizer_lambda_function_arn != null ? "CUSTOM" : "NONE"
+  authorizer_id      = var.authorizer_lambda_function_arn != null ? aws_apigatewayv2_authorizer.default[0].id : null
+  target             = "integrations/${aws_apigatewayv2_integration.lambdas[each.key].id}"
 }
 
 resource "aws_apigatewayv2_route" "lb" {
-  api_id    = aws_apigatewayv2_api.default.id
-  route_key = var.lb_route_key
-  target    = "integrations/${aws_apigatewayv2_integration.lb.id}"
+  api_id             = aws_apigatewayv2_api.default.id
+  route_key          = var.lb_route_key
+  authorization_type = var.authorizer_lambda_function_arn != null ? "CUSTOM" : "NONE"
+  authorizer_id      = var.authorizer_lambda_function_arn != null ? aws_apigatewayv2_authorizer.default[0].id : null
+  target             = "integrations/${aws_apigatewayv2_integration.lb.id}"
 }
 
 resource "aws_apigatewayv2_stage" "default" {

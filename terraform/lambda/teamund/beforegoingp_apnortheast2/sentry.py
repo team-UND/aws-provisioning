@@ -2,6 +2,10 @@ import json
 import os
 import urllib.request
 import boto3
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 secrets_manager_client = None
 cached_secrets = {}
@@ -31,16 +35,16 @@ def get_secret(secret_arn):
         cached_secrets[secret_arn] = parsed_secret
         return parsed_secret
     except Exception as e:
-        print(f"ERROR: Could not retrieve secret '{secret_arn}' from Secrets Manager: {e}")
+        logger.error(f"Could not retrieve secret '{secret_arn}' from Secrets Manager: {e}")
         raise e
 
 def lambda_handler(event, context):
     try:
         body = event.get('body')
         sentry_event = json.loads(body) if body else event
-    except Exception as e:
-        print(f"ERROR: Failed to parse event. Reason: {e}")
-        print(f"Received raw event: {json.dumps(event)}")
+    except (json.JSONDecodeError, TypeError) as e:
+        logger.error(f"Failed to parse event. Reason: {e}")
+        logger.debug(f"Received raw event: {json.dumps(event)}")
         return {
             'statusCode': 400,
             'body': json.dumps('Invalid event format from Sentry.')
@@ -51,10 +55,10 @@ def lambda_handler(event, context):
         app_secrets = get_secret(secret_arn)
         discord_webhook_url = app_secrets['DISCORD_WEBHOOK_URL']
     except KeyError as e:
-        print(f"ERROR: Missing required environment variable or secret key: {e}")
+        logger.error(f"Missing required environment variable or secret key: {e}")
         raise
     except Exception:
-        print(f"CRITICAL ERROR: Halting execution due to secret retrieval failure.")
+        logger.critical(f"Halting execution due to secret retrieval failure.")
         raise
 
     event_data = sentry_event.get('data', {}).get('event', {})
@@ -113,22 +117,22 @@ def lambda_handler(event, context):
 
     headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0'
+        'User-Agent': 'Lambda-Sentry-Integration'
     }
     req = urllib.request.Request(discord_webhook_url, data=json.dumps(discord_data).encode('utf-8'), headers=headers, method='POST')
     try:
         with urllib.request.urlopen(req) as response:
             response_body = response.read().decode('utf-8')
-            print(f"SUCCESS: Discord notification sent. HTTP Status: {response.status}. Response: {response_body}")
+            logger.info(f"Discord notification sent. HTTP Status: {response.status}. Response: {response_body}")
     except urllib.error.HTTPError as e:
         error_response_body = e.read().decode('utf-8')
-        print(f"ERROR: Failed to send Discord notification. HTTP Error: {e.code} - {e.reason}")
-        print(f"Failing event payload: {json.dumps(sentry_event)}")
-        print(f"Response body from Discord: {error_response_body}")
+        logger.error(f"Failed to send Discord notification. HTTP Error: {e.code} - {e.reason}")
+        logger.debug(f"Failing event payload: {json.dumps(sentry_event)}")
+        logger.debug(f"Response body from Discord: {error_response_body}")
         raise
     except Exception as e:
-        print(f"CRITICAL ERROR: Unexpected error while sending Discord notification: {e}")
-        print(f"Failing event payload: {json.dumps(sentry_event)}")
+        logger.critical(f"Unexpected error while sending Discord notification: {e}")
+        logger.debug(f"Failing event payload: {json.dumps(sentry_event)}")
         raise
 
     return {

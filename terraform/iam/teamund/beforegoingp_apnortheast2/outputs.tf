@@ -13,6 +13,11 @@ output "aws_iam_role_ecs_task_execution_arn" {
   value       = aws_iam_role.ecs_task_execution.arn
 }
 
+output "aws_iam_role_authorizer_arn" {
+  description = "ARN of the IAM role for Authorizer Lambda function"
+  value       = aws_iam_role.authorizer.arn
+}
+
 output "aws_iam_role_sentry_arn" {
   description = "ARN of the IAM role for Sentry Lambda function"
   value       = aws_iam_role.sentry.arn

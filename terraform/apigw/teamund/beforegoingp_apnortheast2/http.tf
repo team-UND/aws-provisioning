@@ -14,11 +14,13 @@ resource "aws_vpc_security_group_ingress_rule" "vpclink_http_lb" {
 module "http" {
   source = "../../_module/http"
 
-  vpc_id   = data.terraform_remote_state.vpc.outputs.vpc_id
-  vpc_name = data.terraform_remote_state.vpc.outputs.vpc_name
-  shard_id = local.shard_id
-
+  vpc_id             = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_name           = data.terraform_remote_state.vpc.outputs.vpc_name
+  shard_id           = local.shard_id
   private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
+
+  authorizer_lambda_function_arn   = data.terraform_remote_state.function.outputs.authorizer_lambda_function_arn
+  authorizer_result_ttl_in_seconds = 300
 
   lb_security_group_id = data.terraform_remote_state.int_lb.outputs.aws_security_group_id
   lb_listener_arn      = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn

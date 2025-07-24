@@ -28,6 +28,16 @@ variable "lb_route_key" {
   type        = string
 }
 
+variable "authorizer_lambda_function_arn" {
+  description = "The ARN of the Lambda function to be used as an authorizer. If null, no authorizer is created"
+  type        = string
+}
+
+variable "authorizer_result_ttl_in_seconds" {
+  description = "The TTL for the authorizer result in seconds"
+  type        = number
+}
+
 variable "lambda_integrations" {
   description = "A map of Lambda integrations. The key is a logical name, and the value is an object with 'arn' and 'route_key'"
   type = map(
