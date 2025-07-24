@@ -5,6 +5,7 @@ resource "aws_ecs_service" "default" {
   desired_count                     = var.container_desired_capacity
   health_check_grace_period_seconds = var.health_check_grace_period_seconds
   enable_execute_command            = var.enable_execute_command
+  enable_ecs_managed_tags           = true
 
   load_balancer {
     target_group_arn = aws_lb_target_group.default.arn
@@ -131,7 +132,7 @@ resource "aws_lb_target_group" "default" {
 }
 
 resource "aws_lb_listener_rule" "default" {
-  listener_arn = var.lb_https_listener_arn
+  listener_arn = var.lb_http_listener_arn
   priority     = var.listener_rule_priority
 
   condition {

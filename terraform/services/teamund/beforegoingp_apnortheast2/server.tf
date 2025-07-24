@@ -21,9 +21,9 @@ locals {
     aws_region                  = data.terraform_remote_state.vpc.outputs.aws_region
     service_name                = local.service_name
     image_url                   = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
-    container_cpu_limit         = 432
-    container_memory_hard_limit = 432
-    container_memory_soft_limit = 432
+    container_cpu_limit         = 400
+    container_memory_hard_limit = 400
+    container_memory_soft_limit = 400
     max_swap                    = 1024
     swappiness                  = 70
     service_port                = local.service_port
@@ -60,16 +60,29 @@ resource "aws_vpc_security_group_ingress_rule" "task_redis" {
   referenced_security_group_id = module.server.aws_security_group_id
 }
 
-# Allow access to the Actuator endpoint only from the Prometheus server
-# And block all other access
-resource "aws_lb_listener_rule" "actuator_allow" {
-  listener_arn = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_https_arn
-  priority     = 98
+# Allow public access to the health check endpoint
+# This rule has the highest priority (lowest number) to ensure it's always allowed
+resource "aws_lb_listener_rule" "health_check_allow" {
+  listener_arn = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn
+  priority     = 97
 
   action {
     type             = "forward"
     target_group_arn = module.server.aws_lb_target_group_arn
   }
+
+  condition {
+    path_pattern {
+      values = [local.health_check_path]
+    }
+  }
+}
+
+# Allow access to the Actuator endpoint only from the Prometheus server
+# And block all other access
+resource "aws_lb_listener_rule" "observability_allow" {
+  listener_arn = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn
+  priority     = 98
 
   condition {
     path_pattern {
@@ -83,11 +96,23 @@ resource "aws_lb_listener_rule" "actuator_allow" {
       values = data.terraform_remote_state.vpc.outputs.private_observability_subnet_cidrs
     }
   }
+
+  action {
+    type             = "forward"
+    target_group_arn = module.server.aws_lb_target_group_arn
+  }
 }
 
 resource "aws_lb_listener_rule" "actuator_block" {
-  listener_arn = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_https_arn
+  listener_arn = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn
   priority     = 99
+
+  condition {
+    path_pattern {
+      # Block the base actuator path AND all sub-paths to secure the endpoint.
+      values = [local.actuator_path, "${local.actuator_path}/*"]
+    }
+  }
 
   action {
     type = "fixed-response"
@@ -95,12 +120,6 @@ resource "aws_lb_listener_rule" "actuator_block" {
       content_type = "text/plain"
       message_body = "Forbidden"
       status_code  = "403"
-    }
-  }
-
-  condition {
-    path_pattern {
-      values = [local.actuator_path, local.prometheus_path]
     }
   }
 }
@@ -126,7 +145,7 @@ module "server" {
   subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
 
   # LB Info
-  lb_https_listener_arn       = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_https_arn
+  lb_http_listener_arn        = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn
   lb_security_group_id        = data.terraform_remote_state.int_lb.outputs.aws_security_group_id
   listener_rule_path_patterns = ["/server/*"]
   listener_rule_priority      = 100

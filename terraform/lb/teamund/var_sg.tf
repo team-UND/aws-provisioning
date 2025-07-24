@@ -19,7 +19,7 @@ variable "sg_variables" {
       tags = {
 
         beforegoingpapne2 = {
-          Name    = "external-lb-sg-beforegoingp_apnortheast2"
+          Name    = "ext-lb-sg-beforegoingp_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
           env     = "prod"
@@ -33,7 +33,7 @@ variable "sg_variables" {
       tags = {
 
         beforegoingpapne2 = {
-          Name    = "internal-lb-sg-beforegoingp_apnortheast2"
+          Name    = "int-lb-sg-beforegoingp_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
           env     = "prod"

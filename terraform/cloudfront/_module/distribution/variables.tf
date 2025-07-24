@@ -38,9 +38,10 @@ variable "origin_id" {
   type        = string
 }
 
-variable "origin_verify_secret_name" {
-  description = "The name of the Secrets Manager secret containing the X-Origin-Verify header value."
+variable "origin_verify_secret" {
+  description = "The secret for X-Origin-Verify header"
   type        = string
+  sensitive   = true
 }
 
 variable "cache_policy_id" {
@@ -61,11 +62,6 @@ variable "geo_restriction_type" {
 variable "geo_restriction_locations" {
   description = "A list of ISO 3166-1-alpha-2 country codes for the geo restriction"
   type        = list(string)
-}
-
-variable "acm_certificate_arn" {
-  description = "The ARN of the ACM certificate for the custom domain"
-  type        = string
 }
 
 variable "web_acl_id" {

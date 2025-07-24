@@ -20,6 +20,7 @@ module "http" {
   private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
 
   authorizer_lambda_function_arn   = data.terraform_remote_state.function.outputs.authorizer_lambda_function_arn
+  authorizer_lambda_invoke_arn     = data.terraform_remote_state.function.outputs.authorizer_lambda_function_invoke_arn
   authorizer_result_ttl_in_seconds = 300
 
   lb_security_group_id = data.terraform_remote_state.int_lb.outputs.aws_security_group_id
@@ -32,7 +33,9 @@ module "http" {
   }
   lb_route_key = "ANY /{proxy+}"
 
-  cors_allow_origins = ["https://*.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"]
+  cors_allow_origins = [
+    "https://api.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"
+  ]
   cors_allow_methods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
   cors_allow_headers = ["*"]
 

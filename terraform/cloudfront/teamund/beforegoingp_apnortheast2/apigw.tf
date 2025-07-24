@@ -6,11 +6,21 @@ data "aws_cloudfront_origin_request_policy" "all_viewer" {
   name = "Managed-AllViewer"
 }
 
+data "aws_secretsmanager_secret" "origin_verify" {
+  provider = aws.vpc_region
+  name     = "prod/origin-verify/cloudfront"
+}
+
+data "aws_secretsmanager_secret_version" "origin_verify" {
+  provider  = aws.vpc_region
+  secret_id = data.aws_secretsmanager_secret.origin_verify.id
+}
+
 locals {
   subdomain_name     = "api"
   api_domain_name    = "${local.subdomain_name}.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"
   origin_domain_name = replace(data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_api_api_endpoint, "https://", "")
-  origin_path        = data.terraform_remote_state.apigw.outputs.stage_name == "$default" ? "" : "/${data.terraform_remote_state.apigw.outputs.stage_name}"
+  origin_path        = data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_stage_name == "$default" ? "" : "/${data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_stage_name}"
 }
 
 module "apigw" {
@@ -27,7 +37,7 @@ module "apigw" {
   origin_path        = local.origin_path
   origin_id          = data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_api_id
 
-  origin_verify_secret_name = "prod/origin-verify/cloudfront"
+  origin_verify_secret = data.aws_secretsmanager_secret_version.origin_verify.secret_string
 
   cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
   origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
@@ -35,8 +45,7 @@ module "apigw" {
   geo_restriction_type      = "none"
   geo_restriction_locations = []
 
-  acm_certificate_arn = data.aws_acm_certificate.default.arn
-  web_acl_id          = data.terraform_remote_state.waf.outputs.cloudfront_web_acl_arn
+  web_acl_id = data.terraform_remote_state.acl.outputs.cloudfront_aws_wafv2_web_acl_arn
 
   log_bucket        = null
   log_bucket_prefix = ""

@@ -7,5 +7,5 @@ data "terraform_remote_state" "vpc" {
 data "terraform_remote_state" "iam" {
   backend = "s3"
 
-  config = merge(var.remote_state.iam.teamund.beforegoinpdapne2)
+  config = merge(var.remote_state.iam.teamund.beforegoingpapne2)
 }

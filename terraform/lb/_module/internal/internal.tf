@@ -1,7 +1,7 @@
 # Security Group for Internal LB
 resource "aws_security_group" "default" {
   description = "Internal LB SG for ${var.shard_id}"
-  name        = "internal-lb-sg-${var.vpc_name}"
+  name        = "int-lb-sg-${var.vpc_name}"
   vpc_id      = var.vpc_id
 
   tags = var.sg_variables.internal.tags[var.shard_id]
@@ -16,7 +16,7 @@ resource "aws_vpc_security_group_egress_rule" "lb" {
 
 # Internal LB
 resource "aws_lb" "default" {
-  name               = "internal-lb-${var.shard_id}"
+  name               = "int-lb-${var.shard_id}"
   internal           = true
   load_balancer_type = var.lb_type
   subnets            = var.private_subnet_ids

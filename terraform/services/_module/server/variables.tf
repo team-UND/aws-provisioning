@@ -149,8 +149,8 @@ variable "container_definitions_json" {
   type        = string
 }
 
-variable "lb_https_listener_arn" {
-  description = "The ARN of the LB's HTTPS listener"
+variable "lb_http_listener_arn" {
+  description = "The ARN of the LB's HTTP listener"
   type        = string
 }
 

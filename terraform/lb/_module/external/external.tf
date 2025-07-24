@@ -6,7 +6,7 @@ data "aws_acm_certificate" "default" {
 # Security Group for External LB
 resource "aws_security_group" "default" {
   description = "External LB SG for ${var.shard_id}"
-  name        = "external-lb-sg-${var.vpc_name}"
+  name        = "ext-lb-sg-${var.vpc_name}"
   vpc_id      = var.vpc_id
 
   tags = var.sg_variables.external.tags[var.shard_id]
@@ -43,7 +43,7 @@ resource "aws_vpc_security_group_egress_rule" "lb" {
 
 # External LB
 resource "aws_lb" "default" {
-  name               = "external-lb-${var.shard_id}"
+  name               = "ext-lb-${var.shard_id}"
   internal           = false
   load_balancer_type = var.lb_type
   subnets            = var.public_subnet_ids

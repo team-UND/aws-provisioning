@@ -13,7 +13,7 @@ resource "aws_vpc_security_group_egress_rule" "vpclink_http" {
   security_group_id            = aws_security_group.vpclink.id
   from_port                    = 80
   to_port                      = 80
-  ip_protocol                  = "-1"
+  ip_protocol                  = "tcp"
   referenced_security_group_id = var.lb_security_group_id
 }
 
@@ -40,11 +40,11 @@ resource "aws_apigatewayv2_api" "default" {
 }
 
 resource "aws_apigatewayv2_authorizer" "default" {
-  count = var.authorizer_lambda_function_arn != null ? 1 : 0
+  count = var.authorizer_lambda_invoke_arn != null ? 1 : 0
 
   api_id                            = aws_apigatewayv2_api.default.id
   authorizer_type                   = "REQUEST"
-  authorizer_uri                    = var.authorizer_lambda_function_arn
+  authorizer_uri                    = var.authorizer_lambda_invoke_arn
   authorizer_result_ttl_in_seconds  = var.authorizer_result_ttl_in_seconds
   identity_sources                  = ["$request.header.X-Origin-Verify"]
   name                              = "header-based-authorizer"
@@ -78,16 +78,16 @@ resource "aws_apigatewayv2_route" "lambdas" {
 
   api_id             = aws_apigatewayv2_api.default.id
   route_key          = each.value.route_key
-  authorization_type = var.authorizer_lambda_function_arn != null ? "CUSTOM" : "NONE"
-  authorizer_id      = var.authorizer_lambda_function_arn != null ? aws_apigatewayv2_authorizer.default[0].id : null
+  authorization_type = var.authorizer_lambda_invoke_arn != null ? "CUSTOM" : "NONE"
+  authorizer_id      = var.authorizer_lambda_invoke_arn != null ? aws_apigatewayv2_authorizer.default[0].id : null
   target             = "integrations/${aws_apigatewayv2_integration.lambdas[each.key].id}"
 }
 
 resource "aws_apigatewayv2_route" "lb" {
   api_id             = aws_apigatewayv2_api.default.id
   route_key          = var.lb_route_key
-  authorization_type = var.authorizer_lambda_function_arn != null ? "CUSTOM" : "NONE"
-  authorizer_id      = var.authorizer_lambda_function_arn != null ? aws_apigatewayv2_authorizer.default[0].id : null
+  authorization_type = var.authorizer_lambda_invoke_arn != null ? "CUSTOM" : "NONE"
+  authorizer_id      = var.authorizer_lambda_invoke_arn != null ? aws_apigatewayv2_authorizer.default[0].id : null
   target             = "integrations/${aws_apigatewayv2_integration.lb.id}"
 }
 
@@ -128,6 +128,16 @@ resource "aws_lambda_permission" "apigw" {
   function_name = each.value.arn
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.default.execution_arn}/${aws_apigatewayv2_stage.default.name}/${each.value.route_key}"
+}
+
+resource "aws_lambda_permission" "authorizer" {
+  count = var.authorizer_lambda_function_arn != null ? 1 : 0
+
+  statement_id  = "AllowAPIGatewayInvokeAuthorizer"
+  action        = "lambda:InvokeFunction"
+  function_name = var.authorizer_lambda_function_arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.default.execution_arn}/authorizers/${aws_apigatewayv2_authorizer.default[0].id}"
 }
 
 # CloudWatch Log Group for API Gateway Access Logs

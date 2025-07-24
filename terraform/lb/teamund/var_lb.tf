@@ -19,7 +19,7 @@ variable "lb_variables" {
       tags = {
 
         beforegoingpapne2 = {
-          Name    = "external-lb-beforegoingp_apnortheast2"
+          Name    = "ext-lb-beforegoingp_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
           env     = "prod"
@@ -33,7 +33,7 @@ variable "lb_variables" {
       tags = {
 
         beforegoingpapne2 = {
-          Name    = "internal-lb-beforegoingp_apnortheast2"
+          Name    = "int-lb-beforegoingp_apnortheast2"
           app     = "beforegoing"
           project = "beforegoing"
           env     = "prod"

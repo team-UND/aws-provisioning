@@ -29,7 +29,12 @@ variable "lb_route_key" {
 }
 
 variable "authorizer_lambda_function_arn" {
-  description = "The ARN of the Lambda function to be used as an authorizer. If null, no authorizer is created"
+  description = "The standard ARN of the Lambda function to be used as an authorizer. Required for setting permissions. If null, no authorizer is created"
+  type        = string
+}
+
+variable "authorizer_lambda_invoke_arn" {
+  description = "The invocation ARN of the Lambda function to be used as an authorizer. Required for the authorizer URI. If null, no authorizer is created"
   type        = string
 }
 
