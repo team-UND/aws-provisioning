@@ -13,22 +13,6 @@ locals {
   origin_path        = data.terraform_remote_state.apigw.outputs.stage_name == "$default" ? "" : "/${data.terraform_remote_state.apigw.outputs.stage_name}"
 }
 
-# Generate a random secret for the origin verification header
-resource "random_string" "default" {
-  length  = 32
-  special = false
-}
-
-# Store the secret securely in AWS Secrets Manager
-resource "aws_secretsmanager_secret" "default" {
-  name = "prod/origin-verify/cloudfront"
-}
-
-resource "aws_secretsmanager_secret_version" "default" {
-  secret_id     = aws_secretsmanager_secret.default.id
-  secret_string = random_string.default.result
-}
-
 module "apigw" {
   source = "../../_module/distribution"
 
@@ -43,7 +27,7 @@ module "apigw" {
   origin_path        = local.origin_path
   origin_id          = data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_api_id
 
-  origin_custom_header_secret = random_string.default.result
+  origin_verify_secret_name = "prod/origin-verify/cloudfront"
 
   cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
   origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id

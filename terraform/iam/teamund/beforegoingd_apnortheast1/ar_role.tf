@@ -1,3 +1,13 @@
+data "aws_secretsmanager_secret" "server" {
+  provider = aws.vpc_region
+  name     = "dev/server/springboot"
+}
+
+data "aws_secretsmanager_secret" "prometheus" {
+  provider = aws.vpc_region
+  name     = "dev/prometheus"
+}
+
 resource "aws_iam_role" "ar_service" {
   description = "Role for App Runner service to access ECR"
   name        = "ar-service-${data.terraform_remote_state.vpc.outputs.vpc_name}"
@@ -42,8 +52,8 @@ resource "aws_iam_policy" "ar_secrets_read" {
       Action = "secretsmanager:GetSecretValue",
       Resource = [
         # Add secret ARNs here
-        "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:dev/server/springboot-*",
-        "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:dev/prometheus-*",
+        data.aws_secretsmanager_secret.server.arn,
+        data.aws_secretsmanager_secret.prometheus.arn,
         data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
       ]
     }]

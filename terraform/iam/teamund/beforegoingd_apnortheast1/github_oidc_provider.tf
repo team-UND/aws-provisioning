@@ -41,7 +41,7 @@ resource "aws_iam_policy" "github_actions" {
       {
         Effect   = "Allow"
         Action   = "ecr:GetAuthorizationToken"
-        Resource = "*"
+        Resource = "arn:aws:ecr:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:repository/*"
       },
       {
         Effect = "Allow"

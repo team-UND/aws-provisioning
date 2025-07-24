@@ -38,10 +38,9 @@ variable "origin_id" {
   type        = string
 }
 
-variable "origin_custom_header_secret" {
-  description = "A secret value for the 'X-Origin-Verify' custom header to send to the origin. If null, no header is sent"
+variable "origin_verify_secret_name" {
+  description = "The name of the Secrets Manager secret containing the X-Origin-Verify header value."
   type        = string
-  sensitive   = true
 }
 
 variable "cache_policy_id" {

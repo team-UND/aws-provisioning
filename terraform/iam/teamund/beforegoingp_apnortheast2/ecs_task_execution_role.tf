@@ -1,3 +1,13 @@
+data "aws_secretsmanager_secret" "server" {
+  provider = aws.vpc_region
+  name     = "prod/server/springboot"
+}
+
+data "aws_secretsmanager_secret" "prometheus" {
+  provider = aws.vpc_region
+  name     = "prod/prometheus"
+}
+
 resource "aws_iam_role" "ecs_task_execution" {
   description = "Role for ECS task execution"
   name        = "ecs-task-execution-${data.terraform_remote_state.vpc.outputs.vpc_name}"
@@ -28,8 +38,8 @@ resource "aws_iam_policy" "ecs_task_execution_secrets_manager_read" {
         Action = "secretsmanager:GetSecretValue"
         Resource = [
           # Add secret ARNs here
-          "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:prod/server/springboot-*",
-          "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:prod/prometheus-*",
+          data.aws_secretsmanager_secret.server.arn,
+          data.aws_secretsmanager_secret.prometheus.arn,
           data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
         ]
       },

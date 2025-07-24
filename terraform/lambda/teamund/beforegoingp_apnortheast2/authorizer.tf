@@ -1,4 +1,4 @@
-data "aws_secretsmanager_secret" "origin_verify_cloudfront" {
+data "aws_secretsmanager_secret" "origin_verify" {
   name = "prod/origin-verify/cloudfront"
 }
 
@@ -22,7 +22,7 @@ module "authorizer" {
   memory_size = var.authorizer_memory_size
 
   env_variables = {
-    ORIGIN_VERIFY_SECRET_ARN = data.aws_secretsmanager_secret.origin_verify_cloudfront.arn
+    ORIGIN_VERIFY_SECRET_ARN = data.aws_secretsmanager_secret.origin_verify.arn
   }
 
   vpc_config = null

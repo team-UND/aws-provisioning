@@ -3,6 +3,10 @@ data "aws_acm_certificate" "default" {
   statuses = ["ISSUED"]
 }
 
+data "aws_secretsmanager_secret" "origin_verify" {
+  name = var.origin_verify_secret_name
+}
+
 resource "aws_cloudfront_distribution" "default" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -18,7 +22,7 @@ resource "aws_cloudfront_distribution" "default" {
   }
 
   dynamic "custom_header" {
-    for_each = var.origin_custom_header_secret != null ? { "X-Origin-Verify" = var.origin_custom_header_secret } : {}
+    for_each = { "X-Origin-Verify" = data.aws_secretsmanager_secret.origin_verify.secret_string }
     content {
       name  = custom_header.key
       value = custom_header.value

@@ -1,3 +1,8 @@
+data "aws_secretsmanager_secret" "sentry_lambda" {
+  provider = aws.vpc_region
+  name     = "prod/sentry/lambda"
+}
+
 resource "aws_iam_role" "sentry" {
   description = "Role for Sentry Lambda function"
   name        = "sentry-${data.terraform_remote_state.vpc.outputs.vpc_name}"
@@ -33,7 +38,7 @@ resource "aws_iam_policy" "sentry_secrets_read" {
         Action = "secretsmanager:GetSecretValue"
         Resource = [
           # Add secret ARNs here
-          "arn:aws:secretsmanager:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:secret:prod/sentry/lambda-*"
+          data.aws_secretsmanager_secret.sentry_lambda.arn
         ]
       },
     ]
