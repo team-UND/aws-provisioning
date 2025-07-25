@@ -46,7 +46,7 @@ resource "aws_apigatewayv2_authorizer" "default" {
   authorizer_type                   = "REQUEST"
   authorizer_uri                    = var.authorizer_lambda_invoke_arn
   authorizer_result_ttl_in_seconds  = var.authorizer_result_ttl_in_seconds
-  identity_sources                  = ["$request.header.X-Origin-Verify"]
+  identity_sources                  = ["$request.header.${var.origin_verify_header_name}"]
   name                              = "header-based-authorizer"
   authorizer_payload_format_version = "2.0"
   enable_simple_responses           = true
@@ -110,7 +110,7 @@ resource "aws_apigatewayv2_stage" "default" {
       integrationErrorMessage = "$context.integrationErrorMessage",
       integrationLatency      = "$context.integration.latency",
       integrationStatus       = "$context.integration.status",
-      xOriginVerifyHeader     = "$request.header.X-Origin-Verify"
+      xOriginVerifyHeader     = "$request.header.${var.origin_verify_header_name}"
       }
     )
   }
@@ -128,7 +128,7 @@ resource "aws_lambda_permission" "apigw" {
   action        = "lambda:InvokeFunction"
   function_name = each.value.arn
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.default.execution_arn}/${aws_apigatewayv2_stage.default.name}/${each.value.route_key}"
+  source_arn    = "${aws_apigatewayv2_api.default.execution_arn}/${aws_apigatewayv2_stage.default.name}/${replace(each.value.route_key, " ", "")}"
 }
 
 resource "aws_lambda_permission" "authorizer" {

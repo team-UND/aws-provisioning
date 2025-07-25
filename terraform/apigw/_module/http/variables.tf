@@ -43,6 +43,11 @@ variable "authorizer_result_ttl_in_seconds" {
   type        = number
 }
 
+variable "origin_verify_header_name" {
+  description = "The name of the header to use as the identity source for the authorizer"
+  type        = string
+}
+
 variable "lambda_integrations" {
   description = "A map of Lambda integrations. The key is a logical name, and the value is an object with 'arn' and 'route_key'"
   type = map(

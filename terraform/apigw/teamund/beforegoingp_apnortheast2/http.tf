@@ -22,13 +22,14 @@ module "http" {
   authorizer_lambda_function_arn   = data.terraform_remote_state.function.outputs.authorizer_lambda_function_arn
   authorizer_lambda_invoke_arn     = data.terraform_remote_state.function.outputs.authorizer_lambda_function_invoke_arn
   authorizer_result_ttl_in_seconds = 300
+  origin_verify_header_name        = data.terraform_remote_state.function.outputs.origin_verify_header_name
 
   lb_security_group_id = data.terraform_remote_state.int_lb.outputs.aws_security_group_id
   lb_listener_arn      = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn
   lambda_integrations = {
     sentry = {
       arn : data.terraform_remote_state.function.outputs.sentry_lambda_function_arn,
-      route_key : "POST /sentry/{proxy+}"
+      route_key : "POST /sentry"
     }
   }
   lb_route_key = "ANY /{proxy+}"

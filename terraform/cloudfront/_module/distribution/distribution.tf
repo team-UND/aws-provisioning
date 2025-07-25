@@ -24,7 +24,7 @@ resource "aws_cloudfront_distribution" "default" {
     }
 
     dynamic "custom_header" {
-      for_each = { "X-Origin-Verify" = var.origin_verify_secret }
+      for_each = { (var.origin_verify_header_name) = var.origin_verify_secret }
       content {
         name  = custom_header.key
         value = custom_header.value

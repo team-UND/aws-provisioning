@@ -44,6 +44,11 @@ variable "origin_verify_secret" {
   sensitive   = true
 }
 
+variable "origin_verify_header_name" {
+  description = "The name of the custom header for origin verification"
+  type        = string
+}
+
 variable "cache_policy_id" {
   description = "The ID of the cache policy to use for this distribution"
   type        = string

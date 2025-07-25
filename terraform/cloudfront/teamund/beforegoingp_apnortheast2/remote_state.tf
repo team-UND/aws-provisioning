@@ -22,6 +22,12 @@ data "terraform_remote_state" "acl" {
   config = merge(var.remote_state.waf.acl.beforegoingpapne2)
 }
 
+data "terraform_remote_state" "function" {
+  backend = "s3"
+
+  config = merge(var.remote_state.lambda.function.beforegoingpapne2)
+}
+
 data "terraform_remote_state" "apigw" {
   backend = "s3"
 

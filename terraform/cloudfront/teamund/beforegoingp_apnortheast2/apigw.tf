@@ -37,7 +37,8 @@ module "apigw" {
   origin_path        = local.origin_path
   origin_id          = data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_api_id
 
-  origin_verify_secret = data.aws_secretsmanager_secret_version.origin_verify.secret_string
+  origin_verify_secret      = data.aws_secretsmanager_secret_version.origin_verify.secret_string
+  origin_verify_header_name = data.terraform_remote_state.function.outputs.origin_verify_header_name
 
   cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
   origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host_header.id
