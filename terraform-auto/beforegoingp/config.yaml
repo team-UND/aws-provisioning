@@ -3,67 +3,89 @@ apply_stages:
   - name: "Stage 1: VPC"
     parallel: false
     directories:
-      - ../../terraform/vpc/beforegoingp_apnortheast2
+      - path: ../../terraform/vpc/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 2: Data Stores & Load Balancer"
     parallel: true
     directories:
-      - ../../terraform/rds/teamund/beforegoingp_apnortheast2
-      - ../../terraform/elasticache/teamund/beforegoingp_apnortheast2
-      - ../../terraform/lb/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/rds/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/elasticache/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/lb/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 3: Identity & Security"
     parallel: true
     directories:
-      - ../../terraform/iam/teamund/beforegoingp_apnortheast2
-      - ../../terraform/waf/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/iam/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/waf/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 4: Compute"
     parallel: false
     directories:
-      - ../../terraform/ecs/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/ecs/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 5: Application Logic"
     parallel: true
     directories:
-      - ../../terraform/services/teamund/beforegoingp_apnortheast2
-      - ../../terraform/lambda/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/services/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/lambda/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 6: API Gateway"
     parallel: false
     directories:
-      - ../../terraform/apigw/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/apigw/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 7: CDN"
     parallel: false
     directories:
-      - ../../terraform/cloudfront/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/cloudfront/teamund/beforegoingp_apnortheast2
+        enabled: true
 
 # Destroy stages are defined in reverse order of apply stages
 destroy_stages:
   - name: "Stage 1: CDN"
     parallel: false
     directories:
-      - ../../terraform/cloudfront/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/cloudfront/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 2: API Gateway"
     parallel: false
     directories:
-      - ../../terraform/apigw/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/apigw/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 3: Application Logic"
     parallel: true
     directories:
-      - ../../terraform/services/teamund/beforegoingp_apnortheast2
-      - ../../terraform/lambda/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/services/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/lambda/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 4: Compute"
     parallel: false
     directories:
-      - ../../terraform/ecs/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/ecs/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 5: Identity & Security"
     parallel: true
     directories:
-      - ../../terraform/iam/teamund/beforegoingp_apnortheast2
-      - ../../terraform/waf/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/iam/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/waf/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 6: Data Stores & Load Balancer"
     parallel: true
     directories:
-      - ../../terraform/rds/teamund/beforegoingp_apnortheast2
-      - ../../terraform/elasticache/teamund/beforegoingp_apnortheast2
-      - ../../terraform/lb/teamund/beforegoingp_apnortheast2
+      - path: ../../terraform/rds/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/elasticache/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/lb/teamund/beforegoingp_apnortheast2
+        enabled: true
   - name: "Stage 7: VPC"
     parallel: false
     directories:
-      - ../../terraform/vpc/beforegoingp_apnortheast2
+      - path: ../../terraform/vpc/beforegoingp_apnortheast2
+        enabled: true
