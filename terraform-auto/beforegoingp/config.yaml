@@ -28,7 +28,7 @@ apply_stages:
     directories:
       - path: ../../terraform/ecs/teamund/beforegoingp_apnortheast2
         enabled: true
-  - name: "Stage 5: Application Logic"
+  - name: "Stage 5: Services"
     parallel: true
     directories:
       - path: ../../terraform/services/teamund/beforegoingp_apnortheast2
@@ -58,7 +58,7 @@ destroy_stages:
     directories:
       - path: ../../terraform/apigw/teamund/beforegoingp_apnortheast2
         enabled: true
-  - name: "Stage 3: Application Logic"
+  - name: "Stage 3: Services"
     parallel: true
     directories:
       - path: ../../terraform/services/teamund/beforegoingp_apnortheast2
