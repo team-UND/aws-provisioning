@@ -2,8 +2,8 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
 
-data "aws_cloudfront_origin_request_policy" "all_viewer" {
-  name = "Managed-AllViewer"
+data "aws_cloudfront_origin_request_policy" "all_viewer_except_host_header" {
+  name = "Managed-AllViewerExceptHostHeader"
 }
 
 data "aws_secretsmanager_secret" "origin_verify" {
@@ -40,15 +40,15 @@ module "apigw" {
   origin_verify_secret = data.aws_secretsmanager_secret_version.origin_verify.secret_string
 
   cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
-  origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
+  origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host_header.id
 
   geo_restriction_type      = "none"
   geo_restriction_locations = []
 
   web_acl_id = data.terraform_remote_state.acl.outputs.cloudfront_aws_wafv2_web_acl_arn
 
-  log_bucket        = null
-  log_bucket_prefix = ""
+  log_bucket        = data.terraform_remote_state.bucket.outputs.aws_s3_bucket_bucket_domain_name
+  log_bucket_prefix = data.terraform_remote_state.bucket.outputs.aws_s3_bucket_lifecycle_configuration_rule_prefix
 }
 
 resource "aws_route53_record" "api" {

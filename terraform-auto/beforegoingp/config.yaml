@@ -12,6 +12,8 @@ apply_stages:
         enabled: true
       - path: ../../terraform/elasticache/teamund/beforegoingp_apnortheast2
         enabled: true
+      - path: ../../terraform/s3/teamund/beforegoingp_apnortheast2
+        enabled: true
       - path: ../../terraform/lb/teamund/beforegoingp_apnortheast2
         enabled: true
   - name: "Stage 3: Identity & Security"
@@ -81,6 +83,8 @@ destroy_stages:
       - path: ../../terraform/rds/teamund/beforegoingp_apnortheast2
         enabled: true
       - path: ../../terraform/elasticache/teamund/beforegoingp_apnortheast2
+        enabled: true
+      - path: ../../terraform/s3/teamund/beforegoingp_apnortheast2
         enabled: true
       - path: ../../terraform/lb/teamund/beforegoingp_apnortheast2
         enabled: true

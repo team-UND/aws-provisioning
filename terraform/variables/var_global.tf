@@ -113,6 +113,20 @@ variable "remote_state" {
 
     })
 
+    s3 = object({
+
+      bucket = object({
+
+        beforegoingpapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
     rds = object({
 
       mysql = object({
@@ -307,6 +321,21 @@ variable "remote_state" {
           region = "ap-northeast-2"
           bucket = "teamund-apnortheast2-tfstate"
           key    = "aws-provisioning/terraform/ecs/teamund/beforegoingp_apnortheast2/terraform.tfstate"
+        }
+
+      }
+
+    }
+
+    # S3
+    s3 = {
+
+      bucket = {
+
+        beforegoingpapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/s3/teamund/beforegoingp_apnortheast2/terraform.tfstate"
         }
 
       }

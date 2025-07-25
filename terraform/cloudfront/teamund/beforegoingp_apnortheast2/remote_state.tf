@@ -10,6 +10,12 @@ data "terraform_remote_state" "hosting_zone" {
   config = merge(var.remote_state.route53.hosting_zone.beforegoingpapne2)
 }
 
+data "terraform_remote_state" "bucket" {
+  backend = "s3"
+
+  config = merge(var.remote_state.s3.bucket.beforegoingpapne2)
+}
+
 data "terraform_remote_state" "acl" {
   backend = "s3"
 
