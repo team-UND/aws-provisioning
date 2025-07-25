@@ -109,7 +109,8 @@ resource "aws_apigatewayv2_stage" "default" {
       responseLength          = "$context.responseLength",
       integrationErrorMessage = "$context.integrationErrorMessage",
       integrationLatency      = "$context.integration.latency",
-      integrationStatus       = "$context.integration.status"
+      integrationStatus       = "$context.integration.status",
+      xOriginVerifyHeader     = "$request.header.X-Origin-Verify"
       }
     )
   }
