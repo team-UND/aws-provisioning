@@ -38,3 +38,12 @@ variable "enable_common_rule_set" {
   type        = bool
   default     = true
 }
+
+variable "common_rule_set_exceptions" {
+  description = "List of path exceptions for Common Rule Set with specific rule overrides"
+  type = list(object({
+    path       = string # Path to match (ex. "/sentry")
+    match_type = string # Matching type: "EXACTLY" "STARTS_WITH" "ENDS_WITH" "CONTAINS" "CONTAINS_WORD"
+    rule_name  = string # AWS managed rule name to override (ex. "SizeRestrictions_BODY")
+  }))
+}

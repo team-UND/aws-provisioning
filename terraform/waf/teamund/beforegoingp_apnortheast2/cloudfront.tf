@@ -61,4 +61,12 @@ module "cloudfront" {
       arn      = aws_wafv2_ip_set.temporary_block_ips.arn
     }
   }
+
+  common_rule_set_exceptions = [
+    {
+      path       = "/sentry"
+      match_type = "EXACTLY"
+      rule_name  = "SizeRestrictions_BODY"
+    }
+  ]
 }
