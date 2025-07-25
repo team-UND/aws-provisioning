@@ -20,8 +20,6 @@ resource "aws_s3_bucket_policy" "cloudfront_logs" {
       }
     ]
   })
-
-  depends_on = [module.cloudfront_logs]
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_logs" {
@@ -39,8 +37,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_logs" {
       days = 30
     }
   }
-
-  depends_on = [module.cloudfront_logs]
 }
 
 module "cloudfront_logs" {
