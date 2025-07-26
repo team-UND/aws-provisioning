@@ -69,10 +69,11 @@ resource "aws_autoscaling_group" "default" {
     version = "$Latest"
   }
 
-  min_size            = var.ec2_min_size
-  max_size            = var.ec2_max_size
-  desired_capacity    = var.ec2_desired_capacity
-  vpc_zone_identifier = var.private_subnet_ids
+  min_size              = var.ec2_min_size
+  max_size              = var.ec2_max_size
+  desired_capacity      = var.ec2_desired_capacity
+  protect_from_scale_in = true
+  vpc_zone_identifier   = var.private_subnet_ids
 
   tag {
     key                 = "Name"
