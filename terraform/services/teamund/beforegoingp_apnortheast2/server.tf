@@ -66,15 +66,21 @@ resource "aws_lb_listener_rule" "health_check_allow" {
   listener_arn = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn
   priority     = 97
 
-  action {
-    type             = "forward"
-    target_group_arn = module.server.aws_lb_target_group_arn
-  }
-
   condition {
     path_pattern {
       values = [local.health_check_path]
     }
+  }
+
+  condition {
+    source_ip {
+      values = [data.terraform_remote_state.vpc.outputs.vpc_cidr_block]
+    }
+  }
+
+  action {
+    type             = "forward"
+    target_group_arn = module.server.aws_lb_target_group_arn
   }
 }
 
