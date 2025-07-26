@@ -24,8 +24,8 @@ locals {
     container_cpu_limit         = 400
     container_memory_hard_limit = 400
     container_memory_soft_limit = 400
-    max_swap                    = 1024
-    swappiness                  = 70
+    max_swap                    = 2048
+    swappiness                  = 80
     service_port                = local.service_port
     health_check_port           = local.health_check_port
     health_check_path           = local.health_check_path

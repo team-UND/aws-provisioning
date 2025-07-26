@@ -37,7 +37,7 @@ resource "aws_launch_template" "lt" {
     # Configure the ECS agent to use the correct cluster
     echo "ECS_CLUSTER=${aws_ecs_cluster.default.name}" > /etc/ecs/ecs.config
 
-    # Create and enable a 2GB swap file if it doesn't exist
+    # Create and enable a ${var.swap_file_size_gb}GB swap file if it doesn't exist
     if [ ! -f /swapfile ]; then
       fallocate -l ${var.swap_file_size_gb}G /swapfile
       chmod 600 /swapfile
