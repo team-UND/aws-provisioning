@@ -97,7 +97,7 @@ resource "aws_ecs_capacity_provider" "default" {
   name = "cp-${var.vpc_name}"
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.default.arn
-    managed_termination_protection = "DISABLED"
+    managed_termination_protection = "ENABLED"
 
     managed_scaling {
       status          = "ENABLED"
