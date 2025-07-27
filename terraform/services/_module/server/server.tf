@@ -6,6 +6,7 @@ resource "aws_ecs_service" "default" {
   health_check_grace_period_seconds = var.health_check_grace_period_seconds
   enable_execute_command            = var.enable_execute_command
   enable_ecs_managed_tags           = true
+  availability_zone_rebalancing     = "ENABLED"
 
   deployment_circuit_breaker {
     enable   = true
@@ -21,6 +22,16 @@ resource "aws_ecs_service" "default" {
   capacity_provider_strategy {
     capacity_provider = var.ecs_capacity_provider_name
     weight            = 1
+  }
+
+  ordered_placement_strategy {
+    field = "attribute:ecs.availability-zone"
+    type  = "spread"
+  }
+
+  ordered_placement_strategy {
+    field = "memory"
+    type  = "binpack"
   }
 
   network_configuration {
