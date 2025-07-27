@@ -21,6 +21,7 @@ locals {
     aws_region                  = data.terraform_remote_state.vpc.outputs.aws_region
     service_name                = local.service_name
     image_url                   = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
+    image_tag                   = "05912ed"
     container_cpu_limit         = 400
     container_memory_hard_limit = 400
     container_memory_soft_limit = 400
