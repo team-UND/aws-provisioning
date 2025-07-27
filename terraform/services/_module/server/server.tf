@@ -7,6 +7,11 @@ resource "aws_ecs_service" "default" {
   enable_execute_command            = var.enable_execute_command
   enable_ecs_managed_tags           = true
 
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
+
   load_balancer {
     target_group_arn = aws_lb_target_group.default.arn
     container_name   = var.service_name
