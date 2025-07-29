@@ -1,7 +1,7 @@
 locals {
   org_name    = "team-UND"
   repo_names  = ["beforegoing-server", "observability"]
-  branch_name = "develop"
+  branch_name = "dev"
 }
 
 resource "aws_iam_role" "github_oidc" {
