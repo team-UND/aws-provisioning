@@ -7,7 +7,7 @@ resource "aws_apprunner_service" "default" {
     }
 
     image_repository {
-      image_identifier      = "${var.image_url}:${var.image_tag}"
+      image_identifier      = "${var.image_uri}:${var.image_tag}"
       image_repository_type = var.image_repository_type
 
       image_configuration {
