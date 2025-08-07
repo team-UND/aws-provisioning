@@ -35,6 +35,16 @@ variable "pg_variables" {
           apply_method = "pending-reboot"
         },
         {
+          name         = "character_set_database"
+          value        = "utf8mb4"
+          apply_method = "pending-reboot"
+        },
+        {
+          name         = "collation_connection"
+          value        = "utf8mb4_unicode_ci"
+          apply_method = "pending-reboot"
+        },
+        {
           name         = "wait_timeout"
           value        = "1200"
           apply_method = "immediate"
@@ -50,6 +60,16 @@ variable "pg_variables" {
         {
           name         = "character_set_server"
           value        = "utf8mb4"
+          apply_method = "pending-reboot"
+        },
+        {
+          name         = "character_set_database"
+          value        = "utf8mb4"
+          apply_method = "pending-reboot"
+        },
+        {
+          name         = "collation_connection"
+          value        = "utf8mb4_unicode_ci"
           apply_method = "pending-reboot"
         },
         {
