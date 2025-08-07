@@ -36,7 +36,7 @@ module "service" {
   shard_id = data.terraform_remote_state.vpc.outputs.shard_id
 
   image_uri             = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
-  image_tag             = "latest"
+  image_tag             = "bdbd75b"
   image_repository_type = "ECR"
 
   domain_name          = data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name
@@ -58,6 +58,7 @@ module "service" {
     SPRING_REDIS_HOST               = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_REDIS_HOST::"
     SPRING_REDIS_PORT               = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_REDIS_PORT::"
     OAUTH_KAKAO_APP_KEY             = "${data.aws_secretsmanager_secret.app_secrets.arn}:OAUTH_KAKAO_APP_KEY::"
+    OAUTH_APPLE_APP_ID              = "${data.aws_secretsmanager_secret.app_secrets.arn}:OAUTH_APPLE_APP_ID::"
     ISSUER_NAME                     = "${data.aws_secretsmanager_secret.app_secrets.arn}:ISSUER_NAME::"
     JWT_SECRET                      = "${data.aws_secretsmanager_secret.app_secrets.arn}:JWT_SECRET::"
     ACCESS_TOKEN_EXPIRE_TIME        = "${data.aws_secretsmanager_secret.app_secrets.arn}:ACCESS_TOKEN_EXPIRE_TIME::"
