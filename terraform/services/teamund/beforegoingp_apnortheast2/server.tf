@@ -20,7 +20,7 @@ locals {
   template_vars = {
     aws_region                  = data.terraform_remote_state.vpc.outputs.aws_region
     service_name                = local.service_name
-    image_uri                   = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
+    image_url                   = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
     image_tag                   = "bfa3302"
     container_cpu_limit         = 400
     container_memory_hard_limit = 400

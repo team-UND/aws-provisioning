@@ -23,8 +23,8 @@ variable "access_role_arn" {
   type        = string
 }
 
-variable "image_uri" {
-  description = "URI of the Docker image in ECR"
+variable "image_url" {
+  description = "URL of the Docker image in ECR"
   type        = string
 }
 
