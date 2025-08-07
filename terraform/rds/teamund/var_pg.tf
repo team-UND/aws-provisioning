@@ -26,7 +26,7 @@ variable "pg_variables" {
       beforegoingdapne1 = [
         {
           name         = "time_zone"
-          value        = "Asia/Seoul"
+          value        = "UTC"
           apply_method = "pending-reboot"
         },
         {
@@ -44,7 +44,7 @@ variable "pg_variables" {
       beforegoingpapne2 = [
         {
           name         = "time_zone"
-          value        = "Asia/Seoul"
+          value        = "UTC"
           apply_method = "pending-reboot"
         },
         {
