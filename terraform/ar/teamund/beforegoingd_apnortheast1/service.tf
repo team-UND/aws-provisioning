@@ -36,7 +36,7 @@ module "service" {
   shard_id = data.terraform_remote_state.vpc.outputs.shard_id
 
   image_url             = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
-  image_tag             = "bdbd75b"
+  image_tag             = "0d350fc"
   image_repository_type = "ECR"
 
   domain_name          = data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name
