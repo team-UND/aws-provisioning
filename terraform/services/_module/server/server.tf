@@ -20,18 +20,29 @@ resource "aws_ecs_service" "default" {
   }
 
   capacity_provider_strategy {
-    capacity_provider = var.ecs_capacity_provider_name
-    weight            = 1
+    capacity_provider = var.capacity_provider_name
+    base              = var.capacity_provider_base
+    weight            = var.capacity_provider_weight
   }
 
-  ordered_placement_strategy {
-    field = "attribute:ecs.availability-zone"
-    type  = "spread"
-  }
+  # Placement strategies are only supported for the EC2 launch type.
+  # This dynamic block ensures they are not applied for Fargate services.
+  dynamic "ordered_placement_strategy" {
+    for_each = !strcontains(var.capacity_provider_name, "FARGATE") ? [
+      {
+        field = "attribute:ecs.availability-zone"
+        type  = "spread"
+      },
+      {
+        field = "memory"
+        type  = "binpack"
+      }
+    ] : []
 
-  ordered_placement_strategy {
-    field = "memory"
-    type  = "binpack"
+    content {
+      field = ordered_placement_strategy.value.field
+      type  = ordered_placement_strategy.value.type
+    }
   }
 
   network_configuration {
@@ -79,7 +90,7 @@ resource "aws_appautoscaling_policy" "default" {
 resource "aws_ecs_task_definition" "default" {
   family                   = "task-${var.service_name}-${var.vpc_name}"
   network_mode             = "awsvpc"
-  requires_compatibilities = ["EC2"]
+  requires_compatibilities = ["EC2", "FARGATE"]
   cpu                      = var.task_cpu
   memory                   = var.task_memory
   task_role_arn            = var.ecs_task_role_arn

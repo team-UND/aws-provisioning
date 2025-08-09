@@ -73,3 +73,18 @@ variable "swappiness_value" {
   type        = number
   default     = 10
 }
+
+variable "default_capacity_provider_strategy" {
+  description = "The name of the default capacity provider to use for the cluster."
+  type        = string
+}
+
+variable "default_capacity_provider_base" {
+  description = "The base number of tasks for the default capacity provider."
+  type        = number
+}
+
+variable "default_capacity_provider_weight" {
+  description = "The weight for the default capacity provider."
+  type        = number
+}

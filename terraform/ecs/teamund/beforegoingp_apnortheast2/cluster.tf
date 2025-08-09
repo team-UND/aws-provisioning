@@ -17,11 +17,15 @@ module "cluster" {
 
   # EC2 Instance configuration for the cluster
   instance_type        = "t2.micro"
-  ec2_min_size         = 1
+  ec2_min_size         = 0
   ec2_max_size         = 2
-  ec2_desired_capacity = 1
-  swap_file_size_gb    = 4
-  swappiness_value     = 80
+  ec2_desired_capacity = 0
+  swap_file_size_gb    = 2
+  swappiness_value     = 10
+
+  default_capacity_provider_strategy = module.cluster.aws_ecs_capacity_provider_ec2_name
+  default_capacity_provider_base     = 0
+  default_capacity_provider_weight   = 1
 
   # Pass centralized tag variables
   sg_variables = var.sg_variables

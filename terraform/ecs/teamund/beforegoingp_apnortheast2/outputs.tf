@@ -8,7 +8,7 @@ output "aws_ecs_cluster_name" {
   value       = module.cluster.aws_ecs_cluster_name
 }
 
-output "aws_ecs_capacity_provider_name" {
-  description = "The name of the default ECS Capacity Provider."
-  value       = module.cluster.aws_ecs_capacity_provider_name
+output "aws_ecs_capacity_provider_ec2_name" {
+  description = "The name of the default EC2 Capacity Provider."
+  value       = module.cluster.aws_ecs_capacity_provider_ec2_name
 }

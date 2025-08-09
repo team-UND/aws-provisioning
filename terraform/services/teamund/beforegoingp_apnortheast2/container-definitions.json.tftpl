@@ -14,10 +14,6 @@
         "containerPort": ${health_check_port}
       }
     ],
-    "linuxParameters": {
-      "maxSwap": ${max_swap},
-      "swappiness": ${swappiness}
-    },
     "healthCheck": {
       "command": [
         "CMD-SHELL",

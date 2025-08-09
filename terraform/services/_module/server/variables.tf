@@ -59,9 +59,19 @@ variable "enable_execute_command" {
   type        = bool
 }
 
-variable "ecs_capacity_provider_name" {
-  description = "The name of the ECS capacity provider to use for the service"
+variable "capacity_provider_name" {
+  description = "The name of the capacity provider to use for the service."
   type        = string
+}
+
+variable "capacity_provider_base" {
+  description = "The base number of tasks for the capacity provider."
+  type        = number
+}
+
+variable "capacity_provider_weight" {
+  description = "The weight for the capacity provider."
+  type        = number
 }
 
 variable "subnet_ids" {

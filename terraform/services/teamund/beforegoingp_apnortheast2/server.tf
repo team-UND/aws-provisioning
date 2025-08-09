@@ -22,11 +22,9 @@ locals {
     service_name                = local.service_name
     image_url                   = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
     image_tag                   = "bfa3302"
-    container_cpu_limit         = 400
-    container_memory_hard_limit = 400
-    container_memory_soft_limit = 400
-    max_swap                    = 2048
-    swappiness                  = 80
+    container_cpu_limit         = 512
+    container_memory_hard_limit = 1024
+    container_memory_soft_limit = 512
     service_port                = local.service_port
     health_check_port           = local.health_check_port
     health_check_path           = local.health_check_path
@@ -159,17 +157,20 @@ module "server" {
   lb_variables                = var.lb_variables
 
   # Shared Cluster Info
-  ecs_cluster_id             = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_id
-  ecs_cluster_name           = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_name
-  ecs_capacity_provider_name = data.terraform_remote_state.cluster.outputs.aws_ecs_capacity_provider_name
-  enable_execute_command     = true
+  ecs_cluster_id         = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_id
+  ecs_cluster_name       = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_name
+  enable_execute_command = true
+
+  capacity_provider_name   = "FARGATE"
+  capacity_provider_base   = 1
+  capacity_provider_weight = 1
 
   # IAM & ECR
   ecs_task_role_arn           = data.terraform_remote_state.iam.outputs.aws_iam_role_ecs_task_arn
   ecs_task_execution_role_arn = data.terraform_remote_state.iam.outputs.aws_iam_role_ecs_task_execution_arn
   container_definitions_json  = local.container_definitions_json
 
-  # Autoscaling
+  # Deployment
   deployment_controller_type         = "ECS"
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
@@ -184,8 +185,8 @@ module "server" {
   scale_out_cooldown = 60  # 1 minute before scaling out again
 
   # Task Sizing
-  task_cpu    = "400" # 0.390625 vCPU
-  task_memory = "400" # 400 MiB
+  task_cpu    = "512"  # 0.5 vCPU
+  task_memory = "1024" # 1024 MiB
 
   log_group_name        = local.log_group_name
   log_retention_in_days = 7

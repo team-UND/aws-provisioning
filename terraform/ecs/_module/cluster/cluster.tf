@@ -94,7 +94,7 @@ resource "aws_autoscaling_group" "default" {
   }
 }
 
-resource "aws_ecs_capacity_provider" "default" {
+resource "aws_ecs_capacity_provider" "ec2" {
   name = "cp-${var.vpc_name}"
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.default.arn
@@ -110,11 +110,11 @@ resource "aws_ecs_capacity_provider" "default" {
 resource "aws_ecs_cluster_capacity_providers" "default" {
   cluster_name = aws_ecs_cluster.default.name
 
-  capacity_providers = [aws_ecs_capacity_provider.default.name]
+  capacity_providers = [aws_ecs_capacity_provider.ec2.name, "FARGATE", "FARGATE_SPOT"]
 
   default_capacity_provider_strategy {
-    base              = 1
-    weight            = 100
-    capacity_provider = aws_ecs_capacity_provider.default.name
+    capacity_provider = var.default_capacity_provider_strategy
+    base              = var.default_capacity_provider_base
+    weight            = var.default_capacity_provider_weight
   }
 }
