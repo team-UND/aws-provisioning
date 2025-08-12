@@ -19,11 +19,11 @@ data "aws_secretsmanager_secret_version" "origin_verify" {
 locals {
   subdomain_name     = "api"
   api_domain_name    = "${local.subdomain_name}.${data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name}"
-  origin_domain_name = replace(data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_api_api_endpoint, "https://", "")
+  origin_domain_name = replace(data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_api_endpoint, "https://", "")
   origin_path        = data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_stage_name == "$default" ? "" : "/${data.terraform_remote_state.apigw.outputs.aws_apigatewayv2_stage_name}"
 }
 
-module "apigw" {
+module "distribution" {
   source = "../../_module/distribution"
 
   domain_name = data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name
