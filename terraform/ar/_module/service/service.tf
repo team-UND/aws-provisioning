@@ -28,6 +28,10 @@ resource "aws_apprunner_service" "default" {
   auto_scaling_configuration_arn = aws_apprunner_auto_scaling_configuration_version.default.arn
 
   network_configuration {
+    ingress_configuration {
+      is_publicly_accessible = var.is_publicly_accessible
+    }
+
     egress_configuration {
       egress_type       = "VPC"
       vpc_connector_arn = aws_apprunner_vpc_connector.default.arn

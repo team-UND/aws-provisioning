@@ -13,19 +13,14 @@ variable "shard_id" {
   type        = string
 }
 
-variable "lb_security_group_id" {
-  description = "The ID of the security group for the internal load balancer"
+variable "target_security_group_id" {
+  description = "The ID of the security group to which the VPC Link will send traffic"
   type        = string
 }
 
 variable "private_subnet_ids" {
   description = "A comma-delimited list of private subnets for the VPC"
   type        = list(string)
-}
-
-variable "lb_route_key" {
-  description = "The route key for the default route that forwards to the load balancer"
-  type        = string
 }
 
 variable "authorizer_lambda_function_arn" {
@@ -73,8 +68,13 @@ variable "cors_allow_headers" {
   type        = list(string)
 }
 
-variable "lb_listener_arn" {
-  description = "ARN of the load balancer listener to integrate with API Gateway"
+variable "proxy_integration_uri" {
+  description = "The ARN of the load balancer listener or the URL of the App Runner service to integrate with API Gateway"
+  type        = string
+}
+
+variable "proxy_route_key" {
+  description = "The route key for the default proxy integration (ex. ANY /{proxy+})"
   type        = string
 }
 

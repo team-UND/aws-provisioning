@@ -167,9 +167,29 @@ variable "remote_state" {
 
     })
 
+    ar = object({
+
+      service = object({
+
+        beforegoingpapne1 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
+      })
+
+    })
+
     lambda = object({
 
       function = object({
+
+        beforegoingpapne1 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
 
         beforegoingpapne2 = object({
           region = string
@@ -383,10 +403,30 @@ variable "remote_state" {
       }
     }
 
+    # App Runner
+    ar = {
+
+      service = {
+
+        beforegoingpapne1 = {
+          region = "ap-northeast-1"
+          bucket = "teamund-apnortheast1-tfstate"
+          key    = "aws-provisioning/terraform/ar/teamund/beforegoingd_apnortheast1/terraform.tfstate"
+        }
+
+      }
+    }
+
     # Lambda
     lambda = {
 
       function = {
+
+        beforegoingpapne1 = {
+          region = "ap-northeast-1"
+          bucket = "teamund-apnortheast1-tfstate"
+          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast1/terraform.tfstate"
+        }
 
         beforegoingpapne2 = {
           region = "ap-northeast-2"

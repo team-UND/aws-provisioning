@@ -1,6 +1,6 @@
-resource "aws_vpc_security_group_ingress_rule" "vpclink_http_lb" {
-  description                  = "Allow HTTP traffic from the VPC Link to the LB"
-  security_group_id            = data.terraform_remote_state.int_lb.outputs.aws_security_group_id
+resource "aws_vpc_security_group_ingress_rule" "vpclink_http_apprunner" {
+  description                  = "Allow HTTP traffic from the VPC Link to App Runner"
+  security_group_id            = data.terraform_remote_state.ar.outputs.aws_security_group_id
   from_port                    = 80
   to_port                      = 80
   ip_protocol                  = "tcp"
@@ -20,8 +20,8 @@ module "http" {
   authorizer_result_ttl_in_seconds = 300
   origin_verify_header_name        = data.terraform_remote_state.function.outputs.origin_verify_header_name
 
-  target_security_group_id = data.terraform_remote_state.int_lb.outputs.aws_security_group_id
-  proxy_integration_uri    = data.terraform_remote_state.int_lb.outputs.aws_lb_listener_http_arn
+  target_security_group_id = data.terraform_remote_state.ar.outputs.aws_security_group_id
+  proxy_integration_uri    = data.terraform_remote_state.ar.outputs.aws_apprunner_service_url
   lambda_integrations = {
     sentry = {
       arn : data.terraform_remote_state.function.outputs.sentry_lambda_function_arn,

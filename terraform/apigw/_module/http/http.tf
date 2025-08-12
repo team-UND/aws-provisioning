@@ -14,7 +14,7 @@ resource "aws_vpc_security_group_egress_rule" "vpclink_http" {
   from_port                    = 80
   to_port                      = 80
   ip_protocol                  = "tcp"
-  referenced_security_group_id = var.lb_security_group_id
+  referenced_security_group_id = var.target_security_group_id
 }
 
 resource "aws_apigatewayv2_vpc_link" "default" {
@@ -62,13 +62,15 @@ resource "aws_apigatewayv2_integration" "lambdas" {
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_integration" "lb" {
-  description            = "Load Balancer Integration"
+resource "aws_apigatewayv2_integration" "default_proxy" {
+  count = var.proxy_integration_uri != null ? 1 : 0
+
+  description            = "Default Proxy Integration"
   api_id                 = aws_apigatewayv2_api.default.id
   integration_type       = "HTTP_PROXY"
-  integration_uri        = var.lb_listener_arn
+  integration_uri        = var.proxy_integration_uri
   integration_method     = "ANY"
-  connection_type        = "VPC_LINK" # For LB
+  connection_type        = "VPC_LINK"
   connection_id          = aws_apigatewayv2_vpc_link.default.id
   payload_format_version = "1.0"
 }
@@ -83,12 +85,14 @@ resource "aws_apigatewayv2_route" "lambdas" {
   target             = "integrations/${aws_apigatewayv2_integration.lambdas[each.key].id}"
 }
 
-resource "aws_apigatewayv2_route" "lb" {
+resource "aws_apigatewayv2_route" "default_proxy" {
+  count = var.proxy_route_key != null ? 1 : 0
+
   api_id             = aws_apigatewayv2_api.default.id
-  route_key          = var.lb_route_key
+  route_key          = var.proxy_route_key
   authorization_type = var.authorizer_lambda_invoke_arn != null ? "CUSTOM" : "NONE"
   authorizer_id      = var.authorizer_lambda_invoke_arn != null ? aws_apigatewayv2_authorizer.default[0].id : null
-  target             = "integrations/${aws_apigatewayv2_integration.lb.id}"
+  target             = "integrations/${aws_apigatewayv2_integration.default_proxy[0].id}"
 }
 
 resource "aws_apigatewayv2_stage" "default" {

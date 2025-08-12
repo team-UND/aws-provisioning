@@ -73,6 +73,11 @@ variable "memory" {
   type        = string
 }
 
+variable "is_publicly_accessible" {
+  description = "Whether the App Runner service is publicly accessible"
+  type        = bool
+}
+
 variable "subnet_ids" {
   description = "List of subnet IDs for the VPC connector"
   type        = list(string)

@@ -12,3 +12,8 @@ output "aws_apprunner_custom_domain_association_dns_target" {
   description = "DNS target for the App Runner custom domain"
   value       = aws_apprunner_custom_domain_association.default.dns_target
 }
+
+output "aws_apprunner_service_url" {
+  description = "The URL of the App Runner service"
+  value       = aws_apprunner_service.default.service_url
+}
