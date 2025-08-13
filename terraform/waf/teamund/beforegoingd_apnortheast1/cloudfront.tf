@@ -62,8 +62,5 @@ module "cloudfront" {
     }
   }
 
-  common_rule_set_exceptions = [
-    {
-    }
-  ]
+  common_rule_set_exceptions = []
 }
