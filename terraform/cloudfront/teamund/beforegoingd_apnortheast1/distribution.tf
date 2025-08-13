@@ -46,7 +46,7 @@ module "distribution" {
   geo_restriction_type      = "none"
   geo_restriction_locations = []
 
-  web_acl_id = data.terraform_remote_state.acl.outputs.aws_wafv2_web_acl_arn
+  web_acl_id = data.terraform_remote_state.acl.outputs.cloudfront_aws_wafv2_web_acl_arn
 
   log_bucket        = data.terraform_remote_state.bucket.outputs.aws_s3_bucket_bucket_domain_name
   log_bucket_prefix = data.terraform_remote_state.bucket.outputs.aws_s3_bucket_lifecycle_configuration_rule_prefix
