@@ -22,8 +22,3 @@ output "aws_apigatewayv2_api_execution_arn" {
   description = "The execution ARN of the API Gateway V2 HTTP API"
   value       = aws_apigatewayv2_api.default.execution_arn
 }
-
-output "aws_apigatewayv2_api_endpoint" {
-  description = "The invoke URL of the API Gateway V2 HTTP API"
-  value       = aws_apigatewayv2_api.default.api_endpoint
-}
