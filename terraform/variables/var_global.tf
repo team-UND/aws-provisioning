@@ -117,7 +117,7 @@ variable "remote_state" {
 
       bucket = object({
 
-        beforegoingpapne1 = object({
+        beforegoingdapne1 = object({
           region = string
           bucket = string
           key    = string
@@ -177,7 +177,7 @@ variable "remote_state" {
 
       service = object({
 
-        beforegoingpapne1 = object({
+        beforegoingdapne1 = object({
           region = string
           bucket = string
           key    = string
@@ -191,7 +191,7 @@ variable "remote_state" {
 
       function = object({
 
-        beforegoingpapne1 = object({
+        beforegoingdapne1 = object({
           region = string
           bucket = string
           key    = string
@@ -211,7 +211,7 @@ variable "remote_state" {
 
       http = object({
 
-        beforegoingpapne1 = object({
+        beforegoingdapne1 = object({
           region = string
           bucket = string
           key    = string
@@ -231,7 +231,7 @@ variable "remote_state" {
 
       acl = object({
 
-        beforegoingpapne1 = object({
+        beforegoingdapne1 = object({
           region = string
           bucket = string
           key    = string
@@ -370,7 +370,7 @@ variable "remote_state" {
 
       bucket = {
 
-        beforegoingpapne1 = {
+        beforegoingdapne1 = {
           region = "ap-northeast-1"
           bucket = "teamund-apnortheast1-tfstate"
           key    = "aws-provisioning/terraform/s3/teamund/beforegoingd_apnortheast1/terraform.tfstate"
@@ -432,7 +432,7 @@ variable "remote_state" {
 
       service = {
 
-        beforegoingpapne1 = {
+        beforegoingdapne1 = {
           region = "ap-northeast-1"
           bucket = "teamund-apnortheast1-tfstate"
           key    = "aws-provisioning/terraform/ar/teamund/beforegoingd_apnortheast1/terraform.tfstate"
@@ -446,7 +446,7 @@ variable "remote_state" {
 
       function = {
 
-        beforegoingpapne1 = {
+        beforegoingdapne1 = {
           region = "ap-northeast-1"
           bucket = "teamund-apnortheast1-tfstate"
           key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast1/terraform.tfstate"
@@ -466,7 +466,7 @@ variable "remote_state" {
 
       http = {
 
-        beforegoingpapne1 = {
+        beforegoingdapne1 = {
           region = "ap-northeast-1"
           bucket = "teamund-apnortheast1-tfstate"
           key    = "aws-provisioning/terraform/apigw/teamund/beforegoingd_apnortheast1/terraform.tfstate"
@@ -486,7 +486,7 @@ variable "remote_state" {
 
       acl = {
 
-        beforegoingpapne1 = {
+        beforegoingdapne1 = {
           region = "ap-northeast-1"
           bucket = "teamund-apnortheast1-tfstate"
           key    = "aws-provisioning/terraform/waf/teamund/beforegoingd_apnortheast1/terraform.tfstate"
