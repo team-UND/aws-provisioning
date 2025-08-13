@@ -78,7 +78,7 @@ module "service" {
   autoscaling_max_size        = 2
   autoscaling_max_concurrency = 200
 
-  is_publicly_accessible = false
+  is_publicly_accessible = true
   subnet_ids             = data.terraform_remote_state.vpc.outputs.private_subnet_ids
   ar_egress_cidr         = "0.0.0.0/0"
 
