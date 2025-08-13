@@ -9,7 +9,6 @@ from botocore.exceptions import ClientError
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-# --- Global Scope Initialization ---
 # Initialize clients and load configuration outside the handler for performance
 # and fail-fast behavior on misconfiguration.
 try:
