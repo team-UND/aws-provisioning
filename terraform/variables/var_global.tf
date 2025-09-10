@@ -191,12 +191,6 @@ variable "remote_state" {
 
       function = object({
 
-        beforegoingdapne1 = object({
-          region = string
-          bucket = string
-          key    = string
-        })
-
         beforegoingpapne2 = object({
           region = string
           bucket = string
@@ -439,12 +433,6 @@ variable "remote_state" {
     lambda = {
 
       function = {
-
-        beforegoingdapne1 = {
-          region = "ap-northeast-1"
-          bucket = "teamund-apnortheast1-tfstate"
-          key    = "aws-provisioning/terraform/lambda/teamund/beforegoingd_apnortheast1/terraform.tfstate"
-        }
 
         beforegoingpapne2 = {
           region = "ap-northeast-2"
