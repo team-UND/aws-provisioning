@@ -58,8 +58,8 @@ resource "aws_route53_record" "api" {
   type    = "A"
 
   alias {
-    name                   = module.apigw.aws_cloudfront_distribution_domain_name
-    zone_id                = module.apigw.aws_cloudfront_distribution_hosted_zone_id
+    name                   = module.distribution.aws_cloudfront_distribution_domain_name
+    zone_id                = module.distribution.aws_cloudfront_distribution_hosted_zone_id
     evaluate_target_health = false
   }
 }
