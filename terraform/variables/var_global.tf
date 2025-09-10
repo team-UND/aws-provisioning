@@ -213,12 +213,6 @@ variable "remote_state" {
 
       acl = object({
 
-        beforegoingdapne1 = object({
-          region = string
-          bucket = string
-          key    = string
-        })
-
         beforegoingpapne2 = object({
           region = string
           bucket = string
@@ -449,12 +443,6 @@ variable "remote_state" {
     waf = {
 
       acl = {
-
-        beforegoingdapne1 = {
-          region = "ap-northeast-1"
-          bucket = "teamund-apnortheast1-tfstate"
-          key    = "aws-provisioning/terraform/waf/teamund/beforegoingd_apnortheast1/terraform.tfstate"
-        }
 
         beforegoingpapne2 = {
           region = "ap-northeast-2"
