@@ -22,8 +22,8 @@ locals {
     service_name                = local.service_name
     image_url                   = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
     image_tag                   = "bfa3302"
-    container_cpu_limit         = 512
-    container_memory_hard_limit = 1024
+    container_cpu_limit         = 256
+    container_memory_hard_limit = 512
     container_memory_soft_limit = 512
     service_port                = local.service_port
     health_check_port           = local.health_check_port
@@ -161,7 +161,7 @@ module "server" {
   ecs_cluster_name       = data.terraform_remote_state.cluster.outputs.aws_ecs_cluster_name
   enable_execute_command = true
 
-  capacity_provider_name   = "FARGATE"
+  capacity_provider_name   = data.terraform_remote_state.cluster.outputs.aws_ecs_capacity_provider_ec2_name
   capacity_provider_base   = 1
   capacity_provider_weight = 1
 
@@ -185,8 +185,8 @@ module "server" {
   scale_out_cooldown = 60  # 1 minute before scaling out again
 
   # Task Sizing
-  task_cpu    = "512"  # 0.5 vCPU
-  task_memory = "1024" # 1024 MiB
+  task_cpu    = "256" # 0.25 vCPU
+  task_memory = "512" # 512 MiB
 
   log_group_name        = local.log_group_name
   log_retention_in_days = 7
