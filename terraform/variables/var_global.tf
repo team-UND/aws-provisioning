@@ -211,12 +211,6 @@ variable "remote_state" {
 
       http = object({
 
-        beforegoingdapne1 = object({
-          region = string
-          bucket = string
-          key    = string
-        })
-
         beforegoingpapne2 = object({
           region = string
           bucket = string
@@ -465,12 +459,6 @@ variable "remote_state" {
     apigw = {
 
       http = {
-
-        beforegoingdapne1 = {
-          region = "ap-northeast-1"
-          bucket = "teamund-apnortheast1-tfstate"
-          key    = "aws-provisioning/terraform/apigw/teamund/beforegoingd_apnortheast1/terraform.tfstate"
-        }
 
         beforegoingpapne2 = {
           region = "ap-northeast-2"
