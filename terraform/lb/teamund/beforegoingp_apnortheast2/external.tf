@@ -1,3 +1,4 @@
+/*
 module "external" {
   source = "../../_module/external"
 
@@ -25,3 +26,4 @@ module "external" {
   lb_variables = var.lb_variables
   sg_variables = var.sg_variables
 }
+*/
