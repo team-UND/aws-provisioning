@@ -22,15 +22,25 @@ variable "lb_variables" {
   default = {
 
     target_group_slow_start = {
+      beforegoingsapne2 = 0
       beforegoingpapne2 = 0
     }
 
     target_group_deregistration_delay = {
+      beforegoingsapne2 = 0
       beforegoingpapne2 = 0
     }
 
     lb_tg = {
       tags = {
+
+        beforegoingsapne2 = {
+          Name    = "int-lb-tg-beforegoings_apnortheast2"
+          app     = "beforegoing"
+          project = "beforegoing"
+          env     = "stg"
+          stack   = "beforegoings_apnortheast2"
+        }
 
         beforegoingpapne2 = {
           Name    = "int-lb-tg-beforegoingp_apnortheast2"
@@ -45,15 +55,19 @@ variable "lb_variables" {
 
     health_check = {
       interval = {
+        beforegoingsapne2 = 15
         beforegoingpapne2 = 15
       }
       timeout = {
+        beforegoingsapne2 = 5
         beforegoingpapne2 = 5
       }
       healthy_threshold = {
+        beforegoingsapne2 = 3
         beforegoingpapne2 = 3
       }
       unhealthy_threshold = {
+        beforegoingsapne2 = 2
         beforegoingpapne2 = 2
       }
     }

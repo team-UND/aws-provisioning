@@ -1,0 +1,113 @@
+[
+  {
+    "name": "${service_name}",
+    "image": "${image_url}:${image_tag}",
+    "essential": true,
+    "cpu": ${container_cpu_limit},
+    "memory": ${container_memory_hard_limit},
+    "memoryReservation": ${container_memory_soft_limit},
+    "portMappings": [
+      {
+        "containerPort": ${service_port}
+      },
+      {
+        "containerPort": ${health_check_port}
+      }
+    ],
+    "healthCheck": {
+      "command": [
+        "CMD-SHELL",
+        "wget --quiet --spider http://localhost:${health_check_port}${health_check_path}"
+      ],
+      "interval": 15,
+      "timeout": 5,
+      "retries": 3,
+      "startPeriod": 90
+    },
+    "environment": [
+      {
+        "name": "SPRING_PROFILES_ACTIVE",
+        "value": "${spring_profiles_active}"
+      }
+    ],
+    "dockerLabels": {
+      "prometheus.io/scrape": "${prometheus_enable}",
+      "prometheus.io/path": "${prometheus_path}",
+      "prometheus.io/port": "${health_check_port}"
+    },
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group_name}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${service_name}"
+      }
+    },
+    "secrets": [
+      {
+        "name": "SPRING_DATASOURCE_ENDPOINT",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_ENDPOINT::"
+      },
+      {
+        "name": "SPRING_DATASOURCE_PORT",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_PORT::"
+      },
+      {
+        "name": "SPRING_DATASOURCE_DATABASE_NAME",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_DATABASE_NAME::"
+      },
+      {
+        "name": "SPRING_DATASOURCE_USERNAME",
+        "valueFrom": "${rdb_secrets_arn}:username::"
+      },
+      {
+        "name": "SPRING_DATASOURCE_PASSWORD",
+        "valueFrom": "${rdb_secrets_arn}:password::"
+      },
+      {
+        "name": "SPRING_REDIS_HOST",
+        "valueFrom": "${app_secrets_arn}:SPRING_REDIS_HOST::"
+      },
+      {
+        "name": "SPRING_REDIS_PORT",
+        "valueFrom": "${app_secrets_arn}:SPRING_REDIS_PORT::"
+      },
+      {
+        "name": "OAUTH_KAKAO_APP_KEY",
+        "valueFrom": "${app_secrets_arn}:OAUTH_KAKAO_APP_KEY::"
+      },
+      {
+        "name": "OAUTH_APPLE_APP_ID",
+        "valueFrom": "${app_secrets_arn}:OAUTH_APPLE_APP_ID::"
+      },
+      {
+        "name": "ISSUER_NAME",
+        "valueFrom": "${app_secrets_arn}:ISSUER_NAME::"
+      },
+            {
+        "name": "JWT_SECRET",
+        "valueFrom": "${app_secrets_arn}:JWT_SECRET::"
+      },
+      {
+        "name": "ACCESS_TOKEN_EXPIRE_TIME",
+        "valueFrom": "${app_secrets_arn}:ACCESS_TOKEN_EXPIRE_TIME::"
+      },
+            {
+        "name": "REFRESH_TOKEN_EXPIRE_TIME",
+        "valueFrom": "${app_secrets_arn}:REFRESH_TOKEN_EXPIRE_TIME::"
+      },
+      {
+        "name": "SENTRY_DSN",
+        "valueFrom": "${app_secrets_arn}:SENTRY_DSN::"
+      },
+      {
+        "name": "PROMETHEUS_USERNAME",
+        "valueFrom": "${prometheus_secrets_arn}:USERNAME::"
+      },
+      {
+        "name": "PROMETHEUS_PASSWORD",
+        "valueFrom": "${prometheus_secrets_arn}:PASSWORD::"
+      }
+    ]
+  }
+]
