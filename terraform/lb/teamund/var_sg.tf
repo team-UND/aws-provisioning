@@ -18,6 +18,14 @@ variable "sg_variables" {
     external = {
       tags = {
 
+        beforegoingsapne2 = {
+          Name    = "ext-lb-sg-beforegoings_apnortheast2"
+          app     = "beforegoing"
+          project = "beforegoing"
+          env     = "stg"
+          stack   = "beforegoings_apnortheast2"
+        }
+
         beforegoingpapne2 = {
           Name    = "ext-lb-sg-beforegoingp_apnortheast2"
           app     = "beforegoing"
@@ -31,6 +39,14 @@ variable "sg_variables" {
 
     internal = {
       tags = {
+
+        beforegoingsapne2 = {
+          Name    = "int-lb-sg-beforegoings_apnortheast2"
+          app     = "beforegoing"
+          project = "beforegoing"
+          env     = "stg"
+          stack   = "beforegoings_apnortheast2"
+        }
 
         beforegoingpapne2 = {
           Name    = "int-lb-sg-beforegoingp_apnortheast2"
