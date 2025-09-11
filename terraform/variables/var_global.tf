@@ -121,6 +121,12 @@ variable "remote_state" {
 
       cluster = object({
 
+        beforegoingsapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
         beforegoingpapne2 = object({
           region = string
           bucket = string
@@ -390,6 +396,12 @@ variable "remote_state" {
     ecs = {
 
       cluster = {
+
+        beforegoingsapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/ecs/teamund/beforegoings_apnortheast2/terraform.tfstate"
+        }
 
         beforegoingpapne2 = {
           region = "ap-northeast-2"
