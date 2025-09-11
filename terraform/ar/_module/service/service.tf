@@ -67,7 +67,7 @@ resource "aws_security_group" "default" {
   }
 }
 
-resource "aws_vpc_security_group_egress_rule" "ap" {
+resource "aws_vpc_security_group_egress_rule" "ar" {
   description       = "Allow traffic from the App Runner"
   security_group_id = aws_security_group.default.id
   ip_protocol       = "-1"
