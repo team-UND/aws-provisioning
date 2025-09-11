@@ -51,6 +51,34 @@ variable "pg_variables" {
         }
       ]
 
+      beforegoingsapne2 = [
+        {
+          name         = "time_zone"
+          value        = "UTC"
+          apply_method = "pending-reboot"
+        },
+        {
+          name         = "character_set_server"
+          value        = "utf8mb4"
+          apply_method = "pending-reboot"
+        },
+        {
+          name         = "character_set_database"
+          value        = "utf8mb4"
+          apply_method = "pending-reboot"
+        },
+        {
+          name         = "collation_connection"
+          value        = "utf8mb4_unicode_ci"
+          apply_method = "pending-reboot"
+        },
+        {
+          name         = "wait_timeout"
+          value        = "1200"
+          apply_method = "immediate"
+        }
+      ]
+
       beforegoingpapne2 = [
         {
           name         = "time_zone"
