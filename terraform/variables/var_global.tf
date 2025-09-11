@@ -169,6 +169,12 @@ variable "remote_state" {
           key    = string
         })
 
+        beforegoingsapne2 = object({
+          region = string
+          bucket = string
+          key    = string
+        })
+
         beforegoingpapne2 = object({
           region = string
           bucket = string
@@ -410,6 +416,12 @@ variable "remote_state" {
           region = "ap-northeast-1"
           bucket = "teamund-apnortheast1-tfstate"
           key    = "aws-provisioning/terraform/elasticache/teamund/beforegoingd_apnortheast1/terraform.tfstate"
+        }
+
+        beforegoingsapne2 = {
+          region = "ap-northeast-2"
+          bucket = "teamund-apnortheast2-tfstate"
+          key    = "aws-provisioning/terraform/elasticache/teamund/beforegoings_apnortheast2/terraform.tfstate"
         }
 
         beforegoingpapne2 = {

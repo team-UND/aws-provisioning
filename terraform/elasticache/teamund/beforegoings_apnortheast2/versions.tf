@@ -1,0 +1,1 @@
+../../_module/redis/versions.tf
