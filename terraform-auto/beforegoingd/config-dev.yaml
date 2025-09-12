@@ -1,0 +1,71 @@
+# Apply stages are defined in the order they should be applied
+apply_stages:
+  - name: "Stage 1: VPC"
+    parallel: false
+    directories:
+      - path: ../../terraform/vpc/beforegoingd_apnortheast1
+        enabled: true
+  - name: "Stage 2: Data Stores & Load Balancer"
+    parallel: true
+    directories:
+      - path: ../../terraform/rds/teamund/beforegoingd_apnortheast1
+        enabled: true
+      - path: ../../terraform/elasticache/teamund/beforegoingd_apnortheast1
+        enabled: true
+  - name: "Stage 3: Identity & Security"
+    parallel: false
+    directories:
+      - path: ../../terraform/iam/teamund/beforegoingd_apnortheast1
+        enabled: true
+      - path: ../../terraform/waf/teamund/beforegoingd_apnortheast1
+        enabled: false
+  - name: "Stage 4: Services"
+    parallel: false
+    directories:
+      - path: ../../terraform/ar/teamund/beforegoingd_apnortheast1
+        enabled: true
+        steps:
+          - name: "Create Service and Security Group Rules"
+            targets:
+              - "module.service"
+              - "aws_vpc_security_group_ingress_rule.ar_mysql"
+              - "aws_vpc_security_group_ingress_rule.ar_redis"
+          - name: "Create DNS"
+            targets:
+              - "module.dns"
+
+# Destroy stages are defined in reverse order of apply stages
+destroy_stages:
+  - name: "Stage 1: Services"
+    parallel: false
+    directories:
+      - path: ../../terraform/ar/teamund/beforegoingd_apnortheast1
+        enabled: true
+        steps:
+          - name: "Destroy DNS"
+            targets:
+              - "module.dns"
+          - name: "Destroy Service and Security Group Rules"
+            targets:
+              - "module.service"
+              - "aws_vpc_security_group_ingress_rule.ar_mysql"
+              - "aws_vpc_security_group_ingress_rule.ar_redis"
+  - name: "Stage 2: Identity & Security"
+    parallel: false
+    directories:
+      - path: ../../terraform/iam/teamund/beforegoingd_apnortheast1
+        enabled: true
+      - path: ../../terraform/waf/teamund/beforegoingd_apnortheast1
+        enabled: false
+  - name: "Stage 3: Data Stores & Load Balancer"
+    parallel: true
+    directories:
+      - path: ../../terraform/rds/teamund/beforegoingd_apnortheast1
+        enabled: true
+      - path: ../../terraform/elasticache/teamund/beforegoingd_apnortheast1
+        enabled: true
+  - name: "Stage 4: VPC"
+    parallel: false
+    directories:
+      - path: ../../terraform/vpc/beforegoingd_apnortheast1
+        enabled: true
