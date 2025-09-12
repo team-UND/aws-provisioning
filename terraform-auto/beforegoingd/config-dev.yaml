@@ -13,12 +13,12 @@ apply_stages:
       - path: ../../terraform/elasticache/teamund/beforegoingd_apnortheast1
         enabled: true
   - name: "Stage 3: Identity & Security"
-    parallel: false
+    parallel: true
     directories:
       - path: ../../terraform/iam/teamund/beforegoingd_apnortheast1
         enabled: true
       - path: ../../terraform/waf/teamund/beforegoingd_apnortheast1
-        enabled: false
+        enabled: true
   - name: "Stage 4: Services"
     parallel: false
     directories:
@@ -51,12 +51,12 @@ destroy_stages:
               - "aws_vpc_security_group_ingress_rule.ar_mysql"
               - "aws_vpc_security_group_ingress_rule.ar_redis"
   - name: "Stage 2: Identity & Security"
-    parallel: false
+    parallel: true
     directories:
       - path: ../../terraform/iam/teamund/beforegoingd_apnortheast1
         enabled: true
       - path: ../../terraform/waf/teamund/beforegoingd_apnortheast1
-        enabled: false
+        enabled: true
   - name: "Stage 3: Data Stores & Load Balancer"
     parallel: true
     directories:
