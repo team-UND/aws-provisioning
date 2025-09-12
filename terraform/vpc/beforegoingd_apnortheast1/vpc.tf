@@ -19,6 +19,7 @@ resource "aws_internet_gateway" "default" {
   }
 }
 
+/*
 # NAT gateway
 resource "aws_nat_gateway" "default" {
   count = var.enable_ha_nat_gateway ? length(var.availability_zones) : 1
@@ -48,6 +49,7 @@ resource "aws_eip" "nat" {
     Name = "nat-eip${count.index}-${var.vpc_name}"
   }
 }
+*/
 
 # Public subnets
 # Subnet will use cidr with /20

@@ -5,6 +5,7 @@ resource "aws_route" "public_igw" {
   gateway_id             = aws_internet_gateway.default.id
 }
 
+/*
 # Routes for NAT gateway which will be set in private subnet
 resource "aws_route" "private_nat" {
   count                  = length(var.availability_zones)
@@ -15,3 +16,4 @@ resource "aws_route" "private_nat" {
   # If not, route all to the single NAT GW
   nat_gateway_id = var.enable_ha_nat_gateway ? aws_nat_gateway.default[count.index].id : aws_nat_gateway.default[0].id
 }
+*/
