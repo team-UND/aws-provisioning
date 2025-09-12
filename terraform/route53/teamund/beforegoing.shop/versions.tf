@@ -1,0 +1,1 @@
+../../_module/hosting_zone/versions.tf
