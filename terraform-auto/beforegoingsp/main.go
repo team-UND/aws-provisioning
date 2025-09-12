@@ -16,7 +16,6 @@ import (
 const (
 	commandApply   = "apply"
 	commandDestroy = "destroy"
-	configFile     = "config.yaml"
 )
 
 // --- Structs ---
@@ -233,20 +232,36 @@ func processStages(stages []Stage, command string) error {
 
 func main() {
 	// 1. Argument validation
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %s <%s|%s>\n", os.Args[0], commandApply, commandDestroy)
+	if len(os.Args) < 3 || len(os.Args) > 4 {
+		fmt.Fprintf(os.Stderr, "Usage: %s <env> <%s|%s> [-y]\n", os.Args[0], commandApply, commandDestroy)
 		os.Exit(1)
 	}
-	command := os.Args[1]
+
+	env := os.Args[1]
+	command := os.Args[2]
+	autoApprove := false
+
+	if len(os.Args) == 4 {
+		if os.Args[3] == "-y" {
+			autoApprove = true
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: invalid option '%s'. Only '-y' is supported.\n", os.Args[3])
+			fmt.Fprintf(os.Stderr, "Usage: %s <env> <%s|%s> [-y]\n", os.Args[0], commandApply, commandDestroy)
+			os.Exit(1)
+		}
+	}
+
 	if command != commandApply && command != commandDestroy {
 		fmt.Fprintf(os.Stderr, "Error: command must be '%s' or '%s', got '%s'\n", commandApply, commandDestroy, command)
 		os.Exit(1)
 	}
 
 	// 2. Load configuration
+	configFile := fmt.Sprintf("config-%s.yaml", env)
 	cfg, err := loadConfig(configFile)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error loading config: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Please ensure '%s' exists and is correctly formatted.\n", configFile)
 		os.Exit(1)
 	}
 
@@ -269,12 +284,14 @@ func main() {
 
 	// 4. Show execution plan and ask for confirmation
 	previewExecutionPlan(stagesToProcess, command)
-	fmt.Printf("Are you sure you want to %s the resources listed above? Type 'yes' to continue: ", command)
-	reader := bufio.NewReader(os.Stdin)
-	confirmation, _ := reader.ReadString('\n')
-	if strings.TrimSpace(confirmation) != "yes" {
-		fmt.Println("Operation cancelled by user.")
-		os.Exit(0)
+	if !autoApprove {
+		fmt.Printf("Are you sure you want to %s the resources listed above? Type 'yes' to continue: ", command)
+		reader := bufio.NewReader(os.Stdin)
+		confirmation, _ := reader.ReadString('\n')
+		if strings.TrimSpace(confirmation) != "yes" {
+			fmt.Println("Operation cancelled by user.")
+			os.Exit(0)
+		}
 	}
 
 	// 5. Execute stages
