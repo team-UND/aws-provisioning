@@ -118,6 +118,11 @@ variable "enable_www_subdomain" {
   type        = bool
 }
 
+variable "web_acl_arn" {
+  description = "The ARN of the AWS WAFv2 Web ACL to associate with the App Runner service"
+  type        = string
+}
+
 variable "enable_observability" {
   description = "If true, enables AWS X-Ray tracing for the App Runner service"
   type        = bool

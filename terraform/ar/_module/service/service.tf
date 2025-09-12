@@ -99,6 +99,11 @@ resource "aws_apprunner_custom_domain_association" "default" {
   enable_www_subdomain = var.enable_www_subdomain
 }
 
+resource "aws_wafv2_web_acl_association" "default" {
+  resource_arn = aws_apprunner_service.default.arn
+  web_acl_arn  = var.web_acl_arn
+}
+
 resource "aws_apprunner_observability_configuration" "default" {
   count = var.enable_observability ? 1 : 0
 

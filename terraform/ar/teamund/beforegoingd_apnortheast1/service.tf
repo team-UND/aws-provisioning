@@ -84,5 +84,6 @@ module "service" {
 
   lb_variables = var.lb_variables
 
+  web_acl_arn          = data.terraform_remote_state.acl.outputs.regional_aws_wafv2_web_acl_arn
   enable_observability = true
 }
