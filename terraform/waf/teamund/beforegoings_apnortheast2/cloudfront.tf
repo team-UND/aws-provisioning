@@ -6,7 +6,7 @@ locals {
 resource "aws_wafv2_ip_set" "permanent_block_ips" {
   provider = aws.global
 
-  name               = "permanent-block-ips"
+  name               = "permanent-block-ips-${data.terraform_remote_state.vpc.outputs.vpc_name}"
   scope              = local.scope
   ip_address_version = "IPV4"
   addresses = [
@@ -14,7 +14,7 @@ resource "aws_wafv2_ip_set" "permanent_block_ips" {
   ]
 
   tags = {
-    Name = "permanent-block-ips"
+    Name = "permanent-block-ips-${data.terraform_remote_state.vpc.outputs.vpc_name}"
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_wafv2_ip_set" "permanent_block_ips" {
 resource "aws_wafv2_ip_set" "temporary_block_ips" {
   provider = aws.global
 
-  name               = "temporary-block-ips"
+  name               = "temporary-block-ips-${data.terraform_remote_state.vpc.outputs.vpc_name}"
   scope              = local.scope
   ip_address_version = "IPV4"
   addresses = [
@@ -30,7 +30,7 @@ resource "aws_wafv2_ip_set" "temporary_block_ips" {
   ]
 
   tags = {
-    Name         = "temporary-block-ips"
+    Name         = "temporary-block-ips-${data.terraform_remote_state.vpc.outputs.vpc_name}"
     ManagedUntil = "2025-12-31"
   }
 }
