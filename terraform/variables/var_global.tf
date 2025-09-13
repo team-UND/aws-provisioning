@@ -31,19 +31,19 @@ variable "remote_state" {
 
       hosting_zone = object({
 
-        beforegoingdapne1 = object({
+        beforegoingstore = object({
           region = string
           bucket = string
           key    = string
         })
 
-        beforegoingsapne2 = object({
+        beforegoingshop = object({
           region = string
           bucket = string
           key    = string
         })
 
-        beforegoingpapne2 = object({
+        beforegoingsite = object({
           region = string
           bucket = string
           key    = string
@@ -333,21 +333,21 @@ variable "remote_state" {
 
       hosting_zone = {
 
-        beforegoingdapne1 = {
-          region = "ap-northeast-1"
-          bucket = "teamund-apnortheast1-tfstate"
+        beforegoingstore = {
+          region = "us-east-1"
+          bucket = "teamund-global-tfstate"
           key    = "aws-provisioning/terraform/route53/teamund/beforegoing.store/terraform.tfstate"
         }
 
-        beforegoingsapne2 = {
-          region = "ap-northeast-2"
-          bucket = "teamund-apnortheast2-tfstate"
+        beforegoingshop = {
+          region = "us-east-1"
+          bucket = "teamund-global-tfstate"
           key    = "aws-provisioning/terraform/route53/teamund/beforegoing.shop/terraform.tfstate"
         }
 
-        beforegoingpapne2 = {
-          region = "ap-northeast-2"
-          bucket = "teamund-apnortheast2-tfstate"
+        beforegoingsite = {
+          region = "us-east-1"
+          bucket = "teamund-global-tfstate"
           key    = "aws-provisioning/terraform/route53/teamund/beforegoing.site/terraform.tfstate"
         }
 

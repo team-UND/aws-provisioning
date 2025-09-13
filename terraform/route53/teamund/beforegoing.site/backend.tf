@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "teamund-apnortheast2-tfstate"
+    bucket         = "teamund-global-tfstate"
     key            = "aws-provisioning/terraform/route53/teamund/beforegoing.site/terraform.tfstate"
-    region         = "ap-northeast-2"
+    region         = "us-east-1"
     encrypt        = true
-    dynamodb_table = "terraform-lock"
+    dynamodb_table = "global-terraform-lock"
   }
 }

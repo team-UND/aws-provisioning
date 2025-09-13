@@ -7,7 +7,7 @@ data "terraform_remote_state" "vpc" {
 data "terraform_remote_state" "hosting_zone" {
   backend = "s3"
 
-  config = merge(var.remote_state.route53.hosting_zone.beforegoingdapne1)
+  config = merge(var.remote_state.route53.hosting_zone.beforegoingstore)
 }
 
 data "terraform_remote_state" "repository" {
