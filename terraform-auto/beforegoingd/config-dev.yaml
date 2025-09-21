@@ -5,7 +5,7 @@ apply_stages:
     directories:
       - path: ../../terraform/vpc/beforegoingd_apnortheast1
         enabled: true
-  - name: "Stage 2: Data Stores & Load Balancer"
+  - name: "Stage 2: Data Stores"
     parallel: true
     directories:
       - path: ../../terraform/rds/teamund/beforegoingd_apnortheast1
@@ -57,7 +57,7 @@ destroy_stages:
         enabled: true
       - path: ../../terraform/waf/teamund/beforegoingd_apnortheast1
         enabled: true
-  - name: "Stage 3: Data Stores & Load Balancer"
+  - name: "Stage 3: Data Stores"
     parallel: true
     directories:
       - path: ../../terraform/rds/teamund/beforegoingd_apnortheast1
