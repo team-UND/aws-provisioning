@@ -18,16 +18,6 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "at_rest_encryption_enabled" {
-  description = "Whether to enable encryption at rest"
-  type        = bool
-}
-
-variable "transit_encryption_enabled" {
-  description = "Whether to enable encryption in transit"
-  type        = bool
-}
-
 variable "route53_zone_id" {
   description = "The ID of the Route 53 Hosted Zone"
   type        = string

@@ -10,9 +10,6 @@ module "redis" {
   subdomain_name  = "redis"
   port            = 6079
 
-  at_rest_encryption_enabled = true
-  transit_encryption_enabled = true
-
   engine_version             = "7.0"
   auto_minor_version_upgrade = true
   node_type                  = "cache.t2.micro"
