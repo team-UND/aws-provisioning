@@ -37,7 +37,30 @@ resource "aws_iam_policy" "ecs_task_exec" {
   })
 }
 
+resource "aws_iam_policy" "ecs_task_rds" {
+  description = "Policy for ECS task to access RDS"
+  name        = "ecs-task-rds-${data.terraform_remote_state.vpc.outputs.vpc_name}"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Action = [
+        "rds-db:connect"
+      ],
+      "Resource" : [
+        "${data.terraform_remote_state.mysql.outputs.aws_db_instance_arn}/${data.terraform_remote_state.mysql.outputs.aws_db_instance_username}"
+      ]
+    }]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "ecs_task_exec" {
   role       = aws_iam_role.ecs_task.name
   policy_arn = aws_iam_policy.ecs_task_exec.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_rds" {
+  role       = aws_iam_role.ecs_task.name
+  policy_arn = aws_iam_policy.ecs_task_rds.arn
 }

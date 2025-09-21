@@ -28,7 +28,7 @@ resource "aws_iam_role_policy_attachment" "ar_ecr_access" {
 }
 
 resource "aws_iam_role" "ar_instance" {
-  description = "Role for App Runner instance to access secrets"
+  description = "Role for App Runner instance to access RDS and secrets"
   name        = "ar-instance-${data.terraform_remote_state.vpc.outputs.vpc_name}"
 
   assume_role_policy = jsonencode({
@@ -37,6 +37,24 @@ resource "aws_iam_role" "ar_instance" {
       Action    = "sts:AssumeRole",
       Effect    = "Allow",
       Principal = { Service = "tasks.apprunner.amazonaws.com" }
+    }]
+  })
+}
+
+resource "aws_iam_policy" "ar_rds" {
+  description = "Policy for App Runner instance to access RDS"
+  name        = "ar-rds-${data.terraform_remote_state.vpc.outputs.vpc_name}"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Action = [
+        "rds-db:connect"
+      ],
+      "Resource" : [
+        "${data.terraform_remote_state.mysql.outputs.aws_db_instance_arn}/${data.terraform_remote_state.mysql.outputs.aws_db_instance_username}"
+      ]
     }]
   })
 }
@@ -58,6 +76,11 @@ resource "aws_iam_policy" "ar_secrets_read" {
       ]
     }]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "ar_rds" {
+  role       = aws_iam_role.ar_instance.name
+  policy_arn = aws_iam_policy.ar_rds.arn
 }
 
 resource "aws_iam_role_policy_attachment" "ar_secrets_read" {
