@@ -17,15 +17,16 @@ module "mysql" {
   max_allocated_storage      = 0
   storage_type               = "gp2"
 
-  username                        = "team_UND_Beforegoing_prod_admin"
-  db_name                         = "beforegoingp"
-  manage_master_user_password     = true
-  multi_az                        = false
-  publicly_accessible             = false
-  backup_retention_period         = 7
-  copy_tags_to_snapshot           = true
-  enabled_cloudwatch_logs_exports = ["general"]
-  skip_final_snapshot             = true
-  family                          = "mysql8.0"
-  pg_variables                    = var.pg_variables
+  username                            = "team_UND_Beforegoing_prod_admin"
+  db_name                             = "beforegoingp"
+  manage_master_user_password         = true
+  iam_database_authentication_enabled = true
+  multi_az                            = false
+  publicly_accessible                 = false
+  backup_retention_period             = 7
+  copy_tags_to_snapshot               = true
+  enabled_cloudwatch_logs_exports     = ["general"]
+  skip_final_snapshot                 = true
+  family                              = "mysql8.0"
+  pg_variables                        = var.pg_variables
 }

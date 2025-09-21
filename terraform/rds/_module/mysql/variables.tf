@@ -78,6 +78,11 @@ variable "manage_master_user_password" {
   type        = bool
 }
 
+variable "iam_database_authentication_enabled" {
+  description = "Whether to enable IAM database authentication"
+  type        = bool
+}
+
 variable "multi_az" {
   description = "Whether to use multi-AZ"
   type        = bool

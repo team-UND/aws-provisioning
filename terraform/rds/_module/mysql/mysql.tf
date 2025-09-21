@@ -39,16 +39,17 @@ resource "aws_db_instance" "mysql" {
   vpc_security_group_ids     = [aws_security_group.mysql.id]
   db_subnet_group_name       = aws_db_subnet_group.mysql.name
 
-  username                        = var.username
-  db_name                         = var.db_name
-  port                            = var.port
-  manage_master_user_password     = var.manage_master_user_password
-  multi_az                        = var.multi_az
-  publicly_accessible             = var.publicly_accessible
-  backup_retention_period         = var.backup_retention_period
-  copy_tags_to_snapshot           = var.copy_tags_to_snapshot
-  enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
-  skip_final_snapshot             = var.skip_final_snapshot
+  username                            = var.username
+  db_name                             = var.db_name
+  port                                = var.port
+  manage_master_user_password         = var.manage_master_user_password
+  iam_database_authentication_enabled = var.iam_database_authentication_enabled
+  multi_az                            = var.multi_az
+  publicly_accessible                 = var.publicly_accessible
+  backup_retention_period             = var.backup_retention_period
+  copy_tags_to_snapshot               = var.copy_tags_to_snapshot
+  enabled_cloudwatch_logs_exports     = var.enabled_cloudwatch_logs_exports
+  skip_final_snapshot                 = var.skip_final_snapshot
 
   tags = {
     Name = "mysql-${var.vpc_name}"
