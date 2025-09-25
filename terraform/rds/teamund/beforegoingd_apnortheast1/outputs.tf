@@ -3,14 +3,14 @@ output "aws_db_instance_arn" {
   value       = module.mysql.aws_db_instance_arn
 }
 
+output "aws_db_instance_resource_id" {
+  description = "The resource ID of the RDS instance"
+  value       = module.mysql.aws_db_instance_resource_id
+}
+
 output "aws_db_instance_username" {
   description = "The master username for the RDS instance"
   value       = module.mysql.aws_db_instance_username
-}
-
-output "aws_db_master_user_secret_arn" {
-  description = "The ARN of the secret containing the master user password"
-  value       = module.mysql.aws_db_master_user_secret_arn
 }
 
 output "aws_security_group_id" {
