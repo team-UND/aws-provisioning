@@ -1,3 +1,8 @@
+data "aws_secretsmanager_secret_version" "db_username" {
+  provider  = aws.vpc_region
+  secret_id = data.aws_secretsmanager_secret.server.id
+}
+
 resource "aws_iam_role" "ecs_task" {
   description = "Role for ECS tasks"
   name        = "ecs-task-${data.terraform_remote_state.vpc.outputs.vpc_name}"
@@ -49,7 +54,7 @@ resource "aws_iam_policy" "ecs_task_rds" {
         "rds-db:connect"
       ],
       "Resource" : [
-        "${data.terraform_remote_state.mysql.outputs.aws_db_instance_arn}/${data.terraform_remote_state.mysql.outputs.aws_db_instance_username}"
+        "arn:aws:rds-db:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:dbuser:${data.terraform_remote_state.mysql.outputs.aws_db_instance_resource_id}/${jsondecode(data.aws_secretsmanager_secret_version.db_username.secret_string)["SPRING_DATASOURCE_USERNAME"]}"
       ]
     }]
   })

@@ -39,8 +39,7 @@ resource "aws_iam_policy" "ecs_task_execution_secrets_manager_read" {
         Resource = [
           # Add secret ARNs here
           data.aws_secretsmanager_secret.server.arn,
-          data.aws_secretsmanager_secret.prometheus.arn,
-          data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
+          data.aws_secretsmanager_secret.prometheus.arn
         ]
       },
     ]

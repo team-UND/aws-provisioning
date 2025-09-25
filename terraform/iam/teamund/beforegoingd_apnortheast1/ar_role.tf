@@ -3,6 +3,11 @@ data "aws_secretsmanager_secret" "server" {
   name     = "dev/server/springboot"
 }
 
+data "aws_secretsmanager_secret_version" "db_username" {
+  provider  = aws.vpc_region
+  secret_id = data.aws_secretsmanager_secret.server.id
+}
+
 data "aws_secretsmanager_secret" "prometheus" {
   provider = aws.vpc_region
   name     = "dev/prometheus"
@@ -53,7 +58,7 @@ resource "aws_iam_policy" "ar_rds" {
         "rds-db:connect"
       ],
       "Resource" : [
-        "${data.terraform_remote_state.mysql.outputs.aws_db_instance_arn}/${data.terraform_remote_state.mysql.outputs.aws_db_instance_username}"
+        "arn:aws:rds-db:${data.terraform_remote_state.vpc.outputs.aws_region}:${data.aws_caller_identity.current.account_id}:dbuser:${data.terraform_remote_state.mysql.outputs.aws_db_instance_resource_id}/${jsondecode(data.aws_secretsmanager_secret_version.db_username.secret_string)["SPRING_DATASOURCE_USERNAME"]}"
       ]
     }]
   })
@@ -71,8 +76,7 @@ resource "aws_iam_policy" "ar_secrets_read" {
       Resource = [
         # Add secret ARNs here
         data.aws_secretsmanager_secret.server.arn,
-        data.aws_secretsmanager_secret.prometheus.arn,
-        data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
+        data.aws_secretsmanager_secret.prometheus.arn
       ]
     }]
   })
