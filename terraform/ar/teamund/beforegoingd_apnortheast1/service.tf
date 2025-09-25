@@ -36,7 +36,7 @@ module "service" {
   shard_id = data.terraform_remote_state.vpc.outputs.shard_id
 
   image_url             = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
-  image_tag             = "ae6fc87"
+  image_tag             = "a414de2"
   image_repository_type = "ECR"
 
   domain_name          = data.terraform_remote_state.hosting_zone.outputs.aws_route53_zone_name
@@ -53,8 +53,8 @@ module "service" {
     SPRING_DATASOURCE_ENDPOINT      = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_ENDPOINT::"
     SPRING_DATASOURCE_PORT          = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_PORT::"
     SPRING_DATASOURCE_DATABASE_NAME = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_DATABASE_NAME::"
-    SPRING_DATASOURCE_USERNAME      = "${data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn}:username::"
-    SPRING_DATASOURCE_PASSWORD      = "${data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn}:password::"
+    SPRING_DATASOURCE_REGION        = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_REGION::"
+    SPRING_DATASOURCE_USERNAME      = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_USERNAME::"
     SPRING_REDIS_HOST               = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_REDIS_HOST::"
     SPRING_REDIS_PORT               = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_REDIS_PORT::"
     OAUTH_KAKAO_APP_KEY             = "${data.aws_secretsmanager_secret.app_secrets.arn}:OAUTH_KAKAO_APP_KEY::"

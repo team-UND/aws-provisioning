@@ -57,12 +57,12 @@
         "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_DATABASE_NAME::"
       },
       {
-        "name": "SPRING_DATASOURCE_USERNAME",
-        "valueFrom": "${rdb_secrets_arn}:username::"
+        "name": "SPRING_DATASOURCE_REGION",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_REGION::"
       },
       {
-        "name": "SPRING_DATASOURCE_PASSWORD",
-        "valueFrom": "${rdb_secrets_arn}:password::"
+        "name": "SPRING_DATASOURCE_USERNAME",
+        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_USERNAME::"
       },
       {
         "name": "SPRING_REDIS_HOST",

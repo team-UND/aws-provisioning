@@ -32,7 +32,6 @@ locals {
     prometheus_enable           = true
     spring_profiles_active      = data.terraform_remote_state.vpc.outputs.billing_tag
     log_group_name              = local.log_group_name
-    rdb_secrets_arn             = data.terraform_remote_state.mysql.outputs.aws_db_master_user_secret_arn
     app_secrets_arn             = data.aws_secretsmanager_secret.app_secrets.arn
     prometheus_secrets_arn      = data.aws_secretsmanager_secret.prometheus_secrets.arn
   }
