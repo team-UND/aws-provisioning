@@ -83,6 +83,11 @@ variable "iam_database_authentication_enabled" {
   type        = bool
 }
 
+variable "storage_encrypted" {
+  description = "Whether to enable storage encryption"
+  type        = bool
+}
+
 variable "multi_az" {
   description = "Whether to use multi-AZ"
   type        = bool

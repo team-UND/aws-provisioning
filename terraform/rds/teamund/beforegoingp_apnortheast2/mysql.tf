@@ -21,6 +21,7 @@ module "mysql" {
   db_name                             = "beforegoingp"
   manage_master_user_password         = true
   iam_database_authentication_enabled = true
+  storage_encrypted                   = true
   multi_az                            = false
   publicly_accessible                 = false
   backup_retention_period             = 7

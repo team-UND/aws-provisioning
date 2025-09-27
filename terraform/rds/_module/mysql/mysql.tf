@@ -44,6 +44,7 @@ resource "aws_db_instance" "mysql" {
   port                                = var.port
   manage_master_user_password         = var.manage_master_user_password
   iam_database_authentication_enabled = var.iam_database_authentication_enabled
+  storage_encrypted                   = var.storage_encrypted
   multi_az                            = var.multi_az
   publicly_accessible                 = var.publicly_accessible
   backup_retention_period             = var.backup_retention_period
