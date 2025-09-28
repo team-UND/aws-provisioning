@@ -1,5 +1,5 @@
 data "aws_secretsmanager_secret" "server" {
-  name = "dev/server/springboot"
+  name = "prod/server/springboot"
 }
 
 data "aws_secretsmanager_secret_version" "secrets" {
