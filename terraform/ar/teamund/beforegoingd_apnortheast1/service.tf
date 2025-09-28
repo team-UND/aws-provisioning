@@ -46,14 +46,14 @@ module "service" {
   container_port = 8080
 
   environment_variables = {
-    SPRING_PROFILES_ACTIVE = data.terraform_remote_state.vpc.outputs.billing_tag
+    SPRING_DATASOURCE_REGION   = data.terraform_remote_state.mysql.outputs.aws_db_instance_region
+    SPRING_PROFILES_ACTIVE     = data.terraform_remote_state.vpc.outputs.billing_tag
+    SPRING_DATASOURCE_HOSTNAME = data.terraform_remote_state.mysql.outputs.aws_db_instance_address
   }
 
   environment_secrets = {
-    SPRING_DATASOURCE_ENDPOINT      = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_ENDPOINT::"
     SPRING_DATASOURCE_PORT          = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_PORT::"
     SPRING_DATASOURCE_DATABASE_NAME = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_DATABASE_NAME::"
-    SPRING_DATASOURCE_REGION        = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_REGION::"
     SPRING_DATASOURCE_USERNAME      = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_DATASOURCE_USERNAME::"
     SPRING_REDIS_HOST               = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_REDIS_HOST::"
     SPRING_REDIS_PORT               = "${data.aws_secretsmanager_secret.app_secrets.arn}:SPRING_REDIS_PORT::"

@@ -30,7 +30,9 @@ locals {
     health_check_path           = local.health_check_path
     prometheus_path             = local.prometheus_path
     prometheus_enable           = true
+    spring_datasource_region    = data.terraform_remote_state.mysql.outputs.aws_db_instance_region
     spring_profiles_active      = data.terraform_remote_state.vpc.outputs.billing_tag
+    spring_datasource_hostname  = data.terraform_remote_state.mysql.outputs.aws_db_instance_address
     log_group_name              = local.log_group_name
     app_secrets_arn             = data.aws_secretsmanager_secret.app_secrets.arn
     prometheus_secrets_arn      = data.aws_secretsmanager_secret.prometheus_secrets.arn
