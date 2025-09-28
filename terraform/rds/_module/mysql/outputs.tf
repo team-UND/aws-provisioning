@@ -1,3 +1,8 @@
+output "aws_db_instance_region" {
+  description = "value"
+  value       = aws_db_instance.mysql.region
+}
+
 output "aws_db_instance_arn" {
   description = "The ARN of the RDS instance"
   value       = aws_db_instance.mysql.arn
@@ -6,6 +11,11 @@ output "aws_db_instance_arn" {
 output "aws_db_instance_resource_id" {
   description = "The resource ID of the RDS instance"
   value       = aws_db_instance.mysql.resource_id
+}
+
+output "aws_db_instance_address" {
+  description = "The hostname of the RDS instance"
+  value       = aws_db_instance.mysql.address
 }
 
 output "aws_db_instance_username" {
