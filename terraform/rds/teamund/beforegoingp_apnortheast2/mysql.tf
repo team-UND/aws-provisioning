@@ -1,3 +1,11 @@
+data "aws_secretsmanager_secret" "server" {
+  name = "dev/server/springboot"
+}
+
+data "aws_secretsmanager_secret_version" "secrets" {
+  secret_id = data.aws_secretsmanager_secret.server.id
+}
+
 module "mysql" {
   source = "../../_module/mysql"
 
@@ -17,8 +25,8 @@ module "mysql" {
   max_allocated_storage      = 0
   storage_type               = "gp2"
 
-  username                            = "team_UND_Beforegoing_prod_admin"
-  db_name                             = "beforegoingp"
+  username                            = jsondecode(data.aws_secretsmanager_secret_version.secrets.secret_string)["SPRING_DATASOURCE_MASTER_USERNAME"]
+  db_name                             = jsondecode(data.aws_secretsmanager_secret_version.secrets.secret_string)["SPRING_DATASOURCE_DATABASE_NAME"]
   manage_master_user_password         = true
   iam_database_authentication_enabled = true
   storage_encrypted                   = true
