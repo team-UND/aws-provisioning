@@ -53,20 +53,12 @@
     },
     "secrets": [
       {
-        "name": "SPRING_DATASOURCE_ENDPOINT",
-        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_ENDPOINT::"
-      },
-      {
         "name": "SPRING_DATASOURCE_PORT",
         "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_PORT::"
       },
       {
         "name": "SPRING_DATASOURCE_DATABASE_NAME",
         "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_DATABASE_NAME::"
-      },
-      {
-        "name": "SPRING_DATASOURCE_REGION",
-        "valueFrom": "${app_secrets_arn}:SPRING_DATASOURCE_REGION::"
       },
       {
         "name": "SPRING_DATASOURCE_USERNAME",
