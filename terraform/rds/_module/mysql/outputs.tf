@@ -18,11 +18,6 @@ output "aws_db_instance_address" {
   value       = aws_db_instance.mysql.address
 }
 
-output "aws_db_instance_username" {
-  description = "The master username for the RDS instance"
-  value       = aws_db_instance.mysql.username
-}
-
 output "aws_security_group_id" {
   description = "The ID of the security group for the RDS"
   value       = aws_security_group.mysql.id
