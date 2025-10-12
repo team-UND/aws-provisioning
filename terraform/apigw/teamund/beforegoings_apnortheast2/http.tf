@@ -36,8 +36,8 @@ module "http" {
   cors_allow_methods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
   cors_allow_headers = ["*"]
 
-  throttling_burst_limit = 500
-  throttling_rate_limit  = 500
+  throttling_burst_limit = 1000
+  throttling_rate_limit  = 1000
 
   log_group_name        = "/apigw/${data.terraform_remote_state.vpc.outputs.shard_id}"
   log_retention_in_days = 7

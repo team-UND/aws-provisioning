@@ -47,7 +47,7 @@ module "cloudfront" {
   name  = "cloudfront"
   scope = local.scope
 
-  rate_limit = 2000
+  rate_limit = 100
 
   ip_set_rules = {
     # This rule is for permanently blocking specific IP addresses
