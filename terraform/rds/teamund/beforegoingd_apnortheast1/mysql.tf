@@ -28,7 +28,7 @@ module "mysql" {
   username                            = jsondecode(data.aws_secretsmanager_secret_version.secrets.secret_string)["SPRING_DATASOURCE_MASTER_USERNAME"]
   db_name                             = jsondecode(data.aws_secretsmanager_secret_version.secrets.secret_string)["SPRING_DATASOURCE_DATABASE_NAME"]
   manage_master_user_password         = true
-  iam_database_authentication_enabled = true
+  iam_database_authentication_enabled = false
   storage_encrypted                   = true
   multi_az                            = false
   publicly_accessible                 = false
