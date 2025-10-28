@@ -12,41 +12,38 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// --- Constants ---
 const (
 	commandApply   = "apply"
 	commandDestroy = "destroy"
 )
 
-// --- Structs ---
-
-// TerraformStep defines a single execution step with specific targets.
+// TerraformStep defines a single execution step with specific targets
 type TerraformStep struct {
 	Name    string   `yaml:"name"`
 	Targets []string `yaml:"targets"`
 }
 
-// DirectoryConfig defines the structure for each directory within a stage.
+// DirectoryConfig defines the structure for each directory within a stage
 type DirectoryConfig struct {
 	Path    string          `yaml:"path"`
 	Enabled bool            `yaml:"enabled"`
 	Steps   []TerraformStep `yaml:"steps,omitempty"`
 }
 
-// Stage defines the structure for each stage in the config.
+// Stage defines the structure for each stage in the config
 type Stage struct {
 	Name        string            `yaml:"name"`
 	Parallel    bool              `yaml:"parallel"`
 	Directories []DirectoryConfig `yaml:"directories"`
 }
 
-// Config defines the overall structure of the config.yaml.
+// Config defines the overall structure of the config.yaml
 type Config struct {
 	ApplyStages   []Stage `yaml:"apply_stages"`
 	DestroyStages []Stage `yaml:"destroy_stages"`
 }
 
-// MultiError is a custom error type to hold multiple errors.
+// MultiError is a custom error type to hold multiple errors
 type MultiError struct {
 	Errors []error
 }
@@ -62,9 +59,7 @@ func (m *MultiError) Error() string {
 	return fmt.Sprintf("%d errors occurred:\n%s", len(errStrings), strings.Join(errStrings, "\n"))
 }
 
-// --- Core Logic ---
-
-// executeCommand runs a given command in a specific directory and captures its output for logging.
+// executeCommand runs a given command in a specific directory and captures its output for logging
 func executeCommand(dir string, displayDir string, writer *strings.Builder, command string, args ...string) error {
 	var stderr bytes.Buffer
 	cmd := exec.Command(command, args...)
@@ -74,7 +69,7 @@ func executeCommand(dir string, displayDir string, writer *strings.Builder, comm
 
 	err := cmd.Run()
 
-	// Capture stderr for logging purposes, especially on error.
+	// Capture stderr for logging purposes, especially on error
 	stderrOutput := stderr.String()
 	if stderrOutput != "" {
 		writer.WriteString(fmt.Sprintf("[STDERR from %s]:\n%s\n", displayDir, stderrOutput))
@@ -86,7 +81,7 @@ func executeCommand(dir string, displayDir string, writer *strings.Builder, comm
 	return nil
 }
 
-// initAndValidate runs terraform init and validate for a given directory.
+// initAndValidate runs terraform init and validate for a given directory
 func initAndValidate(dir, displayDir string, outputLog *strings.Builder) error {
 	// 1. Run terraform init
 	outputLog.WriteString(fmt.Sprintf("--- Terraform Init in %s ---\n", displayDir))
@@ -104,7 +99,7 @@ func initAndValidate(dir, displayDir string, outputLog *strings.Builder) error {
 	return nil
 }
 
-// runTerraformAction runs a terraform apply or destroy command, optionally with targets.
+// runTerraformAction runs a terraform apply or destroy command, optionally with targets
 func runTerraformAction(dir, displayDir string, outputLog *strings.Builder, command string, targets []string) error {
 	var args []string
 	var action string
@@ -135,7 +130,7 @@ func runTerraformAction(dir, displayDir string, outputLog *strings.Builder, comm
 	return nil
 }
 
-// runTerraformCommand orchestrates the sequence of terraform commands.
+// runTerraformCommand orchestrates the sequence of terraform commands
 func runTerraformCommand(dir, command string, dirConfig DirectoryConfig) (string, error) {
 	displayDir := strings.TrimPrefix(dir, "../../")
 	var outputLog strings.Builder
@@ -169,7 +164,7 @@ func runTerraformCommand(dir, command string, dirConfig DirectoryConfig) (string
 	return outputLog.String(), nil
 }
 
-// loadConfig reads and parses the YAML configuration file.
+// loadConfig reads and parses the YAML configuration file
 func loadConfig(path string) (*Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -184,7 +179,7 @@ func loadConfig(path string) (*Config, error) {
 	return &cfg, nil
 }
 
-// previewExecutionPlan displays a summary of what will be executed.
+// previewExecutionPlan displays a summary of what will be executed
 func previewExecutionPlan(stages []Stage, command string) {
 	fmt.Printf("\n--- Execution Plan for '%s' ---\n", command)
 	hasEnabledTasks := false
@@ -218,7 +213,7 @@ type stageResult struct {
 	err error
 }
 
-// processStages executes all the stages for a given command (apply/destroy).
+// processStages executes all the stages for a given command (apply/destroy)
 func processStages(stages []Stage, command string) error {
 	for i, stage := range stages {
 		fmt.Printf("--- Starting Stage %d: %s ---\n", i+1, stage.Name)
@@ -275,8 +270,6 @@ func processStages(stages []Stage, command string) error {
 
 	return nil
 }
-
-// --- Main Function ---
 
 func main() {
 	// 1. Argument validation
