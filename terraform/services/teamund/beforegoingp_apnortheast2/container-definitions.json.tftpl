@@ -101,6 +101,10 @@
         "valueFrom": "${app_secrets_arn}:SENTRY_DSN::"
       },
       {
+        "name": "KMA_SERVICE_KEY",
+        "valueFrom": "${app_secrets_arn}:KMA_SERVICE_KEY::"
+      },
+      {
         "name": "PROMETHEUS_USERNAME",
         "valueFrom": "${prometheus_secrets_arn}:USERNAME::"
       },

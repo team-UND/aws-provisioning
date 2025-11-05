@@ -64,6 +64,7 @@ module "service" {
     ACCESS_TOKEN_EXPIRE_TIME        = "${data.aws_secretsmanager_secret.app_secrets.arn}:ACCESS_TOKEN_EXPIRE_TIME::"
     REFRESH_TOKEN_EXPIRE_TIME       = "${data.aws_secretsmanager_secret.app_secrets.arn}:REFRESH_TOKEN_EXPIRE_TIME::"
     SENTRY_DSN                      = "${data.aws_secretsmanager_secret.app_secrets.arn}:SENTRY_DSN::"
+    KMA_SERVICE_KEY                 = "${data.aws_secretsmanager_secret.app_secrets.arn}:KMA_SERVICE_KEY::"
     PROMETHEUS_USERNAME             = "${data.aws_secretsmanager_secret.prometheus_secrets.arn}:USERNAME::"
     PROMETHEUS_PASSWORD             = "${data.aws_secretsmanager_secret.prometheus_secrets.arn}:PASSWORD::"
   }
