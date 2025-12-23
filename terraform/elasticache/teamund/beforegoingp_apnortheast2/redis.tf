@@ -12,7 +12,7 @@ module "redis" {
 
   engine_version             = "7.0"
   auto_minor_version_upgrade = true
-  node_type                  = "cache.t2.micro"
+  node_type                  = "cache.t4g.micro"
   num_cache_clusters         = 1
   multi_az_enabled           = false
   automatic_failover_enabled = false
