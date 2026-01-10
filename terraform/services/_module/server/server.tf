@@ -88,9 +88,10 @@ resource "aws_appautoscaling_policy" "default" {
 }
 
 resource "aws_ecs_task_definition" "default" {
-  family                   = "task-${var.service_name}-${var.vpc_name}"
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["EC2", "FARGATE"]
+  family       = "task-${var.service_name}-${var.vpc_name}"
+  network_mode = "awsvpc"
+  # requires_compatibilities = ["EC2", "FARGATE"]
+  requires_compatibilities = ["EC2"]
   cpu                      = var.task_cpu
   memory                   = var.task_memory
   task_role_arn            = var.ecs_task_role_arn

@@ -22,9 +22,9 @@ locals {
     service_name                = local.service_name
     image_url                   = data.terraform_remote_state.repository.outputs.aws_ecr_repository_server_build_repository_url
     image_tag                   = "206b82d"
-    container_cpu_limit         = 256
-    container_memory_hard_limit = 512
-    container_memory_soft_limit = 512
+    container_cpu_limit         = 1024
+    container_memory_hard_limit = 960
+    container_memory_soft_limit = 960
     service_port                = local.service_port
     health_check_port           = local.health_check_port
     health_check_path           = local.health_check_path
@@ -186,8 +186,8 @@ module "server" {
   scale_out_cooldown = 60  # 1 minute before scaling out again
 
   # Task Sizing
-  task_cpu    = "256" # 0.25 vCPU
-  task_memory = "512" # 512 MiB
+  task_cpu    = "1024" # 1 vCPU
+  task_memory = "960"  # 960 MiB
 
   log_group_name        = local.log_group_name
   log_retention_in_days = 7
